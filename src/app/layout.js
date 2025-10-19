@@ -20,7 +20,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        {/* .app-root centers everything and applies page padding */}
+        <div className="app-root">
+          {children}
+        </div>
       </body>
     </html>
   );
