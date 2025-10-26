@@ -10,12 +10,14 @@
 
 .pageWrap {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex;             /* enable flex */
+  align-items: center;       /* vertical centering */
+  justify-content: center;   /* horizontal centering */
   padding: 2rem;
   background: var(--bg);
+  box-sizing: border-box;
 }
+
 
 .card {
   width: 100%;

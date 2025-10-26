@@ -38,7 +38,7 @@ export default function LoginPage() {
       if (!res.ok) return setError(data.error || "Invalid login");
 
       // redirect after successful login
-      router.push("/dashboard");
+      router.push("/home");
     } catch (err) {
       console.error(err);
       setError("Failed to login. Please try again.");
@@ -52,7 +52,7 @@ export default function LoginPage() {
   };
 
   return (
-    // <div className={styles.pageWrap}>
+     <div className={styles.pageWrap}>
       <div className={styles.card}>
         <div className={styles.brand}>
           <h1>Food Challenge</h1>
@@ -111,6 +111,6 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
-    
+    </div>
   );
 }
