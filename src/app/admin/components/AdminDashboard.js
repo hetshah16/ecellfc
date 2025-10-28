@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       const res = await fetch("/api/admin/recharge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: selected.user_id, amount: amt }),
+        body: JSON.stringify({ user_id: selected.user_id, amount: amt , mode:"counter"}),
       });
       const data = await res.json();
       if (!res.ok) {
