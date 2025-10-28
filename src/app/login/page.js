@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   const validate = () => {
     if (!email) return "Email is required";
-    if (!/^[\w-.]+@[\w-]+\.[a-zA-Z]{2,}$/.test(email)) return "Enter a valid email";
+    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email))return "Enter a valid email";
     if (!password) return "Password is required";
     if (password.length < 6) return "Password must be at least 6 characters";
     return "";

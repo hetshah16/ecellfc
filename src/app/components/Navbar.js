@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className={styles.brandWrap}>
           <Link href="/home" className={styles.brand}>
             <span className={styles.logoMark}>🍽️</span>
-            <span className={styles.brandText}>E-Cell Food</span>
+            <span className={styles.brandText}>E-Cell Food Challenge</span>
           </Link>
         </div>
 
@@ -38,10 +38,10 @@ export default function Navbar() {
         <div className={styles.right}>
           <button
             className={styles.primaryBtn}
-            onClick={() => (window.location.href = "/login")}
-            aria-label="Sign in"
+            onClick={() => (window.location.href = "/")}
+            aria-label="Log Out"
           >
-            Sign in
+            Log Out
           </button>
 
           <button
@@ -61,7 +61,7 @@ export default function Navbar() {
       <div className={`${styles.mobileMenu} ${open ? styles.show : ""}`} role="menu" aria-hidden={!open}>
         <Link href="/home" className={styles.mobileLink}>Buy Food</Link>
         <Link href="/transfer" className={styles.mobileLink}>Transfer E-coins</Link>
-        <Link href="/signup" className={styles.mobileLinkPrimary}>Create account</Link>
+        <Link href="/" className={styles.mobileLinkPrimary}>Log Out</Link>
       </div>
     </header>
   );

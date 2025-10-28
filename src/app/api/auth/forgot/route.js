@@ -27,7 +27,9 @@ export async function POST(req) {
 
     // create token
     const token = crypto.randomBytes(32).toString("hex");
-    const expires = new Date(Date.now() + 1000 * 60 * 60).toISOString().slice(0, 19).replace('T', ' '); // 1 hour
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60 * 1000;
+    const expires = new Date(Date.now() + 1000 * 60 * 60-offset).toISOString().slice(0, 19).replace('T', ' '); // 1 hour
 
     // store token
     await pool.execute(

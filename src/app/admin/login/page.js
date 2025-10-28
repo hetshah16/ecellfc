@@ -1,0 +1,116 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "../../login/page.module.css";
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const validate = () => {
+    if (!email) return "Email is required";
+    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email))return "Enter a valid email";
+    if (!password) return "Password is required";
+    if (password.length < 6) return "Password must be at least 6 characters";
+    return "";
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    const v = validate();
+    if (v) return setError(v);
+
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) return setError(data.error || "Invalid login");
+
+      // redirect after successful login
+      router.push("/admin/home");
+    } catch (err) {
+      console.error(err);
+      setError("Failed to login. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOAuth = (provider) => {
+    console.log("OAuth login:", provider);
+  };
+
+  return (
+     <div className={styles.pageWrap}>
+      <div className={styles.card}>
+        <div className={styles.brand}>
+          <h1>Food Challenge</h1>
+          <p className={styles.subtitle}>Sign in to continue</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form} noValidate>
+          <label className={styles.label}>
+            Email
+            <input
+              className={styles.input}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@domain.com"
+              autoComplete="email"
+            />
+          </label>
+
+          <label className={styles.label}>
+            Password
+            <input
+              className={styles.input}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+          </label>
+
+          {error && <div className={styles.error}>{error}</div>}
+
+          <button className={styles.primaryBtn} type="submit" disabled={loading}>
+            {loading ? "Signing in…" : "Sign in"}
+          </button>
+
+          <div className={styles.divider}>Or continue with</div>
+
+          <div className="auth-buttons" role="group">
+            <button type="button" onClick={() => handleOAuth("google")}>
+              Continue with Google
+            </button>
+            <button type="button" onClick={() => handleOAuth("github")}>
+              Continue with GitHub
+            </button>
+          </div>
+
+          <div className={styles.footerLinks}>
+            <button type="button" className={styles.linkBtn} onClick={() => router.push("/admin/signup")}>
+              Create account
+            </button>
+            <button type="button" className={styles.linkBtn} onClick={() => router.push("/admin/forgot")}>
+              Forgot password?
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
