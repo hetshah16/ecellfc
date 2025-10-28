@@ -8,7 +8,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); 
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
@@ -27,7 +27,6 @@ export default function LoginPage() {
 
     try {
       setLoading(true);
-
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
