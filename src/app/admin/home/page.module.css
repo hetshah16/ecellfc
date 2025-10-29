@@ -27,6 +27,7 @@
   padding: 12px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+  max-height: 80vh;
 }
 
 .searchBox {
@@ -43,7 +44,7 @@
 
 /* user list */
 .userList {
-  max-height: 60vh;
+  max-height: 30vh;
   overflow: auto;
   display:flex;
   flex-direction:column;
@@ -129,5 +130,5 @@
   .adminWrap {
     grid-template-columns: 1fr;
   }
-  .userList { max-height: 40vh; }
+  .userList { max-height: 26vh; }
 }
