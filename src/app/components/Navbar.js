@@ -28,7 +28,7 @@ export default function Navbar() {
 
         <div className={`${styles.links} ${open ? styles.open : ""}`}>
           <Link href="/home" className={`${styles.link} ${isActive("/home")}`}>
-            Buy Food
+            Home
           </Link>
           <Link href="/transfer" className={`${styles.link} ${isActive("/transfer")}`}>
             Transfer E-coins

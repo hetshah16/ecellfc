@@ -20,7 +20,7 @@ export async function POST(req) {
       "SELECT coins FROM user WHERE user_id = ? FOR UPDATE",
       [user_id]
     );
-    console.log(user);
+    
     if (user.length === 0) {
       await connection.rollback();
       return NextResponse.json(

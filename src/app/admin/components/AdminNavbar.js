@@ -19,7 +19,7 @@ export default function AdminNavbar() {
       <div className={styles.brand}>Admin Console</div>
 
       <nav className={styles.links}>
-        <Link className={styles.link} href="/admin/recharge">Recharge</Link>
+        <Link className={styles.link} href="/admin/home">Recharge</Link>
         <Link className={styles.link} href="/admin/add-stall">Add stalls</Link>
         <Link className={styles.link} href="/admin/logs">Logs</Link>
         <button className={styles.logout} onClick={logout}>Logout</button>
