@@ -4,8 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from "./navbar.module.css";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 export default function Navbar() {
+  const router = useRouter();
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/logout");        
+      alert("You’ve been logged out.");
+      router.push("/login");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
 
@@ -36,12 +49,8 @@ export default function Navbar() {
         </div>
 
         <div className={styles.right}>
-          <button
-            className={styles.primaryBtn}
-            onClick={() => (window.location.href = "/")}
-            aria-label="Log Out"
-          >
-            Log Out
+          <button className={styles.primaryBtn} onClick={handleLogout}>
+            Logout
           </button>
 
           <button

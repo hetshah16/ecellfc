@@ -1,21 +1,19 @@
-import pool from "@/lib/db";
+import { NextResponse } from "next/server";
+import { verifyToken } from "@/lib/jwt";
 
-export async function GET() {
-  try {
-    const [rows] = await pool.execute(
-      "SELECT user_id, name, email, coins FROM user ORDER BY user_id LIMIT 1"
-    );
+export async function GET(req) {
+  // Read the HTTP-only cookie
+  const token = req.cookies.get("token")?.value;
 
-    if (!rows.length) {
-      return new Response(JSON.stringify({ error: "No user found" }), { status: 404 });
-    }
+  if (!token) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }           
 
-    return new Response(JSON.stringify(rows[0]), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (err) {
-    console.error("GET /api/me error", err);
-    return new Response(JSON.stringify({ error: "Server error" }), { status: 500 });
+  const payload = verifyToken(token);
+  if (!payload) {
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
+
+  // Return user data
+  return NextResponse.json({ user: payload });
 }

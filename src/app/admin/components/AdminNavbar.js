@@ -3,15 +3,18 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./adminNavbar.module.css";
+import axios from "axios";
 
 export default function AdminNavbar() {
   const router = useRouter();
-
-  const logout = async () => {
-    // TODO: implement logout API / session destroy
-    // For now redirect to login
-    await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
-    router.push("/login");
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/logout");
+      alert("You’ve been logged out.");
+      router.push("/admin/login");
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
   };
 
   return (
@@ -22,7 +25,7 @@ export default function AdminNavbar() {
         <Link className={styles.link} href="/admin/recharge">Recharge</Link>
         <Link className={styles.link} href="/admin/add-stall">Add stalls</Link>
         <Link className={styles.link} href="/admin/logs">Logs</Link>
-        <button className={styles.logout} onClick={logout}>Logout</button>
+        <button className={styles.logout} onClick={handleLogout}>Logout</button>
       </nav>
     </header>
   );

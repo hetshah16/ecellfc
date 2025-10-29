@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import axios from "axios";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,36 +21,36 @@ export default function LoginPage() {
     return "";
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     const v = validate();
     if (v) return setError(v);
-
     try {
       setLoading(true);
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || "Invalid login");
-
+      // Axios automatically sets Content-Type to application/json when passing an object
+      const res = await axios.post("/api/login", { email, password });
+      // res.data contains the response JSON
+      const data = res.data;
+      console.log("Login successful:", data);
       // redirect after successful login
       router.push("/home");
     } catch (err) {
-      console.error(err);
-      setError("Failed to login. Please try again.");
+      // Axios wraps errors; the actual response is in err.response
+      if (err.response && err.response.data) {
+        setError(err.response.data.error || "Invalid login");
+      } else {
+        console.error(err);
+        setError("Failed to login. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleOAuth = (provider) => {
-    console.log("OAuth login:", provider);
-  };
+
+
 
   return (
      <div className={styles.pageWrap}>

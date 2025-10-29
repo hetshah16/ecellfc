@@ -1,6 +1,7 @@
 import pool from "@/lib/db";
 import bcrypt from "bcryptjs";
-
+import { NextResponse } from "next/server";
+import { signToken } from "@/lib/jwt"; // <-- use helper
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
@@ -11,18 +12,34 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Invalid email or password" }), { status: 401 });
     }
 
-    const user = rows[0];
+    const admin = rows[0];
 
     // Compare password
-    const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, admin.password);
     if (!valid) {
       return new Response(JSON.stringify({ error: "Invalid email or password" }), { status: 401 });
     }
 
-    // Return user info (or a JWT in real app)
-    return new Response(JSON.stringify({ admin_id: user.admin_id, name: user.name, email: user.email }), { status: 200 });
+    const token = signToken({ admin_id: admin.admin_id, email: admin.email});
+
+    const response = NextResponse.json({
+      message: "Login successful",
+      user: {admin_id: admin.admin_id, email: admin.email},
+    });
+
+    response.cookies.set({
+      name: "token",
+      value: token,
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return response;
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify({ error: "Server error" }), { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

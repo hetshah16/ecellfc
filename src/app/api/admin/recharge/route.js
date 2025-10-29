@@ -1,9 +1,20 @@
 import pool from "@/lib/db";
 import { NextResponse } from "next/server";
-
+import { verifyToken } from "@/lib/jwt"; // <-- use helper
 export async function POST(req) {
   const connection = await pool.getConnection(); // get a dedicated connection for transaction
   try {
+    const token = req.cookies.get("token")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    // 2️⃣ Verify token
+    const payload = verifyToken(token);
+    if (!payload) {
+      return NextResponse.json({ error: "Session expired. Please log in again." }, { status: 401 });
+    }
+
     const { user_id, amount, mode } = await req.json();
 
     if (!user_id || !amount || amount <= 0) {
@@ -41,7 +52,7 @@ export async function POST(req) {
     );
 
     await connection.commit();
-    return NextResponse.json({ success: true, message: "Recharge successful" });
+    return NextResponse.json({ success: true, message: "Recharge successful",  });
 
   } catch (err) {
     console.error("Recharge failed:", err);

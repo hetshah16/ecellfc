@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import styles from "../home/page.module.css";
+import axios from "axios";
 
 /*
 Client-side dashboard:
@@ -11,7 +12,7 @@ Client-side dashboard:
 - recharge posts to POST /api/admin/recharge
 */
 
-export default function AdminDashboard() {
+export default function AdminDashboard({admin}) {
   const [users, setUsers] = useState([]);
   const [q, setQ] = useState("");
   const [selected, setSelected] = useState(null);
@@ -19,7 +20,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
   const [err, setErr] = useState(null);
-
+  console.log(admin);
   useEffect(() => {
     let mounted = true;
     fetch("/api/admin/users")
@@ -52,43 +53,54 @@ export default function AdminDashboard() {
     setErr(null);
   };
 
-  const handleRecharge = async () => {
-    if (!selected) return;
-    const amt = Number(amount);
-    if (!amt || amt <= 0) {
-      setErr("Enter a valid amount (> 0)");
-      return;
-    }
+const handleRecharge = async () => {
+  if (!selected) return;
 
-    setLoading(true);
-    setErr(null);
-    setMsg(null);
+  const amt = Number(amount);
+  if (!amt || amt <= 0) {
+    setErr("Enter a valid amount (> 0)");
+    return;
+  }
 
-    try {
-      const res = await fetch("/api/admin/recharge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: selected.user_id, amount: amt , mode:"counter"}),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setErr(data?.error || "Recharge failed");
-      } else {
-        setMsg(`Recharged ${amt} ⓔ to ${selected.name}. New balance: ${data.new_balance} ⓔ`);
-        // clear selection and amount as requested
-        setSelected(null);
-        setAmount("");
-        // refresh users list to show updated balance
-        const [updated] = await Promise.all([fetch("/api/admin/users").then((r) => r.json())]);
-        setUsers(Array.isArray(updated) ? updated : users);
-      }
-    } catch (e) {
-      console.error(e);
+  setLoading(true);
+  setErr(null);
+  setMsg(null);
+
+  try {
+    // 🔹 Axios POST request
+    console.log(admin.email)
+    const res = await axios.post("/api/admin/recharge", {
+      user_id: selected.user_id,
+      amount: amt,
+      mode: admin.email,
+    });
+
+    const data = res.data; // ✅ Axios automatically parses JSON
+    console.log("Recharge response:", data);
+    // ✅ No need for `res.ok`, Axios throws an error on non-2xx status codes
+    setMsg(`Recharged ${amt} ⓔ to ${selected.name}.`);
+
+    // Clear selection and input
+    setSelected(null);
+    setAmount("");
+
+    // Refresh users list
+    const updatedRes = await axios.get("/api/admin/users");
+    const updated = updatedRes.data;
+    setUsers(Array.isArray(updated) ? updated : users);
+
+  } catch (e) {
+    // Handle error responses properly
+    if (e.response) {
+      setErr(e.response.data?.error || "Recharge failed");
+    } else {
       setErr("Network error");
-    } finally {
-      setLoading(false);
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className={styles.adminWrap}>

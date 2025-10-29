@@ -4,25 +4,24 @@ import { useState,useEffect } from "react";
 import styles from "./page.module.css";
 import axios from "axios";
 
-export default function PaymentForm({ stallId }) {
+export default function PaymentForm({ stallId, user }) {
   const [amount, setAmount] = useState("");
   const [phase, setPhase] = useState("ready"); // ready | askingPw | sending | done
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    async function getUser(){
-    try{
-      const res = await axios.get("/api/user");
-      setUser(res.data);
-      console.log("Fetched user:", res.data);
-    }catch(error){
-      console.error("Error fetching user:", error);
-    }
-  }
-    getUser();
-  },[]);
+  // useEffect(() => {
+  //   async function getUser(){
+  //   try{
+  //     const res = await axios.get("/api/user");
+  //     setUser(res.data);
+  //     console.log("Fetched user:", res.data);
+  //   }catch(error){
+  //     console.error("Error fetching user:", error);
+  //   }
+  // }
+  //   getUser();
+  // },[]);
   
   const startPayment = (e) => {
     e.preventDefault();
@@ -32,34 +31,32 @@ export default function PaymentForm({ stallId }) {
     setPhase("askingPw");
   };
 
-const confirmPayment = async (e) => {
-  e.preventDefault();
-  setError("");
-  setPhase("sending");
+  const confirmPayment = async (e) => {
+    e.preventDefault();
+    setError("");
+    setPhase("sending");
+        
+    try {
+      const res = await axios.post("/api/payment", {
+        receiverId: stallId,
+        amount: Number(amount),
+      });
 
-  try {
-    const res = await axios.post(`/api/payment`, {
-      senderEmail: user.email,
-      password,
-      receiverId: stallId,
-      amount: Number(amount),
-    });
-
-    // Axios returns data directly; no need to check res.ok
-    setSuccess(res.data.message || "Payment successful — your balance updated.");
-    setPhase("done");
-  } catch (err) {
-    if (err.response && err.response.data) {
-      // API returned an error
-      setError(err.response.data.error || "Payment failed");
-    } else {
-      // Network or other error
-      setError("Network error");
+      // Axios returns data directly; no need to check res.ok
+      setSuccess(res.data.message || "Payment successful — your balance updated.");
+      setPhase("done");
+    } catch (err) {
+      if (err.response && err.response.data) {
+        // API returned an error
+        setError(err.response.data.error || "Payment failed");
+      } else {
+        // Network or other error
+        setError("Network error");
+      }
+      setPhase("ready");
+      setPassword("");
     }
-    setPhase("ready");
-    setPassword("");
-  }
-};
+  };
 
 
   const handleForgot = async () => {
