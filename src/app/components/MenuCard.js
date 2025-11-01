@@ -1,19 +1,16 @@
-// components/MenuCard.js
-import React from 'react';
-import styles from './MenuCard.module.css';
+import Image from "next/image"
 
 export default function MenuCard({ item }) {
   return (
-    <div className={styles.menuCard} key={item.item_id}>
-      <img
-        src={item.photo_url || `/placeholders/food-${item.item_id % 10}.jpg`}
-        alt={item.item_name}
-        className={styles.menuImg}
-      />
-      <div className={styles.menuBody}>
-        <strong>{item.item_name}</strong>
-        <div className={styles.price}>{item.price} ⓔ</div>
+    <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/20 group">
+
+      {/* Content */}
+      <div className="p-5">
+        <h4 className="font-semibold text-foreground text-sm truncate">{item.item_name}</h4>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-2xl font-bold text-primary">{item.price} ⓔ</span>
+        </div>
       </div>
     </div>
-  );
+  )
 }

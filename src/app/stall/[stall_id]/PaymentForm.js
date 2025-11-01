@@ -1,104 +1,156 @@
-// src/app/stall/[stall_id]/PaymentForm.js
-"use client";
-import { useState,useEffect } from "react";
-import styles from "./page.module.css";
-import axios from "axios";
+"use client"
+import { useState } from "react"
+import axios from "axios"
 
 export default function PaymentForm({ stallId, user }) {
-  const [amount, setAmount] = useState("");
-  const [phase, setPhase] = useState("ready"); // ready | askingPw | sending | done
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  // useEffect(() => {
-  //   async function getUser(){
-  //   try{
-  //     const res = await axios.get("/api/user");
-  //     setUser(res.data);
-  //     console.log("Fetched user:", res.data);
-  //   }catch(error){
-  //     console.error("Error fetching user:", error);
-  //   }
-  // }
-  //   getUser();
-  // },[]);
-  
+  const [amount, setAmount] = useState("")
+  const [phase, setPhase] = useState("ready")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
   const startPayment = (e) => {
-    e.preventDefault();
-    setError("");
-    const a = Number(amount);
-    if (!a || a <= 0) return setError("Enter a valid amount");
-    setPhase("askingPw");
-  };
+    e.preventDefault()
+    setError("")
+    const a = Number(amount)
+    if (!a || a <= 0) return setError("Enter a valid amount")
+    if (a > user.coins) return setError("Insufficient balance")
+    setPhase("askingPw")
+  }
 
   const confirmPayment = async (e) => {
-    e.preventDefault();
-    setError("");
-    setPhase("sending");
-        
+    e.preventDefault()
+    setError("")
+    setPhase("sending")
+
     try {
       const res = await axios.post("/api/payment", {
         receiverId: stallId,
         amount: Number(amount),
-      });
+      })
 
-      // Axios returns data directly; no need to check res.ok
-      setSuccess(res.data.message || "Payment successful — your balance updated.");
-      setPhase("done");
+      setSuccess(res.data.message || "Payment successful")
+      setPhase("done")
+      setAmount("")
+      setPassword("")
+      setTimeout(() => {
+        setSuccess("")
+        setPhase("ready")
+      }, 3000)
     } catch (err) {
       if (err.response && err.response.data) {
-        // API returned an error
-        setError(err.response.data.error || "Payment failed");
+        setError(err.response.data.error || "Payment failed")
       } else {
-        // Network or other error
-        setError("Network error");
+        setError("Network error")
       }
-      setPhase("ready");
-      setPassword("");
+      setPhase("ready")
+      setPassword("")
     }
-  };
-
+  }
 
   const handleForgot = async () => {
-    const email = prompt("Enter your account email to receive a reset link:");
-    if (!email) return;
+    const email = prompt("Enter your account email to receive a reset link:")
+    if (!email) return
     try {
       await fetch("/api/auth/forgot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-      });
-      alert("If that email exists, a reset link was sent.");
+      })
+      alert("If that email exists, a reset link was sent.")
     } catch (err) {
-      alert("Unable to process request.");
+      alert("Unable to process request.")
     }
-  };
+  }
 
   return (
-    <div className={styles.payBox}>
-      <form onSubmit={startPayment} className={styles.payForm}>
-        <label className={styles.label}>Amount (E-coins)
-          <input className={styles.input} type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
-        </label>
-        <button className={styles.primaryBtn} type="submit">Make Payment</button>
-      </form>
-
-      {phase === "askingPw" && (
-        <form onSubmit={confirmPayment} className={styles.confirmBox}>
-          <label className={styles.label}>Enter your password to confirm
-            <input className={styles.input} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </label>
-
-          <div className={styles.confirmActions}>
-            <button className={styles.primaryBtn} type="submit">Confirm</button>
-            <button type="button" className={styles.linkBtn} onClick={() => setPhase("ready")}>Cancel</button>
-            <button type="button" className={styles.linkBtn} onClick={handleForgot}>Forgot password?</button>
+    <div className="max-w-md mx-auto">
+      {phase === "ready" && (
+        <form onSubmit={startPayment} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium mb-2">Amount (E-coins)</label>
+            <input
+              type="number"
+              min="1"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+              className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+            <p className="text-xs text-muted-foreground mt-2">Available: {user?.coins} ⓔ</p>
           </div>
+          <button
+            type="submit"
+            className="w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+          >
+            Continue
+          </button>
         </form>
       )}
 
-      {error && <div className={styles.error}>{error}</div>}
-      {success && <div className={styles.success}>{success}</div>}
+      {phase === "askingPw" && (
+        <form onSubmit={confirmPayment} className="space-y-5">
+          <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+            <p className="text-sm">
+              Confirm payment of <span className="font-bold text-primary">{amount} ⓔ</span>
+            </p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Enter your password to confirm</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••"
+              required
+              className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+            />
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="flex-1 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+            >
+              Confirm
+            </button>
+            <button
+              type="button"
+              onClick={() => setPhase("ready")}
+              className="flex-1 py-3 bg-muted hover:bg-muted/80 text-foreground font-semibold rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={handleForgot}
+            className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+          >
+            Forgot password?
+          </button>
+        </form>
+      )}
+
+      {phase === "sending" && (
+        <div className="text-center py-8">
+          <div className="inline-block mb-4">
+            <div className="w-10 h-10 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-foreground font-medium">Processing payment...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="p-4 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
+          {success}
+        </div>
+      )}
     </div>
-  );
+  )
 }

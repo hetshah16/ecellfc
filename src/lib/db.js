@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const pool = mysql.createPool({
-  host: 'sql112.infinityfree.com',
+  host: 'localhost',
   user: process.env.DB_USER || 'if0_40296634',
   password: process.env.DB_PASS ||'Hetshah123' ,
   database: process.env.DB_NAME || 'if0_40296634_ecell_fc',

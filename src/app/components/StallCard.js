@@ -1,26 +1,34 @@
-// components/StallCard.js
-import React from 'react';
-import styles from './StallCard.module.css';
+import Image from "next/image"
+import Link from "next/link"
 
 export default function StallCard({ stall }) {
   return (
-    <a
-      href={`/stall/${stall.stall_id}`}
-      className={styles.card}
-      key={stall.stall_id}
-    >
-      <div className={styles.thumbWrap}>
-        <img src={stall.photo_url} alt={stall.stall_name} className={styles.thumb} />
-      </div>
-      <div className={styles.cardBody}>
-        <div className={styles.cardTitle}>
-          <strong>{stall.stall_name}</strong>
-          <span className={styles.stallId}>#{stall.stall_id}</span>
+    <Link href={`/stall/${stall.stall_id}`}>
+      <div className="group h-full bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/20 cursor-pointer">
+
+        {/* Content */}
+        <div className="p-5">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex-1">
+              <h3 className="font-semibold text-lg group-hover:text-primary transition-colors line-clamp-1">
+                {stall.stall_name}
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">ID: #{stall.stall_id}</p>
+            </div>
+          </div>
+          <div className="pt-4 border-t border-border flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Tap to explore</span>
+            <svg
+              className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
         </div>
-        <div className={styles.cardMeta}>
-          {/* <span>Coins: {stall.coins ?? 0} ⓔ</span> */}
-        </div>
       </div>
-    </a>
-  );
+    </Link>
+  )
 }

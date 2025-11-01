@@ -1,212 +1,324 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import styles from "../home/page.module.css"; // reuse admin styles; adjust path if needed
-import AdminNavbar from "../components/AdminNavbar"; // client
+import { useEffect, useState } from "react"
+import AdminNavbar from "../components/AdminNavbar"
 
-function formatValue(v) {
-  if (v === null || v === undefined) return "";
-  if (typeof v === "number") return v;
-  return String(v);
+const styles = {
+  container: {
+    minHeight: "100vh",
+    background: "#0f172a",
+    padding: "2rem 1.5rem",
+  },
+  wrap: {
+    maxWidth: "1400px",
+    margin: "0 auto",
+  },
+  header: {
+    marginBottom: "2rem",
+  },
+  title: {
+    fontSize: "1.875rem",
+    fontWeight: "800",
+    color: "#ffffff",
+    margin: "0 0 0.5rem 0",
+    letterSpacing: "-0.5px",
+  },
+  subtitle: {
+    fontSize: "0.95rem",
+    color: "#94a3b8",
+    margin: "0",
+  },
+  controlsContainer: {
+    background: "#1e293b",
+    borderRadius: "12px",
+    padding: "1.5rem",
+    marginBottom: "2rem",
+    display: "flex",
+    gap: "1rem",
+    flexWrap: "wrap",
+    alignItems: "center",
+    border: "1px solid rgba(255,255,255,0.05)",
+  },
+  input: {
+    padding: "0.75rem 1rem",
+    background: "rgba(15,23,42,0.5)",
+    border: "1px solid rgba(148,163,184,0.2)",
+    borderRadius: "8px",
+    color: "#e2e8f0",
+    fontSize: "0.9rem",
+    outline: "none",
+  },
+  select: {
+    padding: "0.75rem 1rem",
+    background: "rgba(15,23,42,0.5)",
+    border: "1px solid rgba(148,163,184,0.2)",
+    borderRadius: "8px",
+    color: "#e2e8f0",
+    fontSize: "0.9rem",
+  },
+  button: {
+    padding: "0.75rem 1.5rem",
+    background: "linear-gradient(135deg, #1f6feb 0%, #00d9ff 100%)",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "8px",
+    fontWeight: "700",
+    cursor: "pointer",
+    transition: "all 0.2s",
+    fontSize: "0.9rem",
+  },
+  secondaryBtn: {
+    background: "transparent",
+    border: "1px solid rgba(148,163,184,0.2)",
+    color: "#94a3b8",
+  },
+  tableContainer: {
+    background: "#1e293b",
+    borderRadius: "12px",
+    boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
+    border: "1px solid rgba(255,255,255,0.05)",
+    overflow: "auto",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+  },
+  thead: {
+    background: "rgba(0,0,0,0.2)",
+    borderBottom: "1px solid rgba(255,255,255,0.1)",
+  },
+  th: {
+    padding: "1.25rem",
+    textAlign: "left",
+    fontWeight: "700",
+    color: "#94a3b8",
+    fontSize: "0.85rem",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+  },
+  td: {
+    padding: "1.25rem",
+    color: "#e2e8f0",
+    fontSize: "0.95rem",
+    borderBottom: "1px solid rgba(255,255,255,0.05)",
+  },
+  loading: {
+    padding: "3rem",
+    textAlign: "center",
+    color: "#94a3b8",
+  },
+  error: {
+    background: "rgba(244,63,63,0.1)",
+    border: "1px solid rgba(244,63,63,0.3)",
+    color: "#fca5a5",
+    padding: "1rem 1.5rem",
+    borderRadius: "8px",
+    marginBottom: "1.5rem",
+  },
 }
 
-export default function AdminRechargeLogsPage() {
-  const [q, setQ] = useState("");
-  const [receiverIdFilter, setReceiverIdFilter] = useState("");
-  const [methodFilter, setMethodFilter] = useState("");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [sort, setSort] = useState("timestamp:desc");
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(20);
+export default function AdminLogsPage() {
+  const [q, setQ] = useState("")
+  const [receiverIdFilter, setReceiverIdFilter] = useState("")
+  const [methodFilter, setMethodFilter] = useState("")
+  const [dateFrom, setDateFrom] = useState("")
+  const [dateTo, setDateTo] = useState("")
+  const [sort, setSort] = useState("timestamp:desc")
+  const [page, setPage] = useState(1)
+  const [pageSize] = useState(20)
 
-  const [rows, setRows] = useState([]);
-  const [methods, setMethods] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [fetchError, setFetchError] = useState(null);
+  const [rows, setRows] = useState([])
+  const [methods, setMethods] = useState([])
+  const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [fetchError, setFetchError] = useState(null)
 
-  useEffect(() => { fetchLogs(); /* eslint-disable-next-line */ }, [page, sort]);
+  useEffect(() => {
+    fetchLogs()
+  }, [page, sort])
 
   async function fetchLogs() {
-    setLoading(true);
-    setFetchError(null);
+    setLoading(true)
+    setFetchError(null)
     try {
-      const params = new URLSearchParams();
-      if (q) params.set("q", q);
-      if (receiverIdFilter) params.set("receiver_id", receiverIdFilter);
-      if (methodFilter) params.set("method", methodFilter);
-      if (dateFrom) params.set("date_from", dateFrom);
-      if (dateTo) params.set("date_to", dateTo);
-      params.set("page", String(page));
-      params.set("pageSize", String(pageSize));
-      params.set("sort", sort);
+      const params = new URLSearchParams()
+      if (q) params.set("q", q)
+      if (receiverIdFilter) params.set("receiver_id", receiverIdFilter)
+      if (methodFilter) params.set("method", methodFilter)
+      if (dateFrom) params.set("date_from", dateFrom)
+      if (dateTo) params.set("date_to", dateTo)
+      params.set("page", String(page))
+      params.set("pageSize", String(pageSize))
+      params.set("sort", sort)
 
-      const res = await fetch(`/api/admin/logs?${params.toString()}`);
-      const text = await res.text();
-      let data;
-      try { data = text ? JSON.parse(text) : null; } catch (e) {
-        console.error("Non-JSON response:", text);
-        setFetchError("Server error (non-json)");
-        setRows([]); setTotal(0); setMethods([]); return;
+      const res = await fetch(`/api/admin/logs?${params.toString()}`)
+      const text = await res.text()
+      let data
+      try {
+        data = text ? JSON.parse(text) : null
+      } catch (e) {
+        console.error("Parse error:", text)
+        setFetchError("Server error (non-json)")
+        setRows([])
+        setTotal(0)
+        setMethods([])
+        return
       }
 
       if (!res.ok) {
-        console.error("GET /api/admin/logs failed:", res.status, data);
-        setFetchError(data?.error || `Request failed (status ${res.status})`);
-        setRows([]); setTotal(0); setMethods([]); return;
+        setFetchError(data?.error || `Request failed`)
+        setRows([])
+        setTotal(0)
+        setMethods([])
+        return
       }
 
-      setRows(Array.isArray(data.rows) ? data.rows : []);
-      setTotal(Number(data.total || 0));
-      setMethods(Array.isArray(data.methods) ? data.methods : []);
+      setRows(Array.isArray(data.rows) ? data.rows : [])
+      setTotal(Number(data.total || 0))
+      setMethods(Array.isArray(data.methods) ? data.methods : [])
     } catch (err) {
-      console.error("Fetch error", err);
-      setFetchError("Network error");
-      setRows([]); setTotal(0); setMethods([]);
+      console.error("Fetch error", err)
+      setFetchError("Network error")
+      setRows([])
+      setTotal(0)
+      setMethods([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
-  const handleSearch = () => { setPage(1); fetchLogs(); };
-  const handleClear = () => { setQ(""); setReceiverIdFilter(""); setMethodFilter(""); setDateFrom(""); setDateTo(""); setPage(1); fetchLogs(); };
+  const handleSearch = () => {
+    setPage(1)
+    fetchLogs()
+  }
+
+  const handleClear = () => {
+    setQ("")
+    setReceiverIdFilter("")
+    setMethodFilter("")
+    setDateFrom("")
+    setDateTo("")
+    setPage(1)
+    fetchLogs()
+  }
 
   const exportCSV = () => {
-    if (!rows.length) return;
-    const headers = Object.keys(rows[0]);
-    const csvRows = [headers.join(",")];
+    if (!rows.length) return
+    const headers = Object.keys(rows[0])
+    const csvRows = [headers.join(",")]
     for (const r of rows) {
-      const line = headers.map(h => {
-        const v = r[h] ?? "";
-        const s = String(v).replace(/"/g, '""');
-        return `"${s}"`;
-      }).join(",");
-      csvRows.push(line);
+      const line = headers
+        .map((h) => {
+          const v = r[h] ?? ""
+          const s = String(v).replace(/"/g, '""')
+          return `"${s}"`
+        })
+        .join(",")
+      csvRows.push(line)
     }
-    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `recharge_logs_${Date.now()}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const headers = rows.length ? Object.keys(rows[0]) : ["recharge_id","receiver_id","method","amount","timestamp"];
-
-  function formatTimestampToIST(ts) {
-  if (!ts) return "";
-  // ensure we handle both Date objects and SQL timestamp strings
-  const d = typeof ts === "string" ? new Date(ts) : ts;
-  try {
-    return d.toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  } catch (e) {
-    // fallback
-    return d.toString();
+    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `recharge_logs_${Date.now()}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
   }
-}
+
+  const headers = rows.length ? Object.keys(rows[0]) : ["recharge_id", "receiver_id", "method", "amount", "timestamp"]
 
   return (
-    <div>
-        <AdminNavbar />
-        <div className={styles.wrap}>
-        <h1 className={styles.title}>Recharge Logs</h1>
+    <div className="min-h-screen bg-background">
+      <AdminNavbar />
+      <div style={styles.wrap}>
+        <div style={styles.header}>
+          <h1 style={styles.title}>Recharge Logs</h1>
+          <p style={styles.subtitle}>View and manage all recharge transactions</p>
+        </div>
 
-        {fetchError && <div className={styles.error}><strong>Error:</strong> {fetchError}</div>}
+        {fetchError && <div style={styles.error}>{fetchError}</div>}
 
-        <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <input className={styles.searchInput} placeholder="Search (receiver id or method)" value={q} onChange={(e) => setQ(e.target.value)} />
-
-            <input className={styles.searchInput} placeholder="Receiver id filter" value={receiverIdFilter} onChange={(e) => setReceiverIdFilter(e.target.value)} style={{ width: 160 }} />
-
-            <select value={methodFilter} onChange={(e) => setMethodFilter(e.target.value)}>
+        <div style={styles.controlsContainer}>
+          <input
+            type="text"
+            style={styles.input}
+            placeholder="Search..."
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+          <input
+            type="text"
+            style={styles.input}
+            placeholder="Receiver ID"
+            value={receiverIdFilter}
+            onChange={(e) => setReceiverIdFilter(e.target.value)}
+          />
+          <select value={methodFilter} onChange={(e) => setMethodFilter(e.target.value)} style={styles.select}>
             <option value="">All methods</option>
-            {methods.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-
-            <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            From <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-            </label>
-
-            <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            To <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-            </label>
-
-            <select value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }}>
+            {methods.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </select>
+          <input type="date" style={styles.input} value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+          <input type="date" style={styles.input} value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+          <select value={sort} onChange={(e) => setSort(e.target.value)} style={styles.select}>
             <option value="timestamp:desc">Newest first</option>
             <option value="timestamp:asc">Oldest first</option>
-            <option value="amount:desc">Amount high → low</option>
-            <option value="amount:asc">Amount low → high</option>
-            <option value="recharge_id:desc">ID desc</option>
-            <option value="recharge_id:asc">ID asc</option>
-            <option value="receiver_id:asc">Receiver id asc</option>
-            <option value="receiver_id:desc">Receiver id desc</option>
-            </select>
-
-            <button className={styles.primaryBtn} onClick={handleSearch}>Apply</button>
-            <button className={styles.secondaryBtn} onClick={handleClear}>Clear</button>
-
-            <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-            <button className={styles.secondaryBtn} onClick={exportCSV}>Export CSV</button>
-            </div>
+            <option value="amount:desc">Amount: High to Low</option>
+            <option value="amount:asc">Amount: Low to High</option>
+          </select>
+          <button style={styles.button} onClick={handleSearch}>
+            Search
+          </button>
+          <button style={{ ...styles.button, ...styles.secondaryBtn }} onClick={handleClear}>
+            Clear
+          </button>
+          <button style={{ ...styles.button, ...styles.secondaryBtn, marginLeft: "auto" }} onClick={exportCSV}>
+            Export CSV
+          </button>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 10, padding: 12, boxShadow: "0 8px 20px rgba(16,24,40,0.04)" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                <tr style={{ textAlign: "left", borderBottom: "1px solid #eee" }}>
-                    {headers.map(h => <th key={h} style={{ padding: 8 }}>{h}</th>)}
+        <div style={styles.tableContainer}>
+          <table style={styles.table}>
+            <thead style={styles.thead}>
+              <tr>
+                {headers.map((h) => (
+                  <th key={h} style={styles.th}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={headers.length} style={styles.loading}>
+                    Loading...
+                  </td>
                 </tr>
-                </thead>
-
-                <tbody>
-                {loading ? (
-                    <tr>
-                    <td colSpan={Math.max(1, headers.length)} style={{ padding: 16 }}>Loading…</td>
-                    </tr>
-                ) : rows.length === 0 ? (
-                    <tr>
-                    <td colSpan={Math.max(1, headers.length)} style={{ padding: 16 }}>No logs found</td>
-                    </tr>
-                ) : (
-                    rows.map((r, idx) => (
-                    <tr key={idx} style={{ borderBottom: "1px solid #fafafa" }}>
-                        {headers.map(h => {
-                        // render timestamp specially in IST, else use generic formatter
-                        if (h.toLowerCase() === "timestamp") {
-                            return (
-                            <td key={h} style={{ padding: 8 }}>
-                                {formatTimestampToIST(r[h])}
-                            </td>
-                            );
-                        }
-                        return (
-                            <td key={h} style={{ padding: 8 }}>
-                            {formatValue(r[h])}
-                            </td>
-                        );
-                        })}
-                    </tr>
-                    ))
-                )}
-                </tbody>
-            </table>
+              ) : rows.length === 0 ? (
+                <tr>
+                  <td colSpan={headers.length} style={styles.loading}>
+                    No logs found
+                  </td>
+                </tr>
+              ) : (
+                rows.map((r, idx) => (
+                  <tr key={idx}>
+                    {headers.map((h) => (
+                      <td key={h} style={styles.td}>
+                        {String(r[h] ?? "")}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-        </div>
+      </div>
     </div>
-  );
-
-//   function totalPages() {
-//     return Math.max(1, Math.ceil(total / pageSize));
-//   }
+  )
 }
