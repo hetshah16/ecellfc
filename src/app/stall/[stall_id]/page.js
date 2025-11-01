@@ -13,6 +13,7 @@ export default function StallPage({ params }) {
   const [items, setItems] = useState([])
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [pay, setPay] = useState(false)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,7 +49,7 @@ export default function StallPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar coins = {user?.coins} user = {user?.name} />
+      <Navbar coins={user?.coins} user={user?.name} />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {user ? (
           <>
@@ -64,10 +65,27 @@ export default function StallPage({ params }) {
 
             {/* Menu Items */}
             <div className="mb-12">
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2">{stall} Menu</h2>
-                <p className="text-muted-foreground">Browse and order from available items</p>
+              <div className="mb-8 flex justify-between items-center">
+                <div>
+                  <h2 className="text-3xl font-bold mb-2">{stall} Menu</h2>
+                  <p className="text-muted-foreground">Browse and order from available items</p>
+                </div>
+
+                <button
+                  className="px-8 h-10 justify-center flex items-center bg-primary text-black border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/20 group"
+                  onClick = {() => setPay(true)}
+                >
+                  Pay
+                </button>
               </div>
+
+              {pay && (
+              <div className="bg-card border border-border rounded-xl p-8 mb-10">
+                <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
+                <p className="text-muted-foreground mb-8">Complete your payment to place an order</p>
+                <PaymentForm stallId={stall_id} user={user} setPay={setPay} />
+              </div>
+              )}
 
               {loading ? (
                 <div className="flex items-center justify-center py-16">
@@ -82,20 +100,13 @@ export default function StallPage({ params }) {
                 <div className="text-center py-16 bg-card border border-border rounded-xl">
                   <p className="text-muted-foreground">No items available yet</p>
                 </div>
-              ) : (
+              ) : !pay && (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                   {items.map((item) => (
                     <MenuCard item={item} key={item.item_id} />
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Payment Section */}
-            <div className="bg-card border border-border rounded-xl p-8">
-              <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
-              <p className="text-muted-foreground mb-8">Complete your payment to place an order</p>
-              <PaymentForm stallId={stall_id} user={user} />
             </div>
           </>
         ) : (

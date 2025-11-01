@@ -2,7 +2,7 @@
 import { useState } from "react"
 import axios from "axios"
 
-export default function PaymentForm({ stallId, user }) {
+export default function PaymentForm({ stallId, user, setPay }) {
   const [amount, setAmount] = useState("")
   const [phase, setPhase] = useState("ready")
   const [password, setPassword] = useState("")
@@ -79,12 +79,20 @@ export default function PaymentForm({ stallId, user }) {
             />
             <p className="text-xs text-muted-foreground mt-2">Available: {user?.coins} ⓔ</p>
           </div>
-          <button
-            type="submit"
-            className="w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
-          >
-            Continue
-          </button>
+          <div className="flex gap-4">
+            <button
+              type="submit"
+              className="w-1/2 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+            >
+              Continue
+            </button>
+            <button
+              onClick={() => setPay(false)}
+              className="w-1/2 py-3 bg-muted text-foreground hover:bg-primary/90 font-semibold rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
 
@@ -141,7 +149,7 @@ export default function PaymentForm({ stallId, user }) {
       )}
 
       {error && (
-        <div className="p-4 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm">
+        <div className="p-4 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm mt-4">
           {error}
         </div>
       )}
