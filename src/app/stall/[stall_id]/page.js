@@ -53,19 +53,19 @@ export default function StallPage({ params }) {
         {user ? (
           <>
             {/* Stall Header */}
-            <div className="mb-12 bg-linear-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-xl p-8 backdrop-blur-sm">
+            {/* <div className="mb-12 bg-linear-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-xl p-8 backdrop-blur-sm">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
                   <h1 className="text-4xl font-bold mb-2">{stall}</h1>
                   <p className="text-muted-foreground">Stall ID: #{stall_id}</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Menu Items */}
             <div className="mb-12">
               <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2">Menu</h2>
+                <h2 className="text-3xl font-bold mb-2">{stall} Menu</h2>
                 <p className="text-muted-foreground">Browse and order from available items</p>
               </div>
 
