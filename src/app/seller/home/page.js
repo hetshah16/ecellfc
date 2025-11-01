@@ -224,7 +224,7 @@ export default function SellerHomePage() {
       }
     }
     fetchSeller()
-  }, [])
+  }, [router])
 
   const fetchItems = async () => {
     if (!seller?.stall_id) return

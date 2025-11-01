@@ -111,7 +111,7 @@ export default function SellerLogsPage() {
       }
     }
     fetchSeller()
-  }, [])
+  }, [router])
 
   useEffect(() => {
     if (!seller?.stall_id) return
