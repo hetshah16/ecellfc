@@ -1,77 +1,118 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import styles from "./navbar.module.css";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { useRouter } from "next/navigation"
 
-
-export default function Navbar() {
-  const router = useRouter();
-  const handleLogout = async () => {
-    try {
-      await axios.post("/api/logout");        
-      alert("You’ve been logged out.");
-      router.push("/login");
-    } catch (err) {
-      console.error("Logout failed", err);
-    }
-  };
-  const pathname = usePathname() || "/";
-  const [open, setOpen] = useState(false);
+export default function Navbar({ coins, user }) {
+  const router = useRouter()
+  const pathname = usePathname() || "/"
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    // close mobile menu on navigation
-    setOpen(false);
-  }, [pathname]);
+    setOpen(false)
+  }, [pathname])
 
-  const isActive = (path) => (pathname === path ? styles.active : "");
+  const handleLogout = async () => {
+    try {
+      await axios.post("/api/logout")
+      router.push("/login")
+    } catch (err) {
+      console.error("Logout failed", err)
+    }
+  }
+
+  const isActive = (path) => pathname === path
 
   return (
-    <header className={styles.sticky}>
-      <nav className={styles.nav}>
-        <div className={styles.brandWrap}>
-          <Link href="/home" className={styles.brand}>
-            <span className={styles.logoMark}>🍽️</span>
-            <span className={styles.brandText}>E-Cell Food Challenge</span>
+    <div>
+      <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/home" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+              E
+            </div>
+            <span className="hidden sm:inline">E-Cell Food</span>
           </Link>
-        </div>
 
-        <div className={`${styles.links} ${open ? styles.open : ""}`}>
-          <Link href="/home" className={`${styles.link} ${isActive("/home")}`}>
-            Home
-          </Link>
-          <Link href="/transfer" className={`${styles.link} ${isActive("/transfer")}`}>
-            Transfer E-coins
-          </Link>
-        </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            <Link
+              href="/home"
+              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/home")
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+            >
+              Browse
+            </Link>
+            <Link
+              href="/transfer"
+              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/transfer")
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                }`}
+            >
+              Transfer
+            </Link>
+          </div>
 
-        <div className={styles.right}>
-          <button className={styles.primaryBtn} onClick={handleLogout}>
-            Logout
-          </button>
+          {/* Desktop Logout Button */}
+          <div className="hidden md:block">
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 text-foreground hover:text-destructive transition-colors font-medium text-sm"
+            >
+              Logout
+            </button>
+          </div>
 
+          {/* Mobile Hamburger */}
           <button
-            className={styles.hamburger}
-            onClick={() => setOpen((s) => !s)}
-            aria-expanded={open}
-            aria-label="Toggle navigation"
+            className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-        </div>
-      </nav>
+        </nav>
 
-      {/* mobile dropdown (animated) */}
-      <div className={`${styles.mobileMenu} ${open ? styles.show : ""}`} role="menu" aria-hidden={!open}>
-        <Link href="/home" className={styles.mobileLink}>Buy Food</Link>
-        <Link href="/transfer" className={styles.mobileLink}>Transfer E-coins</Link>
-        <Link href="/" className={styles.mobileLinkPrimary}>Log Out</Link>
+        {/* Mobile Menu */}
+        {open && (
+          <div className="md:hidden border-t border-border bg-card divide-y divide-border">
+            <Link href="/home" className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium">
+              Browse
+            </Link>
+            <Link
+              href="/transfer"
+              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+            >
+              Transfer
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </header>
+      <div className="mt-6 flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
+        <div className="justify-end flex gap-2">
+          <p className="text-xl text-muted-foreground flex justify-center items-center">Hi,</p>
+          <div className="text-xl text-muted-foreground">{user}</div>
+        </div>
+        <div className="justify-end flex gap-2">
+          <p className="text-xl text-muted-foreground flex justify-center items-center">Your Balance:</p>
+          <div className="text-2xl font-bold text-primary">{coins} ⓔ</div>
+        </div>
       </div>
-    </header>
-  );
+    </div>
+  )
 }

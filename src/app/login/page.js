@@ -1,117 +1,124 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
-import axios from "axios";
-
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import axios from "axios"
+import Link from "next/link"
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const validate = () => {
-    if (!email) return "Email is required";
-    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email))return "Enter a valid email";
-    if (!password) return "Password is required";
-    if (password.length < 6) return "Password must be at least 6 characters";
-    return "";
-  };
-
+    if (!email) return "Email is required"
+    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) return "Enter a valid email"
+    if (!password) return "Password is required"
+    if (password.length < 6) return "Password must be at least 6 characters"
+    return ""
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    const v = validate();
-    if (v) return setError(v);
+    e.preventDefault()
+    setError("")
+    const v = validate()
+    if (v) return setError(v)
     try {
-      setLoading(true);
-      // Axios automatically sets Content-Type to application/json when passing an object
-      const res = await axios.post("/api/login", { email, password });
-      // res.data contains the response JSON
-      const data = res.data;
-      console.log("Login successful:", data);
-      // redirect after successful login
-      router.push("/home");
+      setLoading(true)
+      await axios.post("/api/login", { email, password })
+      router.push("/home")
     } catch (err) {
-      // Axios wraps errors; the actual response is in err.response
       if (err.response && err.response.data) {
-        setError(err.response.data.error || "Invalid login");
+        setError(err.response.data.error || "Invalid login")
       } else {
-        console.error(err);
-        setError("Failed to login. Please try again.");
+        setError("Failed to login. Please try again.")
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
-
-
+  }
 
   return (
-     <div className={styles.pageWrap}>
-      <div className={styles.card}>
-        <div className={styles.brand}>
-          <h1>Food Challenge</h1>
-          <p className={styles.subtitle}>Sign in to continue</p>
-        </div>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+            E
+          </div>
+          <span>E-Cell Food</span>
+        </Link>
+      </div>
 
-        <form onSubmit={handleSubmit} className={styles.form} noValidate>
-          <label className={styles.label}>
-            Email
-            <input
-              className={styles.input}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@domain.com"
-              autoComplete="email"
-            />
-          </label>
-
-          <label className={styles.label}>
-            Password
-            <input
-              className={styles.input}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-            />
-          </label>
-
-          {error && <div className={styles.error}>{error}</div>}
-
-          <button className={styles.primaryBtn} type="submit" disabled={loading}>
-            {loading ? "Signing in…" : "Sign in"}
-          </button>
-
-          <div className={styles.divider}>Or continue with</div>
-
-          <div className="auth-buttons" role="group">
-            <button type="button" onClick={() => handleOAuth("google")}>
-              Continue with Google
-            </button>
-            <button type="button" onClick={() => handleOAuth("github")}>
-              Continue with GitHub
-            </button>
+      {/* Form Container */}
+      <div className="w-full max-w-md">
+        <div className="bg-card border border-border rounded-xl shadow-lg p-8">
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
+            <p className="text-muted-foreground">Sign in to your account</p>
           </div>
 
-          <div className={styles.footerLinks}>
-            <button type="button" className={styles.linkBtn} onClick={() => router.push("/signup")}>
-              Create account
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                autoComplete="email"
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                autoComplete="current-password"
+              />
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2.5 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
+            >
+              {loading ? "Signing in..." : "Sign In"}
             </button>
-            <button type="button" className={styles.linkBtn} onClick={() => router.push("/forgot")}>
+          </form>
+
+          {/* Footer Links */}
+          <div className="mt-8 pt-6 border-t border-border text-center text-sm space-y-3">
+            <p className="text-muted-foreground">
+              {"Don't have an account?"}{" "}
+              <Link href="/signup" className="text-primary hover:underline font-medium">
+                Create one
+              </Link>
+            </p>
+            <Link href="/auth/reset" className="inline-block text-muted-foreground hover:text-primary text-xs">
               Forgot password?
-            </button>
+            </Link>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  );
+  )
 }

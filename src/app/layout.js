@@ -1,17 +1,14 @@
-// src/app/layout.js
-import "./globals.css";
+import "./globals.css"
 
 export const metadata = {
-  title: "E-Cell FC",
-  description: "Food Stall Management System",
-};
+  title: "E-Cell Food Challenge",
+  description: "Professional Food Stall Transaction Platform",
+}
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="bg-gray-50 text-gray-900">
-        {children}
-      </body>
+    <html lang="en" className="dark">
+      <body className="bg-background text-foreground font-sans antialiased">{children}</body>
     </html>
-  );
+  )
 }
