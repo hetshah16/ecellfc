@@ -1,6 +1,7 @@
 // src/app/api/admin/logs/route.js
 import pool from "@/lib/db";
 
+
 function parseIntOrDefault(v, d) {
   const n = parseInt(v, 10);
   return Number.isNaN(n) ? d : n;
