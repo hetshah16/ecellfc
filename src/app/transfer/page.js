@@ -9,9 +9,11 @@ import PaymentForm from "./PaymentForm"
 export default function TransferPage() {
   const router = useRouter()
   const [users, setUsers] = useState([])
+  const [amount, setAmount] = useState("")
   const [user, setUser] = useState(null)
   const [q, setQ] = useState("")
   const [selected, setSelected] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   // Fetch current user
   useEffect(() => {
@@ -121,7 +123,7 @@ export default function TransferPage() {
                     <div className="text-xs text-muted-foreground mt-1">
                       #{u.user_id} • {u.email}
                     </div>
-                    <div className="text-sm text-primary mt-1 font-semibold">{u.coins} ⓔ</div>
+                    {/* <div className="text-sm text-primary mt-1 font-semibold">{u.coins} ⓔ</div> */}
                   </button>
                 ))
               )}
@@ -142,6 +144,7 @@ export default function TransferPage() {
               />
             </div>
           )}
+          
         </div>
       </main>
     </div>
