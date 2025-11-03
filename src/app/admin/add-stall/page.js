@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import AdminNavbar from "../components/AdminNavbar"
 import { useRouter } from "next/navigation"
-
+import axios from "axios"
 const styles = {
   container: {
     minHeight: "100vh",
@@ -199,6 +199,7 @@ const styles = {
 
 export default function AdminAddStallPage() {
   const router = useRouter()
+  const [admin, setAdmin] = useState(null)
   const [stalls, setStalls] = useState([])
   const [loading, setLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -206,7 +207,24 @@ export default function AdminAddStallPage() {
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState("")
-
+    useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axios.get("/api/admin/me")
+        setAdmin(res.data.admin)
+      } catch (err) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          alert("Session expired or invalid. Please log in again.")
+          router.push("/admin/login")
+        } else {
+          console.error("Failed to fetch admin:", err)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAdmin()
+  }, [router])
   useEffect(() => {
     fetchStalls()
   }, [])
@@ -287,6 +305,8 @@ export default function AdminAddStallPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {admin ? (
+        <>
       <AdminNavbar />
       <div style={styles.wrap}>
         <div style={styles.header}>
@@ -406,6 +426,12 @@ export default function AdminAddStallPage() {
           </div>
         )}
       </div>
+        </>
+      ) : (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-muted-foreground">Failed to load admin data</p>
+        </div>
+      )}
     </div>
   )
 }

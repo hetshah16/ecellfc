@@ -1,6 +1,6 @@
 import pool from "@/lib/db";
 import { NextResponse } from "next/server";
-import { verifyToken } from "@/lib/jwt"; // <-- use helper
+import { verifyToken1 } from "@/lib/jwt"; // <-- use helper
 export async function POST(req) {
   const connection = await pool.getConnection(); // get a dedicated connection for transaction
   try {
@@ -10,7 +10,7 @@ export async function POST(req) {
     }
 
     // 2️⃣ Verify token
-    const payload = verifyToken(token);
+    const payload = verifyToken1(token);
     if (!payload) {
       return NextResponse.json({ error: "Session expired. Please log in again." }, { status: 401 });
     }

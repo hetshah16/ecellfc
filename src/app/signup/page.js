@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-
+import axios from "axios"
 export default function SignupPage() {
   const router = useRouter()
   const [displayName, setDisplayName] = useState("")
@@ -14,38 +14,43 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
 
   const validate = () => {
-    if (!displayName) return "Display name is required"
-    if (!email) return "Email is required"
-    if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) return "Enter a valid email"
-    if (!password) return "Password is required"
-    if (password.length < 6) return "Password must be at least 6 characters"
-    if (password !== confirm) return "Passwords do not match"
-    return ""
-  }
+    if (!displayName.trim()) return "Name is required";
+    if (!email.trim()) return "Email is required";
+    if (!password.trim()) return "Password is required";
+    if (password.length < 6) return "Password must be at least 6 characters";
+    return null;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
-    const v = validate()
-    if (v) return setError(v)
+    e.preventDefault();
+    setError("");
+
+    const validationError = validate();
+    if (validationError) return setError(validationError);
 
     try {
-      setLoading(true)
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: displayName, email, password }),
-      })
+      setLoading(true);
 
-      const data = await res.json()
-      if (!res.ok) return setError(data.error || "Something went wrong")
-      router.push("/login")
+      console.log("Sending:", { name: displayName, email, password });
+
+      const signupRes = await axios.post("/api/signup", {
+        name: displayName,
+        email,
+        password,
+      });
+
+      if (signupRes.status === 201) {
+        // Automatically log in after signup
+        await axios.post("/api/login", { email, password });
+        router.push("/home");
+      }
     } catch (err) {
-      setError("Unable to create account. Try again later.")
+      console.error("Signup error:", err.response?.data || err.message);
+      setError(err.response?.data?.error || "Unable to create account. Try again later.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">

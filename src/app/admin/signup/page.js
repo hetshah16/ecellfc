@@ -11,8 +11,9 @@ export default function AdminSignupPage() {
   const [confirm, setConfirm] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-
+  const [name, setName] = useState("")
   const validate = () => {
+    if (!name) return "Name is required"
     if (!email) return "Email is required"
     if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) return "Enter a valid email"
     if (!password) return "Password is required"
@@ -32,7 +33,7 @@ export default function AdminSignupPage() {
       const res = await fetch("/api/admin/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       })
 
       const data = await res.json()
@@ -78,7 +79,18 @@ export default function AdminSignupPage() {
               autoComplete="new-password"
             />
           </label>
-
+          <label className={styles.label}>
+            Name 
+            <input
+              className={styles.input}
+              type="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="ENter Name"
+              autoComplete="new-password"
+            />
+          </label>
+            
           <label className={styles.label}>
             Confirm Password
             <input

@@ -1,8 +1,7 @@
 import pool from "@/lib/db";
 
-export async function GET(request,{ params }) {
-  const { stall_id } = params;
-
+export async function GET(request, context) {
+  const { stall_id } = await context.params
   try {
     // Fetch stall info
     const [stalls] = await pool.execute(

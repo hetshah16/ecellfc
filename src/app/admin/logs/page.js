@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react"
 import AdminNavbar from "../components/AdminNavbar"
+import { useRouter } from "next/navigation"
+import axios from "axios"
 
 const styles = {
   container: {
@@ -118,6 +120,8 @@ const styles = {
 }
 
 export default function AdminLogsPage() {
+  const router = useRouter()
+  const [admin, setAdmin] = useState(null)
   const [q, setQ] = useState("")
   const [receiverIdFilter, setReceiverIdFilter] = useState("")
   const [methodFilter, setMethodFilter] = useState("")
@@ -132,6 +136,25 @@ export default function AdminLogsPage() {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [fetchError, setFetchError] = useState(null)
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axios.get("/api/admin/me")
+        console.log("Admin data:", res.data)
+          setAdmin(res.data.admin)
+      } catch (err) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          alert("Session expired or invalid. Please log in again.")
+          router.push("/admin/login")
+        } else {
+          console.error("Failed to fetch admin:", err)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAdmin()
+  }, [router])
 
   useEffect(() => {
     fetchLogs()
@@ -226,9 +249,22 @@ export default function AdminLogsPage() {
   }
 
   const headers = rows.length ? Object.keys(rows[0]) : ["recharge_id", "receiver_id", "method", "amount", "timestamp"]
-
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading admin panel...</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen bg-background">
+    {admin ? (
+      <>
       <AdminNavbar />
       <div style={styles.wrap}>
         <div style={styles.header}>
@@ -319,6 +355,12 @@ export default function AdminLogsPage() {
           </table>
         </div>
       </div>
+      </>
+      ) : (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-muted-foreground">Failed to load admin data</p>
+        </div>
+      )}
     </div>
   )
 }

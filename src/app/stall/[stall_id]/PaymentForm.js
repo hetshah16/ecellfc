@@ -2,7 +2,7 @@
 import { useState } from "react"
 import axios from "axios"
 
-export default function PaymentForm({ stallId, user, setPay }) {
+export default function PaymentForm({ stallId, user, setPay, setUser}) {
   const [amount, setAmount] = useState("")
   const [phase, setPhase] = useState("ready")
   const [password, setPassword] = useState("")
@@ -27,8 +27,9 @@ export default function PaymentForm({ stallId, user, setPay }) {
       const res = await axios.post("/api/payment", {
         receiverId: stallId,
         amount: Number(amount),
+        password: password,
       })
-
+      setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
       setSuccess(res.data.message || "Payment successful")
       setPhase("done")
       setAmount("")
@@ -37,11 +38,13 @@ export default function PaymentForm({ stallId, user, setPay }) {
         setSuccess("")
         setPhase("ready")
       }, 3000)
+
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.error || "Payment failed")
       } else {
         setError("Network error")
+        console.log(err)
       }
       setPhase("ready")
       setPassword("")

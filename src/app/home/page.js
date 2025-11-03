@@ -19,6 +19,7 @@ export default function HomePage() {
         const res = await axios.post("/api/user", {
           user_id: r.data.user.user_id,
         })
+        // if(res.data.pin==NULL)router.push("/profile")
         setUser(res.data)
       } catch (err) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
@@ -49,53 +50,54 @@ export default function HomePage() {
     getStalls()
   }, [])
 
-  return (
-    <div className="min-h-screen bg-background">
-      <Navbar coins = {user?.coins} user = {user?.name} />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {user ? (
-          <>
+return (
+  <div className="min-h-screen bg-background">
+    {user ? (
+      <>
+        <Navbar coins={user?.coins} user={user?.name} />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Stalls Section */}
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold mb-2">Available Stalls</h2>
+              <p className="text-muted-foreground">
+                Browse and order from our partner food vendors
+              </p>
+            </div>
 
-            {/* Stalls Section */}
-            <div>
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2">Available Stalls</h2>
-                <p className="text-muted-foreground">Browse and order from our partner food vendors</p>
-              </div>
-
-              {loading ? (
-                <div className="flex items-center justify-center py-16">
-                  <div className="text-center">
-                    <div className="inline-block mb-4">
-                      <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
-                    </div>
-                    <p className="text-muted-foreground">Loading stalls...</p>
+            {loading ? (
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <div className="inline-block mb-4">
+                    <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
                   </div>
+                  <p className="text-muted-foreground">Loading stalls...</p>
                 </div>
-              ) : stalls.length === 0 ? (
-                <div className="text-center py-16 bg-card border border-border rounded-xl">
-                  <p className="text-muted-foreground">No stalls available yet</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                  {stalls.map((stall) => (
-                    <StallCard stall={stall} key={stall.stall_id} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <div className="inline-block mb-4">
-                <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
               </div>
-              <p className="text-muted-foreground">Loading user data...</p>
-            </div>
+            ) : stalls.length === 0 ? (
+              <div className="text-center py-16 bg-card border border-border rounded-xl">
+                <p className="text-muted-foreground">No stalls available yet</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                {stalls.map((stall) => (
+                  <StallCard stall={stall} key={stall.stall_id} />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </main>
-    </div>
-  )
+        </main>
+      </>
+    ) : (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading user data...</p>
+        </div>
+      </div>
+    )}
+  </div>
+)
 }

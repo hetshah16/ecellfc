@@ -15,7 +15,8 @@ export default function AdminPage() {
     const fetchAdmin = async () => {
       try {
         const res = await axios.get("/api/admin/me")
-        setAdmin(res.data.admin)
+        console.log("Admin data:", res.data)
+          setAdmin(res.data.admin)
       } catch (err) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           alert("Session expired or invalid. Please log in again.")

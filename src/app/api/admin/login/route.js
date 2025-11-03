@@ -1,7 +1,8 @@
 import pool from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { signToken } from "@/lib/jwt"; // <-- use helper
+import { signToken1 } from "@/lib/jwt"; // <-- use helper
+
 export async function POST(req) {
   try {
     const { email, password } = await req.json();
@@ -20,7 +21,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Invalid email or password" }), { status: 401 });
     }
 
-    const token = signToken({ admin_id: admin.admin_id, email: admin.email});
+    const token = signToken1({ admin_id: admin.admin_id, email: admin.email});
 
     const response = NextResponse.json({
       message: "Login successful",

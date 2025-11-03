@@ -1,112 +1,55 @@
-// src/app/api/transfer/route.js
-import pool from "@/lib/db";
-import bcrypt from "bcryptjs";
-
-/*
-Request body:
-{
-  sender_email: string,
-  password: string,
-  receiver_id: number,
-  amount: number
-}
-*/
+import { NextResponse } from "next/server"
+import withTransaction from "@/lib/withTransaction"
+import bcrypt from "bcryptjs"
+import { verifyToken } from "@/lib/jwt"
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { sender_email, password, receiver_id,receiver_name, amount } = body || {};
-    const amt = Number(amount);
-
-    if (!sender_email || !password || !receiver_id || !receiver_name || !amt || isNaN(amt) || amt <= 0) {
-      return new Response(JSON.stringify({ error: "Invalid input" }), { status: 400 });
+    // 1️⃣ Read token from HTTP-only cookie
+    const token = req.cookies.get("token")?.value
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    // Step 1: resolve sender id from email (quick read)
-    const [senderRows] = await pool.execute("SELECT user_id FROM user WHERE email = ? LIMIT 1", [sender_email]);
-    if (!senderRows.length) {
-      return new Response(JSON.stringify({ error: "Sender email not found" }), { status: 404 });
-    }
-    const senderId = senderRows[0].user_id;
-    const receiverId = Number(receiver_id);
+    // 2️⃣ Verify token
+    const payload = verifyToken(token)
+    if (!payload) {
+      return NextResponse.json({ error: "Session expired. Please log in again." }, { status: 401 })
+    } 
+    
+    const body = await req.json()
+    const { sender_id, password, receiver_id, receiver_name, amount } = body
+    const amt = Number(amount)
 
-    if (senderId === receiverId) {
-      return new Response(JSON.stringify({ error: "Cannot transfer to yourself" }), { status: 400 });
-    }
-
-    // Acquire dedicated connection for transaction
-    const conn = await pool.getConnection();
-    try {
-      await conn.beginTransaction();
-
-      // Lock both user rows in a consistent order to avoid deadlocks
-      const [idsToLock] =
-        await conn.execute(
-          "SELECT user_id FROM user WHERE user_id IN (?, ?) ORDER BY user_id ASC",
-          [senderId, receiverId]
-        );
-
-      // Now fetch the full rows FOR UPDATE (this locks them)
+    const result = await withTransaction(async (conn) => {
+      // 🔒 Lock rows
       const [rows] = await conn.execute(
-        "SELECT user_id, email, password, coins FROM user WHERE user_id IN (?, ?) FOR UPDATE",
-        [senderId, receiverId]
-      );
+        "SELECT user_id, name, email, password, coins FROM user WHERE user_id IN (?, ?) FOR UPDATE",
+        [sender_id, receiver_id]
+      )
 
-      // rows will contain two rows (if receiver exists). Find sender and receiver
-      const senderRow = rows.find(r => r.user_id === senderId);
-      const receiverRow = rows.find(r => r.user_id === receiverId);
+      const sender = rows.find(r => r.user_id === sender_id)
+      const receiver = rows.find(r => r.user_id === receiver_id)
+      if (!sender || !receiver) throw new Error("User not found")
 
-      if (!senderRow) {
-        await conn.rollback();
-        return new Response(JSON.stringify({ error: "Sender not found (race?)" }), { status: 404 });
-      }
-      if (!receiverRow) {
-        await conn.rollback();
-        return new Response(JSON.stringify({ error: "Receiver not found" }), { status: 404 });
-      }
+      const ok = await bcrypt.compare(password, sender.password)
+      if (!ok) throw new Error("Invalid password")
 
-      // Verify password
-      const passwordOk = await bcrypt.compare(password, senderRow.password);
-      if (!passwordOk) {
-        await conn.rollback();
-        return new Response(JSON.stringify({ error: "Invalid password" }), { status: 401 });
-      }
+      if (Number(sender.coins) < amt) throw new Error("Insufficient balance")
 
-      const senderCoins = Number(senderRow.coins || 0);
-      if (senderCoins < amt) {
-        await conn.rollback();
-        return new Response(JSON.stringify({ error: "Insufficient balance" }), { status: 400 });
-      }
+      await conn.execute("UPDATE user SET coins = coins - ? WHERE user_id = ?", [amt, sender_id])
+      await conn.execute("UPDATE user SET coins = coins + ? WHERE user_id = ?", [amt, receiver_id])
 
-      // Update balances
-      await conn.execute("UPDATE user SET coins = coins - ? WHERE user_id = ?", [amt, senderId]);
-      await conn.execute("UPDATE user SET coins = coins + ? WHERE user_id = ?", [amt, receiverId]);
-
-      // Insert into transfer_log inside same transaction
       const [insertRes] = await conn.execute(
-        "INSERT INTO transfer_log (sender_id, receiver_id,receiver_name, amount) VALUES (?, ?, ?, ?)",
-        [senderId, receiverId,receiver_name, amt]
-      );
+        "INSERT INTO transfer_log (sender_id, sender_name, receiver_id, receiver_name, amount) VALUES (?, ?, ?, ?, ?)",
+        [sender_id, sender.name, receiver_id, receiver.name, amt]
+      )
 
-      await conn.commit();
-      conn.release();
+      return { transaction_id: insertRes.insertId }
+    })
 
-      // Optionally fetch new sender balance
-      const [freshSender] = await pool.execute("SELECT coins FROM user WHERE user_id = ?", [senderId]);
-      const newBalance = freshSender[0]?.coins ?? null;
-
-      return new Response(JSON.stringify({
-        ok: true,
-        transaction_id: insertRes.insertId,
-        new_balance: newBalance
-      }), { status: 200 });
-    } catch (txErr) {
-      try { await conn.rollback(); } catch (e) {}
-      try { conn.release(); } catch (e) {}
-      console.error("Transfer transaction error:", txErr);
-      return new Response(JSON.stringify({ error: "Transfer failed" }), { status: 500 });
-    }
+    return NextResponse.json({ ok: true, ...result })
   } catch (err) {
-    console.error("Transfer route error:", err);
-    return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400 });
+    return NextResponse.json({ error: err.message || "Transfer failed" }, { status: 400 })
   }
 }
+

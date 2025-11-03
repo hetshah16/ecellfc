@@ -49,10 +49,10 @@ export default function StallPage({ params }) {
 
   return (
     <div className="min-h-screen bg-background">
+    {user ? (
+      <>
       <Navbar coins={user?.coins} user={user?.name} />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {user ? (
-          <>
             {/* Stall Header */}
             {/* <div className="mb-12 bg-linear-to-r from-primary/20 to-accent/20 border border-primary/30 rounded-xl p-8 backdrop-blur-sm">
               <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -83,7 +83,7 @@ export default function StallPage({ params }) {
               <div className="bg-card border border-border rounded-xl p-8 mb-10">
                 <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
                 <p className="text-muted-foreground mb-8">Complete your payment to place an order</p>
-                <PaymentForm stallId={stall_id} user={user} setPay={setPay} />
+                <PaymentForm stallId={stall_id} user={user} setPay={setPay} setUser={setUser}/>
               </div>
               )}
 
@@ -108,6 +108,7 @@ export default function StallPage({ params }) {
                 </div>
               )}
             </div>
+            </main>
           </>
         ) : (
           <div className="flex items-center justify-center min-h-[400px]">
@@ -119,7 +120,7 @@ export default function StallPage({ params }) {
             </div>
           </div>
         )}
-      </main>
+      
     </div>
   )
 }

@@ -15,5 +15,5 @@ export async function GET(req) {
   }
 
   // Return user data
-  return NextResponse.json({ user: payload });
+  return NextResponse.json({ user: payload});
 }

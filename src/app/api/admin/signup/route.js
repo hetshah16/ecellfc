@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const {name, email, password } = await req.json();
 
     // Check if email exists
     const [existing] = await pool.execute("SELECT * FROM admin WHERE email = ?", [email]);
@@ -16,8 +16,8 @@ export async function POST(req) {
 
     // Insert user
     const [result] = await pool.execute(
-      "INSERT INTO admin (email, password) VALUES (?, ?)",
-      [ email, hashed]
+      "INSERT INTO admin (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashed]
     );
 
     return new Response(JSON.stringify({ admin_id: result.insertId, email }), { status: 201 });
