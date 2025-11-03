@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const validate = () => {
@@ -28,6 +29,7 @@ export default function LoginPage() {
     try {
       setLoading(true)
       await axios.post("/api/login", { email, password })
+      setSuccess(true)
       router.push("/home")
     } catch (err) {
       if (err.response && err.response.data) {
@@ -92,6 +94,11 @@ export default function LoginPage() {
             {error && (
               <div className="p-3 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm">
                 {error}
+              </div>
+            )}
+            {success && (
+              <div className="p-3 bg-green-100 border border-green-500 rounded-lg text-green-700 text-sm">
+                Signin successful! Redirecting...
               </div>
             )}
 
