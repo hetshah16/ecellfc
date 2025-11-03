@@ -30,11 +30,9 @@ export default function LoginPage() {
       setLoading(true)
       await axios.post("/api/login", { email, password })
       setSuccess(true)
-      if (success) {
       setTimeout(() => {
         router.push("/home");
       }, 2000); // 1000 ms = 1 second
-    }
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.error || "Invalid login")
