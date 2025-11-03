@@ -35,17 +35,34 @@ export default function TransferPage() {
   }, [router])
 
   // Fetch all users
-  useEffect(() => {
+    useEffect(() => {
     let mounted = true
-    fetch("/api/admin/users")
-      .then((r) => r.json())
-      .then((data) => {
+
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("/api/admin/users")
         if (!mounted) return
-        setUsers(Array.isArray(data) ? data : [])
-      })
-      .catch((e) => console.error(e))
-    return () => (mounted = false)
-  }, [])
+
+        const usersData = Array.isArray(res.data) ? res.data : []
+        const filter2=usersData.filter((u) => u.user_id == user?.user_id);
+        setUser(prev => ({...prev, coins: Number(filter2[0]?.coins)}))
+        // Keep user_id column but skip logged-in user
+        const filteredUsers = usersData.filter(
+          (u) => u.user_id !== user?.user_id
+        )
+
+        setUsers(filteredUsers)
+      } catch (error) {
+        console.error("Failed to fetch users:", error)
+      }
+    }
+
+    if (user) fetchUsers()
+
+    return () => {
+      mounted = false
+    }
+  }, [user])
 
   // Filter users based on search query
   const filtered = useMemo(() => {
