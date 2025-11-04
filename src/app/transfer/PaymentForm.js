@@ -31,7 +31,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
         receiver_name: selected.name,
         amount: Number(amount),
       })
-      setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
+      // setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
       setSuccess(res.data.message || "Payment successful")
       setPhase("done")
       setAmount("")

@@ -45,10 +45,14 @@ export async function POST(req) {
       if (user.coins < amt) throw new Error("Insufficient balance")
 
       // Deduct from sender
-      await conn.execute(
-        "UPDATE user SET coins = coins - ? WHERE user_id = ?",
-        [amt, user.user_id]
-      )
+      const [deductRes] = await conn.execute(
+        "UPDATE user SET coins = coins - ? WHERE user_id = ? AND coins >= ?",
+        [amt, user.user_id, amt]
+      );
+
+      if (deductRes.affectedRows === 0) {
+        throw new Error("Insufficient balance");
+      }
 
       // Add to receiver (food_stall)
       await conn.execute(
