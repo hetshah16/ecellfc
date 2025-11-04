@@ -88,7 +88,7 @@ export default function TransferPage() {
       <Navbar coins={user?.coins} user={user?.name} />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Transfer E-coins</h1>
+          <h2 className="text-3xl font-bold mb-2">Transfer E-coins</h2>
           <p className="text-muted-foreground">Send E-coins to your friends securely</p>
         </div>
 
@@ -108,12 +108,12 @@ export default function TransferPage() {
 
             <div className="bg-card border border-border rounded-lg overflow-hidden max-h-96 overflow-y-auto">
               {filtered.length === 0 ? (
-                <div className="p-4 text-center text-muted-foreground">No users found</div>
+                <div>{!selected && (<div className="p-4 text-center text-muted-foreground">No users found</div>)}</div>
               ) : (
                 filtered.map((u) => (
                   <button
                     key={u.user_id}
-                    onClick={() => handleSelect(u)}
+                    onClick={() => {handleSelect(u); setQ("")}}
                     className={`w-full text-left px-4 py-3 border-b border-border transition-colors ${selected?.user_id === u.user_id
                         ? "bg-primary/10 border-l-2 border-primary"
                         : "hover:bg-muted/50"
@@ -132,9 +132,19 @@ export default function TransferPage() {
 
           {/* Payment Form */}
           {selected && (
-              <div className="bg-card border border-border rounded-xl p-8 mb-10">
-              <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
-              <p className="text-muted-foreground mb-8">Complete your payment to place an order</p>
+              <div className="bg-card border border-border rounded-xl p-4 mb-5">
+              <p className="text-muted-foreground mb-2">Transfer Your E-coins to</p>
+              <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Name</div>
+                <div className="font-semibold">{selected.name}</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-1">Email</div>
+                <div className="text-sm break-all">{selected.email}</div>
+              </div>
+            </div>
+
               <PaymentForm
                 selected={selected}
                 user={user}
