@@ -41,6 +41,20 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
+  const handleForgot = async () => {
+    const email = prompt("Enter your account email to receive a reset link:")
+    if (!email) return
+    try {
+      await fetch("/api/auth/forgot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+      alert("If that email exists, a reset link was sent.")
+    } catch (err) {
+      alert("Unable to process request.")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
@@ -120,9 +134,13 @@ export default function LoginPage() {
                 Create one
               </Link>
             </p>
-            <Link href="/auth/reset" className="inline-block text-muted-foreground hover:text-primary text-xs">
+            <button
+              type="button"
+              onClick={handleForgot}
+              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+            >
               Forgot password?
-            </Link>
+            </button>
           </div>
         </div>
       </div>

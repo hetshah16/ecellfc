@@ -157,8 +157,10 @@ export default function SellerLogsPage() {
           <table style={styles.table}>
             <thead style={styles.thead}>
               <tr>
+                <th style={styles.th}>Transaction ID</th>
                 <th style={styles.th}>Sender ID</th>
                 <th style={styles.th}>Sender Name</th>
+                <th style={styles.th}>Sender Email</th>
                 <th style={styles.th}>Amount</th>
                 <th style={styles.th}>Date & Time</th>
               </tr>
@@ -179,8 +181,10 @@ export default function SellerLogsPage() {
               ) : (
                 transactions.map((tx) => (
                   <tr key={tx.transaction_id} style={styles.tr}>
+                    <td style={styles.td}>{tx.transaction_id}</td>
                     <td style={styles.td}>{tx.sender_id}</td>
                     <td style={styles.td}>{tx.sender_name}</td>
+                    <td style={styles.td}>{tx.sender_email}</td>
                     <td style={{ ...styles.td, color: "#00d9ff", fontWeight: "700" }}>₹{tx.amount}</td>
                     <td style={styles.td}>{formatTimestamp(tx.timestamp)}</td>
                   </tr>

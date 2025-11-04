@@ -248,7 +248,7 @@ export default function AdminLogsPage() {
     URL.revokeObjectURL(url)
   }
 
-  const headers = rows.length ? Object.keys(rows[0]) : ["recharge_id", "receiver_id", "method", "amount", "timestamp"]
+  const headers = rows.length ? Object.keys(rows[0]) : ["recharge_id", "receiver_id", "receiver_name", "receiver_email  ", "method", "amount", "timestamp"]
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -260,6 +260,14 @@ export default function AdminLogsPage() {
         </div>
       </div>
     )
+  }
+  const formatTimestamp = (ts) => {
+    if (!ts) return ""
+    try {
+      return new Date(ts).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+    } catch {
+      return ts
+    }
   }
   return (
     <div className="min-h-screen bg-background">

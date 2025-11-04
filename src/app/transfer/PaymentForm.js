@@ -26,9 +26,12 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
     try {
       const res = await axios.post("/api/transfer", {
         sender_id: user.user_id,
+        sender_name: user.name,
+        sender_email: user.email,
         password,
         receiver_id: selected.user_id,
         receiver_name: selected.name,
+        receiver_email: selected.email,
         amount: Number(amount),
       })
       // setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))

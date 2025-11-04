@@ -17,7 +17,7 @@ export async function POST(req) {
     } 
     
     const body = await req.json()
-    const { sender_id, password, receiver_id, receiver_name, amount } = body
+    const { sender_id,sender_name,sender_email, password, receiver_id, receiver_name,receiver_email, amount } = body
     const amt = Number(amount)
 
     const result = await withTransaction(async (conn) => {
@@ -40,8 +40,8 @@ export async function POST(req) {
       await conn.execute("UPDATE user SET coins = coins + ? WHERE user_id = ?", [amt, receiver_id])
 
       const [insertRes] = await conn.execute(
-        "INSERT INTO transfer_log (sender_id, sender_name, receiver_id, receiver_name, amount) VALUES (?, ?, ?, ?, ?)",
-        [sender_id, sender.name, receiver_id, receiver.name, amt]
+        "INSERT INTO transfer_log (sender_id, sender_name,sender_email, receiver_id, receiver_name,receiver_email, amount) VALUES (?, ?, ?, ?, ?,?, ?)",
+        [sender_id, sender.name,sender_email, receiver_id, receiver.name,receiver_email, amt]
       )
 
       return { transaction_id: insertRes.insertId }

@@ -21,7 +21,7 @@ export async function POST(req) {
     const senderId = payload.user_id
 
     // 3️⃣ Get request data (receiver and amount)
-    const { receiverId, amount, password } = await req.json()
+    const { receiverId,sender_id,sender_name,sender_email ,amount, password } = await req.json()
     const amt = Number(amount)
     if (!amt || amt <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 })
@@ -59,11 +59,16 @@ export async function POST(req) {
         "UPDATE food_stall SET coins = coins + ? WHERE stall_id = ?",
         [amt, receiverId]
       )
-
+      const [stallRows] = await conn.execute(
+        "SELECT stall_name FROM food_stall WHERE stall_id = ?",
+        [receiverId]
+      )
+      if (stallRows.length === 0) throw new Error("Receiver stall not found")
+      const receiver_name = stallRows[0].stall_name
       // Log transaction
       const [insertRes] = await conn.execute(
-        "INSERT INTO transaction_log (sender_id, receiver_id, amount) VALUES (?, ?, ?)",
-        [user.user_id, receiverId, amt]
+        "INSERT INTO transaction_log (sender_id,sender_name,sender_email, receiver_id,receiver_name, amount) VALUES (?, ?, ? ,?, ?, ?)",
+        [user.user_id,sender_name,sender_email, receiverId,receiver_name, amt]
       )
 
       return { transaction_id: insertRes.insertId }

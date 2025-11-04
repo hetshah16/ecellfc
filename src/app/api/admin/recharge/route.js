@@ -15,9 +15,9 @@ export async function POST(req) {
       return NextResponse.json({ error: "Session expired. Please log in again." }, { status: 401 });
     }
 
-    const { user_id, amount, mode } = await req.json();
+    const { user_id,email,name, amount, mode } = await req.json();
 
-    if (!user_id || !amount || amount <= 0) {
+    if (!user_id ||!email||!name|| !amount || amount <= 0) {
       return NextResponse.json(
         { error: "Invalid input" },
         { status: 400 }
@@ -47,8 +47,8 @@ export async function POST(req) {
     );
     // Optionally log the recharge in transaction_log
     await connection.query(
-      "INSERT INTO recharge_log (receiver_id, method, amount) VALUES (?, ?, ?)",
-      [user_id, mode, amount] // sender_id = 0 means admin/system
+      "INSERT INTO recharge_log (receiver_id,receiver_name,receiver_email, method, amount) VALUES (?, ?, ?, ?, ?)",
+      [user_id,name,email, mode, amount] // sender_id = 0 means admin/system
     );
 
     await connection.commit();
