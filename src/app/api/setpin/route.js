@@ -18,7 +18,6 @@ export async function POST(req) {
       [pin, email]
     );
 
- 
 
     if (result.affectedRows === 0) {
       return Response.json({ error: "User not found" }, { status: 404 });
