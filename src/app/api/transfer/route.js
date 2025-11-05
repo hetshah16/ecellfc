@@ -35,7 +35,7 @@ export async function POST(req) {
     const result = await withTransaction(async (conn) => {
       // Lock both users
       const [rows] = await conn.execute(
-        "SELECT user_id, name, password, coins FROM user WHERE user_id IN (?, ?) FOR UPDATE",
+        "SELECT user_id,email, name, coins, password,pin FROM user WHERE user_id IN (?, ?) FOR UPDATE",
         [sender_id, receiver_id]
       )
 
@@ -46,8 +46,12 @@ export async function POST(req) {
       if (!receiver) throw new Error("Receiver not found")
 
       // Password check
-      const ok = await bcrypt.compare(password, sender.password)
-      if (!ok) throw new Error("Invalid password")
+       if (!sender.pin) throw new Error("Set up your PIN before making payments")
+
+      // ✅ Password verification
+      const ok = Number(password) === Number(sender.pin);
+      // console.log("Password check:", ok, password, user.pin);
+      if (!ok) throw new Error("Invalid PIN")
 
       // Sufficient balance? Atomic check + update
       const [updateSender] = await conn.execute(
@@ -64,8 +68,8 @@ export async function POST(req) {
 
       // Log transfer
       const [insertRes] = await conn.execute(
-        "INSERT INTO transfer_log (sender_id, receiver_id, amount) VALUES (?, ?, ?)",
-        [sender_id, receiver_id, amt]
+        "INSERT INTO transfer_log (sender_id,sender_name,sender_email, receiver_id,receiver_name,receiver_email, amount) VALUES (?, ?, ?, ? , ?, ?, ?)",
+        [sender_id,sender.name,sender.email, receiver_id,receiver.name,receiver.email, amt]
       )
 
       return { transaction_id: insertRes.insertId }

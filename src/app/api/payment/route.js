@@ -23,7 +23,7 @@ export async function POST(req) {
     const senderId = payload.user_id
 
     // ✅ 3. Get request data
-    const { receiverId, amount, password } = await req.json()
+    const { receiverId, amount, password, receiver_name } = await req.json()
     const amt = Number(amount)
 
     if (!receiverId || !amt || amt <= 0) {
@@ -38,16 +38,18 @@ export async function POST(req) {
     const result = await withTransaction(async (conn) => {
       // ✅ Lock sender row
       const [users] = await conn.execute(
-        "SELECT user_id, name, coins, password FROM user WHERE user_id=? FOR UPDATE",
+        "SELECT user_id,email, name, coins, password,pin FROM user WHERE user_id=? FOR UPDATE",
         [senderId]
       )
 
       if (users.length === 0) throw new Error("User not found")
-      const user = users[0]
+        const user = users[0]
+    if (!user.pin) throw new Error("Set up your PIN before making payments")
 
       // ✅ Password verification
-      const ok = await bcrypt.compare(password, user.password)
-      if (!ok) throw new Error("Invalid password")
+      const ok = Number(password) === Number(user.pin);
+      // console.log("Password check:", ok, password, user.pin);
+      if (!ok) throw new Error("Invalid PIN")
 
       // ✅ Ensure enough coins + atomic safe deduct (prevents double spending)
       const [deductRes] = await conn.execute(
@@ -71,8 +73,8 @@ export async function POST(req) {
 
       // ✅ Log transaction
       const [insertRes] = await conn.execute(
-        "INSERT INTO transaction_log (sender_id, receiver_id, amount) VALUES (?, ?, ?)",
-        [senderId, receiverId, amt]
+        "INSERT INTO transaction_log (sender_id,sender_name ,sender_email , receiver_id ,receiver_name, amount) VALUES (?, ?, ?, ?, ?, ?)",
+        [senderId,user.name,user.email, receiverId,receiver_name, amt]
       )
 
       return { transaction_id: insertRes.insertId }
@@ -88,7 +90,7 @@ export async function POST(req) {
 
     // ✅ Return clean safe messages
     if (
-      err.message === "Invalid password" ||
+      err.message === "Invalid PIN" ||
       err.message === "Insufficient balance" ||
       err.message === "User not found" ||
       err.message === "Receiver not found"

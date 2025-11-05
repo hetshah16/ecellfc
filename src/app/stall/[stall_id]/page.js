@@ -83,7 +83,7 @@ export default function StallPage({ params }) {
               <div className="bg-card border border-border rounded-xl p-8 mb-10">
                 <h2 className="text-3xl font-bold mb-2">Order Summary</h2>
                 <p className="text-muted-foreground mb-8">Complete your payment to place an order</p>
-                <PaymentForm stallId={stall_id} user={user} setPay={setPay} setUser={setUser}/>
+                <PaymentForm stall={stall} stallId={stall_id} user={user} setPay={setPay} setUser={setUser}/>
               </div>
               )}
 

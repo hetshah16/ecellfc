@@ -1,13 +1,15 @@
 "use client"
 import { useState } from "react"
 import axios from "axios"
+import { useRouter } from "next/navigation";
 
-export default function PaymentForm({ stallId, user, setPay, setUser}) {
+export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
   const [amount, setAmount] = useState("")
   const [phase, setPhase] = useState("ready")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const router = useRouter();
 
   const startPayment = (e) => {
     e.preventDefault()
@@ -23,12 +25,14 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
     setError("")
     setPhase("sending")
 
+    
     try {
       const res = await axios.post("/api/payment", {
         receiverId: stallId,
         sender_id: user.user_id,
         sender_name: user.name,
         sender_email: user.email,
+        receiver_name: stall,   
         amount: Number(amount),
         password: password,
       })
@@ -55,18 +59,7 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
   }
 
   const handleForgot = async () => {
-    const email = prompt("Enter your account email to receive a reset link:")
-    if (!email) return
-    try {
-      await fetch("/api/auth/forgot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      })
-      alert("If that email exists, a reset link was sent.")
-    } catch (err) {
-      alert("Unable to process request.")
-    }
+    router.push("/profile");
   }
 
   return (
@@ -110,15 +103,22 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
             </p>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Enter your password to confirm</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••"
-              required
-              className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
+            <label className="block text-sm font-medium mb-2">Enter your pin to confirm</label>
+              <input
+                type="password"
+                name="pin" 
+                maxLength="4" 
+                pattern="^[1-9][0-9]{3}$"
+                inputMode="numeric" 
+                autoComplete="off"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
+                onInput={(e) => e.target.setCustomValidity("")}
+                placeholder="••••"
+                required
+                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
           </div>
           <div className="flex gap-2">
             <button
@@ -135,15 +135,10 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
               Cancel
             </button>
           </div>
-          <button
-            type="button"
-            onClick={handleForgot}
-            className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-          >
-            Forgot password?
-          </button>
+
         </form>
       )}
+      
 
       {phase === "sending" && (
         <div className="text-center py-8">
@@ -165,6 +160,13 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
           {success}
         </div>
       )}
+      <button
+        type="button"
+        onClick={handleForgot}
+        className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+      >
+        Forgot pin?
+      </button>
     </div>
   )
 }
