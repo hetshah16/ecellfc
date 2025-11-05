@@ -10,12 +10,7 @@ export async function POST(req) {
     }
 
     const [rows] = await pool.execute(
-      `SELECT tl.transaction_id, tl.sender_id, u.name AS sender_name,
-              tl.amount, tl.timestamp
-       FROM transaction_log tl
-       JOIN user u ON tl.sender_id = u.user_id
-       WHERE tl.receiver_id = ?
-       ORDER BY tl.timestamp DESC`,
+      `Select transaction_id,sender_id,sender_name,sender_email,amount,timestamp from transaction_log WHERE receiver_id = ? ORDER BY timestamp DESC`,
       [stall_id]
     );
 

@@ -60,6 +60,8 @@ export default function AdminDashboard({ admin }) {
     try {
       const res = await axios.post("/api/admin/recharge", {
         user_id: selected.user_id,
+        email: selected.email,
+        name: selected.name,
         amount: amt,
         mode: admin.email,
       })

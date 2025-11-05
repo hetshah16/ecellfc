@@ -26,6 +26,9 @@ export default function PaymentForm({ stallId, user, setPay, setUser}) {
     try {
       const res = await axios.post("/api/payment", {
         receiverId: stallId,
+        sender_id: user.user_id,
+        sender_name: user.name,
+        sender_email: user.email,
         amount: Number(amount),
         password: password,
       })

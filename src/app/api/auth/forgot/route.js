@@ -38,7 +38,7 @@ export async function POST(req) {
     );
 
     // send email with reset link
-    const resetUrl = `${process.env.APP_URL || 'https://ecellfc-zcfh.vercel.app'}/auth/reset?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
+    const resetUrl = `${process.env.APP_URL}/auth/reset?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
     await transporter.sendMail({
       from: process.env.EMAIL_FROM || "E-Cell Food Challenge <het.shah23@spit.ac.in>",
       to: email,
