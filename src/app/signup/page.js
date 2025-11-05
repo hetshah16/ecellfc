@@ -28,11 +28,10 @@ export default function SignupPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    const validationError = validate();
-    if (validationError) return setError(validationError);
+    e.preventDefault()
+    setError("")
+    const v = validate()
+    if (v) return setError(v)
 
     try {
       setLoading(true);
@@ -48,10 +47,9 @@ export default function SignupPage() {
 
       setSettingPin(true);
     } catch (err) {
-      console.error("Signup error:", err.response?.data || err.message);
-      setError(err.response?.data?.error || "Unable to create account. Try again later.");
+      setError("Unable to create account. Try again later.")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -72,9 +70,7 @@ export default function SignupPage() {
       await axios.post("/api/setpin", {email, pin});
       await axios.post("/api/login", { email, password });
       console.log(email,pin)
-        setMessage("✅ PIN set successfully!")
-        setPin("")
-        setConfirmPin("")
+        setMessage("✅ PIN set successfully. Redirecting to home...")
         // setSettingPin(false); 
      router.push("/home")
     } catch (error) {
