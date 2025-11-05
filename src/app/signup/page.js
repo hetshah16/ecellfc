@@ -196,6 +196,7 @@ export default function SignupPage() {
                 type="password"
                 inputMode="numeric"
                 maxLength="4"
+                minLength="4"
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 className="w-full border rounded-lg p-2"
@@ -210,6 +211,7 @@ export default function SignupPage() {
                 type="password"
                 inputMode="numeric"
                 maxLength="4"
+                minLength="4"
                 value={confirmPin}
                 onChange={(e) => setConfirmPin(e.target.value)}
                 className="w-full border rounded-lg p-2"
