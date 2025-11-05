@@ -88,7 +88,7 @@ export async function POST(req) {
     if (
       err.message === "Sender not found" ||
       err.message === "Receiver not found" ||
-      err.message === "Invalid password" ||
+      err.message === "Invalid PIN" ||
       err.message === "Insufficient balance"
     ) {
       return NextResponse.json({ error: err.message }, { status: 400 })

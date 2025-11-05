@@ -105,7 +105,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
             </p>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2">Enter your password to confirm</label>
+            <label className="block text-sm font-medium mb-2">Enter your PIN to confirm</label>
             <input
                 type="password"
                 name="pin" 
