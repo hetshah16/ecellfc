@@ -70,9 +70,7 @@ export default function SignupPage() {
       await axios.post("/api/setpin", {email, pin});
       await axios.post("/api/login", { email, password });
       console.log(email,pin)
-        setMessage("✅ PIN set successfully!")
-        setPin("")
-        setConfirmPin("")
+        setMessage("✅ PIN set successfully. Redirecting to home...")
         // setSettingPin(false); 
      router.push("/home")
     } catch (error) {

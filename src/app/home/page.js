@@ -19,8 +19,13 @@ export default function HomePage() {
         const res = await axios.post("/api/user", {
           user_id: r.data.user.user_id,
         })
-        // if(res.data.pin==NULL)router.push("/profile")
+        console.log(res.data)
         setUser(res.data)
+        
+        if (!res.data.pin) {
+          alert("Set your pin first");
+          router.push("/profile")
+        }
       } catch (err) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           router.push("/login")
