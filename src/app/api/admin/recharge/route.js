@@ -23,7 +23,7 @@ export async function POST(req) {
     }
 
     // ✅ 2. Input validation
-    const { user_id, amount, mode } = await req.json();
+    const { user_id,email,name, amount, mode } = await req.json();
     if (!user_id || !amount || amount <= 0 || !mode) {
       return NextResponse.json(
         { error: "Invalid input. user_id, amount, and mode are required." },
@@ -51,8 +51,8 @@ export async function POST(req) {
 
       // Log recharge
       await conn.query(
-        "INSERT INTO recharge_log (receiver_id, method, amount) VALUES (?, ?, ?)",
-        [user_id, mode, amount]
+        "INSERT INTO recharge_log (receiver_id,receiver_name,receiver_email, method, amount) VALUES (? ,? ,? ,? , ?)",
+        [user_id,name,email, mode, amount]
       );
 
       return true;
