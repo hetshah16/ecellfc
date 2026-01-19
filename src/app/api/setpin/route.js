@@ -27,5 +27,6 @@ export async function POST(req) {
   } catch (error) {
     console.error("Error updating PIN:", error);
     return Response.json({ error: "Server error" }, { status: 500 });
+    
   }
 }
