@@ -247,6 +247,7 @@ export default function SellerHomePage() {
     if (!seller?.stall_id) {
       setError("Seller not loaded yet. Please wait...")
       return
+      
     }
     setForm({ item_name: "", price: 0, stall_id: seller.stall_id })
     setError("")
