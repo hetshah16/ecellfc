@@ -12,6 +12,7 @@ export async function GET(req) {
   const payload = verifyToken(token);
   if (!payload) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    
   }
 
   // Return user data
