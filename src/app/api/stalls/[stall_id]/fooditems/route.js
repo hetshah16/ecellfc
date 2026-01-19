@@ -38,6 +38,7 @@ export async function GET(request, context) {
 
   } catch (err) {
     console.error("GET /api/stalls/[stall_id] error:", err);
+    
     return new Response(
       JSON.stringify({ error: "Server error" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
