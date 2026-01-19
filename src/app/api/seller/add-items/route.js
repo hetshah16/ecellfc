@@ -23,6 +23,7 @@ export async function POST(req) {
   } catch (err) {
     console.error("Add item error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
+    
   }
 }
 
