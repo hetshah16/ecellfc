@@ -20,7 +20,7 @@ export async function GET(request, context) {
 
     // Fetch menu items for this stall
     const [items] = await pool.execute(
-      "SELECT item_id, item_name, price, photo_url FROM food_item WHERE stall_id = ?",
+      "SELECT item_id, item_name, price FROM food_item WHERE stall_id = ?",
       [stall_id]
     );
 
