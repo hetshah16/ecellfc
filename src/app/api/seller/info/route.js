@@ -18,5 +18,6 @@ export async function POST(req) {
   } catch (err) {
     console.error("POST /api/stalls error", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
+    
   }
 }
