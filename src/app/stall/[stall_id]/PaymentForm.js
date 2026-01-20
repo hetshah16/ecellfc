@@ -135,8 +135,16 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
               Cancel
             </button>
           </div>
+            <button
+              type="button"
+              onClick={handleForgot}
+              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+            >
+              Forgot pin?
+            </button>
 
         </form>
+        
       )}
       
 
@@ -160,13 +168,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
           {success}
         </div>
       )}
-      <button
-        type="button"
-        onClick={handleForgot}
-        className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-      >
-        Forgot pin?
-      </button>
+      
     </div>
   )
 }
