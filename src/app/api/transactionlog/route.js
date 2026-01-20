@@ -33,7 +33,13 @@ export async function GET(req) {
     `,
     [user_id]
     );
-    return new Response(JSON.stringify({ transactionlogs : rows }), { status: 200 });
+    return new Response(
+      JSON.stringify(rows),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    )
     }catch(error){
         console.error(error);
         return new Response(JSON.stringify({ error: "Server error" }), { status: 500 });
