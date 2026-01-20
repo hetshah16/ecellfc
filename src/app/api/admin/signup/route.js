@@ -16,8 +16,8 @@ export async function POST(req) {
 
     // Insert user
     const [result] = await pool.execute(
-      "INSERT INTO admin (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashed]
+      "INSERT INTO admin (email, password) VALUES (?, ?)",
+      [email, hashed]
     );
 
     return new Response(JSON.stringify({ admin_id: result.insertId, email }), { status: 201 });
