@@ -1,5 +1,6 @@
 import pool from "@/lib/db";
-
+import { NextResponse } from "next/server";
+import { verifyToken } from "@/lib/jwt";
 export async function GET(req) {
     try{
     // ✅ 1. Read token from HTTP-only cookie
@@ -16,11 +17,39 @@ export async function GET(req) {
       return NextResponse.json({ error: "Invalid session. Please log in again." }, { status: 401 })
     }
 
-    const senderId = payload.user_id
+    const user_id = payload.user_id
 
     // ✅ 3. Get request data
-    const  
-    }catch(error){
+  const [rows] = await pool.execute(
+    `
+    SELECT *
+    FROM (
+        SELECT 
+            receiver_name AS name,
+            receiver_email AS email,
+            -amount AS amount,
+            timestamp
+        FROM transfer_log
+        WHERE sender_id = ?
 
+        UNION ALL
+
+        SELECT 
+            sender_name AS name,
+            sender_email AS email,
+            amount,
+            timestamp
+        FROM transfer_log
+        WHERE receiver_id = ?
+    ) t
+    ORDER BY timestamp DESC
+    `,
+    [user_id, user_id]
+  );
+
+    return new Response(JSON.stringify({ transferlogs : rows }), { status: 200 });
+    }catch(error){
+        console.error(error);
+        return new Response(JSON.stringify({ error: "Server error" }), { status: 500 });
     }
 }
