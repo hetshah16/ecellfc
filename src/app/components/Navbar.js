@@ -118,6 +118,12 @@ export default function Navbar({ coins, user }) {
             >
               Profile
             </Link>
+            <Link
+              href="/history"
+              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+            >
+              History
+            </Link>
             <button
               onClick={handleLogout}
               className="w-full text-left px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
