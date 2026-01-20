@@ -81,7 +81,7 @@ export async function GET(req) {
     const [methodRows] = await pool.execute("SELECT DISTINCT method FROM recharge_log ORDER BY method ASC");
 
     // main query: embed validated LIMIT/OFFSET numbers directly
-    const sql = `SELECT * FROM recharge_log ${whereSql} ORDER BY ${sortField} ${sortDir} LIMIT ${pageSize} OFFSET ${offset}`;
+    const sql = `SELECT * FROM recharge_log ${whereSql} ORDER BY ${sortField} ${sortDir} `;
     const [rows] = await pool.execute(sql, values);
 
     return new Response(JSON.stringify({
