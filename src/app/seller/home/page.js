@@ -1,209 +1,24 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import axios from "axios"
 import SellerNavbar from "../../components/SellerNavbar"
 import { useRouter } from "next/navigation"
 
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "#0f172a",
-    padding: "2rem 1.5rem",
-  },
-  wrap: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-  },
-  header: {
-    marginBottom: "2rem",
-  },
-  title: {
-    fontSize: "1.875rem",
-    fontWeight: "800",
-    color: "#ffffff",
-    margin: "0 0 0.5rem 0",
-    letterSpacing: "-0.5px",
-  },
-  subtitle: {
-    fontSize: "0.95rem",
-    color: "#94a3b8",
-    margin: "0",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-    gap: "1.5rem",
-    marginTop: "2rem",
-  },
-  card: {
-    background: "#1e293b",
-    borderRadius: "12px",
-    padding: "1.5rem",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-    border: "1px solid rgba(255,255,255,0.05)",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "160px",
-  },
-  cardPlus: {
-    fontSize: "2.5rem",
-    color: "#1f6feb",
-    fontWeight: "800",
-  },
-  cardLabel: {
-    color: "#94a3b8",
-    fontWeight: "700",
-    textAlign: "center",
-    fontSize: "0.95rem",
-  },
-  itemCard: {
-    background: "#1e293b",
-    borderRadius: "12px",
-    padding: "1.5rem",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-    border: "1px solid rgba(255,255,255,0.05)",
-  },
-  itemName: {
-    fontSize: "1.1rem",
-    fontWeight: "700",
-    color: "#ffffff",
-    marginBottom: "0.5rem",
-  },
-  itemPrice: {
-    fontSize: "1.25rem",
-    fontWeight: "800",
-    color: "#00d9ff",
-  },
-  itemId: {
-    fontSize: "0.8rem",
-    color: "#64748b",
-    marginTop: "0.5rem",
-  },
-  modalOverlay: {
-    position: "fixed",
-    inset: "0",
-    zIndex: "1200",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "rgba(0,0,0,0.7)",
-    padding: "1.5rem",
-  },
-  modalContent: {
-    width: "100%",
-    maxWidth: "500px",
-    background: "#1e293b",
-    borderRadius: "12px",
-    padding: "2rem",
-    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-    border: "1px solid rgba(255,255,255,0.05)",
-  },
-  modalTitle: {
-    fontSize: "1.5rem",
-    fontWeight: "800",
-    color: "#ffffff",
-    margin: "0 0 0.5rem 0",
-  },
-  modalSubtitle: {
-    fontSize: "0.9rem",
-    color: "#94a3b8",
-    margin: "0 0 1.5rem 0",
-  },
-  label: {
-    fontSize: "0.85rem",
-    fontWeight: "600",
-    color: "#e2e8f0",
-    marginBottom: "0.5rem",
-    display: "block",
-  },
-  input: {
-    width: "100%",
-    padding: "0.875rem 1rem",
-    background: "rgba(15,23,42,0.5)",
-    border: "1px solid rgba(148,163,184,0.2)",
-    borderRadius: "8px",
-    color: "#ffffff",
-    fontSize: "0.95rem",
-    marginBottom: "1.2rem",
-    outline: "none",
-    transition: "all 0.2s",
-    boxSizing: "border-box",
-  },
-  inputFocus: {
-    borderColor: "#1f6feb",
-    boxShadow: "0 0 0 3px rgba(31,111,235,0.1)",
-    background: "rgba(15,23,42,0.8)",
-  },
-  buttonGroup: {
-    display: "flex",
-    gap: "0.75rem",
-    marginTop: "1.5rem",
-  },
-  primaryBtn: {
-    flex: "1",
-    padding: "0.875rem 1rem",
-    background: "linear-gradient(135deg, #1f6feb 0%, #00d9ff 100%)",
-    color: "#ffffff",
-    border: "none",
-    borderRadius: "8px",
-    fontWeight: "700",
-    cursor: "pointer",
-    transition: "all 0.3s",
-    fontSize: "0.95rem",
-  },
-  secondaryBtn: {
-    flex: "1",
-    padding: "0.875rem 1rem",
-    background: "transparent",
-    color: "#94a3b8",
-    border: "1px solid rgba(148,163,184,0.2)",
-    borderRadius: "8px",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "all 0.2s",
-    fontSize: "0.95rem",
-  },
-  error: {
-    background: "rgba(244,63,63,0.1)",
-    border: "1px solid rgba(244,63,63,0.3)",
-    color: "#fca5a5",
-    padding: "0.875rem 1rem",
-    borderRadius: "8px",
-    fontSize: "0.9rem",
-    marginBottom: "1rem",
-  },
-  success: {
-    background: "rgba(16,185,129,0.1)",
-    border: "1px solid rgba(16,185,129,0.3)",
-    color: "#86efac",
-    padding: "0.875rem 1rem",
-    borderRadius: "8px",
-    fontSize: "0.9rem",
-    marginBottom: "1rem",
-  },
-  loading: {
-    color: "#94a3b8",
-    textAlign: "center",
-    padding: "2rem",
-  },
-}
-
 export default function SellerHomePage() {
   const router = useRouter()
+
   const [items, setItems] = useState([])
   const [seller, setSeller] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+
   const [showModal, setShowModal] = useState(false)
   const [form, setForm] = useState({ item_name: "", price: 0, stall_id: "" })
   const [error, setError] = useState("")
   const [successMsg, setSuccessMsg] = useState("")
   const [submitting, setSubmitting] = useState(false)
 
+  /* ================= FETCH SELLER ================= */
   useEffect(() => {
     const fetchSeller = async () => {
       try {
@@ -211,24 +26,28 @@ export default function SellerHomePage() {
         const sellerRes = await axios.post("/api/seller/info", {
           stall_id: r.data.user.seller_id,
         })
+
         setSeller(sellerRes.data)
         setForm((prev) => ({
           ...prev,
           stall_id: sellerRes.data.stall_id,
         }))
       } catch (err) {
-        console.error("Failed to fetch seller:", err)
+        // console.error("Failed to fetch seller:", err)
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           router.push("/seller/login")
         }
       }
     }
+
     fetchSeller()
   }, [router])
 
+  /* ================= FETCH ITEMS ================= */
   const fetchItems = async () => {
+    // setLoading(true)
     if (!seller?.stall_id) return
-    setLoading(true)
+
     try {
       const res = await axios.get(`/api/stalls/${seller.stall_id}/fooditems`)
       setItems(res.data.items)
@@ -243,11 +62,12 @@ export default function SellerHomePage() {
     fetchItems()
   }, [seller])
 
+  /* ================= MODAL ================= */
   function openModal() {
     if (!seller?.stall_id) {
       setError("Seller not loaded yet. Please wait...")
       return
-      
+
     }
     setForm({ item_name: "", price: 0, stall_id: seller.stall_id })
     setError("")
@@ -270,7 +90,7 @@ export default function SellerHomePage() {
   }
 
   async function handleSubmit(e) {
-    e?.preventDefault()
+    e.preventDefault()
     setError("")
     setSuccessMsg("")
 
@@ -288,112 +108,144 @@ export default function SellerHomePage() {
     } catch (err) {
       console.error("Error:", err)
       if (err.response) {
-        setError(err.response.data?.error || `Failed to create item`)
+        setError(err.response.data?.error || "Failed to create item")
       } else {
         setError("Network error")
       }
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
   return (
-    <div  className="min-h-screen bg-background">
-      <SellerNavbar />
-      <div style={styles.wrap}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Manage Food Items</h1>
-          <p style={styles.subtitle}>Add new items or view existing ones in your stall</p>
+    <div className="min-h-screen bg-background">
+      {seller && !loading ?(
+        <>
+      <SellerNavbar seller={seller?.stall_name}/>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Manage Food Items</h1>
+          <p className="text-muted-foreground">
+            Add new items or view existing ones in your stall
+          </p>
         </div>
 
-        <div style={styles.grid}>
-          {/* Add card */}
+        {/* Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {/* Add Item Card */}
           <div
             onClick={openModal}
-            style={{
-              ...styles.card,
-              ...(seller ? { cursor: "pointer" } : { opacity: 0.6, cursor: "not-allowed" }),
-            }}
-            onMouseEnter={(e) => {
-              if (seller) e.currentTarget.style.transform = "translateY(-4px)"
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)"
-            }}
+            className={`border border-border rounded-xl bg-card hover:shadow-lg transition flex flex-col items-center justify-center min-h-[160px]
+              ${seller ? "cursor-pointer" : "opacity-60 cursor-not-allowed"}`}
           >
-            <div style={styles.cardPlus}>＋</div>
-            <div style={styles.cardLabel}>Add new item</div>
+            <div className="text-4xl font-bold text-primary">+</div>
+            <div className="text-muted-foreground font-medium mt-2">
+              Add new item
+            </div>
           </div>
 
           {/* Items */}
-          {loading ? (
-            <div style={styles.loading}>Loading items...</div>
-          ) : items.length === 0 ? (
-            <div style={{ gridColumn: "1 / -1", ...styles.loading }}>No items yet. Click the + button to add one!</div>
+          {items.length === 0 ? (
+            <div className="col-span-full text-center text-muted-foreground py-12">
+              No items yet. Click the + button to add one!
+            </div>
           ) : (
             items.map((item) => (
-              <div key={item.item_id} style={styles.itemCard}>
-                <div style={styles.itemName}>{item.item_name}</div>
-                <div style={styles.itemPrice}>₹{item.price}</div>
+              <div
+                key={item.item_id}
+                className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition"
+              >
+                <div className="font-semibold text-foreground mb-1">
+                  {item.item_name}
+                </div>
+                <div className="text-primary font-bold text-lg">
+                  ₹{item.price}
+                </div>
               </div>
             ))
           )}
         </div>
+      </main>
 
-        {/* Modal */}
-        {showModal && (
-          <div style={styles.modalOverlay}>
-            <div style={styles.modalContent}>
-              <h2 style={styles.modalTitle}>Add Food Item</h2>
-              <p style={styles.modalSubtitle}>Fill in the details below</p>
+      {/* ================= MODAL ================= */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="w-full max-w-md bg-card border border-border rounded-xl p-6">
+            <h2 className="text-2xl font-bold mb-1">Add Food Item</h2>
+            <p className="text-muted-foreground mb-4">
+              Fill in the details below
+            </p>
 
-              <form onSubmit={handleSubmit}>
-                <label style={styles.label}>Item Name</label>
-                <input
-                  style={styles.input}
-                  name="item_name"
-                  value={form.item_name}
-                  onChange={handleChange}
-                  placeholder="e.g., Veg Sandwich"
-                />
+            <form onSubmit={handleSubmit}>
+              <label className="block text-sm font-medium mb-1">
+                Item Name
+              </label>
+              <input
+                className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                name="item_name"
+                value={form.item_name}
+                onChange={handleChange}
+                placeholder="e.g., Veg Sandwich"
+              />
 
-                <label style={styles.label}>Price (₹)</label>
-                <input
-                  style={styles.input}
-                  name="price"
-                  type="number"
-                  min="0"
-                  value={form.price}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
+              <label className="block text-sm font-medium mb-1">
+                Price (₹)
+              </label>
+              <input
+                type="number"
+                min="0"
+                className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+              />
 
-                {error && <div style={styles.error}>{error}</div>}
-                {successMsg && <div style={styles.success}>{successMsg}</div>}
-
-                <div style={styles.buttonGroup}>
-                  <button
-                    type="submit"
-                    style={styles.primaryBtn}
-                    disabled={submitting}
-                    onMouseEnter={(e) => {
-                      if (!submitting) e.currentTarget.style.transform = "translateY(-2px)"
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)"
-                    }}
-                  >
-                    {submitting ? "Adding..." : "Add Item"}
-                  </button>
-                  <button type="button" style={styles.secondaryBtn} onClick={closeModal} disabled={submitting}>
-                    Cancel
-                  </button>
+              {error && (
+                <div className="mb-3 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+                  {error}
                 </div>
-              </form>
-            </div>
+              )}
+
+              {successMsg && (
+                <div className="mb-3 p-3 rounded-lg bg-emerald-500/10 text-emerald-500 text-sm">
+                  {successMsg}
+                </div>
+              )}
+
+              <div className="flex gap-3 mt-4">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-semibold hover:opacity-90 transition"
+                >
+                  {submitting ? "Adding..." : "Add Item"}
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  disabled={submitting}
+                  className="flex-1 border border-border rounded-lg py-2 text-muted-foreground hover:bg-muted transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
-        )}
+        </div>
+      )}
+        </>
+      ):(
+        <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading user data...</p>
+        </div>
       </div>
+      )}
     </div>
   )
 }

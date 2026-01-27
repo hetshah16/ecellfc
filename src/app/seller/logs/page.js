@@ -1,93 +1,13 @@
 "use client"
+
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import SellerNavbar from "@/app/components/SellerNavbar"
 
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "#0f172a",
-    padding: "2rem 1.5rem",
-  },
-  wrap: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-  },
-  header: {
-    marginBottom: "2rem",
-  },
-  title: {
-    fontSize: "1.875rem",
-    fontWeight: "800",
-    color: "#ffffff",
-    margin: "0 0 0.5rem 0",
-    letterSpacing: "-0.5px",
-  },
-  subtitle: {
-    fontSize: "0.95rem",
-    color: "#94a3b8",
-    margin: "0",
-  },
-  tableContainer: {
-    background: "#1e293b",
-    borderRadius: "12px",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.3)",
-    border: "1px solid rgba(255,255,255,0.05)",
-    overflow: "auto",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  thead: {
-    background: "rgba(0,0,0,0.2)",
-    borderBottom: "1px solid rgba(255,255,255,0.1)",
-  },
-  th: {
-    padding: "1.25rem",
-    textAlign: "left",
-    fontWeight: "700",
-    color: "#94a3b8",
-    fontSize: "0.85rem",
-    textTransform: "uppercase",
-    letterSpacing: "0.5px",
-  },
-  tbody: {},
-  tr: {
-    borderBottom: "1px solid rgba(255,255,255,0.05)",
-    transition: "background 0.2s",
-  },
-  trHover: {
-    background: "rgba(31,111,235,0.05)",
-  },
-  td: {
-    padding: "1.25rem",
-    color: "#e2e8f0",
-    fontSize: "0.95rem",
-  },
-  loading: {
-    padding: "3rem",
-    textAlign: "center",
-    color: "#94a3b8",
-  },
-  error: {
-    background: "rgba(244,63,63,0.1)",
-    border: "1px solid rgba(244,63,63,0.3)",
-    color: "#fca5a5",
-    padding: "1rem 1.5rem",
-    borderRadius: "8px",
-    marginBottom: "1.5rem",
-  },
-  empty: {
-    padding: "3rem",
-    textAlign: "center",
-    color: "#64748b",
-  },
-}
-
 export default function SellerLogsPage() {
   const router = useRouter()
+
   const [seller, setSeller] = useState(null)
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
@@ -102,8 +22,7 @@ export default function SellerLogsPage() {
         })
         setSeller(sellerRes.data)
       } catch (err) {
-        console.error("Failed to fetch seller:", err)
-        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        if (err.response && [401, 403].includes(err.response.status)) {
           router.push("/seller/login")
         } else {
           setError("Failed to load seller info")
@@ -115,8 +34,9 @@ export default function SellerLogsPage() {
 
   useEffect(() => {
     if (!seller?.stall_id) return
+
     const fetchTransactions = async () => {
-      setLoading(true)
+      // setLoading(true)
       setError("")
       try {
         const res = await axios.post("/api/seller/logs", {
@@ -124,76 +44,100 @@ export default function SellerLogsPage() {
         })
         setTransactions(res.data.transactions || [])
       } catch (err) {
-        console.error("Failed to fetch transactions:", err)
         setError("Failed to load transactions")
       } finally {
         setLoading(false)
       }
     }
+
     fetchTransactions()
   }, [seller])
 
   const formatTimestamp = (ts) => {
     if (!ts) return ""
     try {
-      return new Date(ts).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+      return new Date(ts).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+      })
     } catch {
       return ts
     }
   }
 
   return (
-    <div style={styles.container}>
-      <SellerNavbar />
-      <div style={styles.wrap}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Transaction Logs</h1>
-          <p style={styles.subtitle}>View all transactions and payments received</p>
+    <div className="min-h-screen bg-background">
+      {seller && !loading ?(
+        <>
+          <SellerNavbar seller={seller?.stall_name} />
+
+      <main className="max-w-3xl mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-1">Transaction Logs</h2>
+          <p className="text-muted-foreground">
+            View all transactions and payments received
+          </p>
         </div>
 
-        {error && <div style={styles.error}>{error}</div>}
+        {/* Error */}
+        {error && (
+          <div className="mb-4 p-4 rounded-xl border border-destructive/30 bg-destructive/10 text-destructive text-sm">
+            {error}
+          </div>
+        )}
 
-        <div style={styles.tableContainer}>
-          <table style={styles.table}>
-            <thead style={styles.thead}>
-              <tr>
-                <th style={styles.th}>Transaction ID</th>
-                <th style={styles.th}>Sender ID</th>
-                <th style={styles.th}>Sender Name</th>
-                <th style={styles.th}>Sender Email</th>
-                <th style={styles.th}>Amount</th>
-                <th style={styles.th}>Date & Time</th>
-              </tr>
-            </thead>
-            <tbody style={styles.tbody}>
-              {loading ? (
-                <tr>
-                  <td colSpan="4" style={styles.loading}>
-                    Loading transactions...
-                  </td>
-                </tr>
-              ) : transactions.length === 0 ? (
-                <tr>
-                  <td colSpan="4" style={styles.empty}>
-                    No transactions yet
-                  </td>
-                </tr>
-              ) : (
-                transactions.map((tx) => (
-                  <tr key={tx.transaction_id} style={styles.tr}>
-                    <td style={styles.td}>{tx.transaction_id}</td>
-                    <td style={styles.td}>{tx.sender_id}</td>
-                    <td style={styles.td}>{tx.sender_name}</td>
-                    <td style={styles.td}>{tx.sender_email}</td>
-                    <td style={{ ...styles.td, color: "#00d9ff", fontWeight: "700" }}>₹{tx.amount}</td>
-                    <td style={styles.td}>{formatTimestamp(tx.timestamp)}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+        {/* Content */}
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <div className="w-10 h-10 border-4 border-border border-t-primary rounded-full animate-spin" />
+          </div>
+        ) : transactions.length === 0 ? (
+          <p className="text-muted-foreground text-center py-12">
+            No transactions yet
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {transactions.map((tx) => (
+              <div
+                key={tx.transaction_id}
+                className="flex items-center justify-between p-4 bg-card border border-border rounded-xl"
+              >
+                {/* Left */}
+                <div className="min-w-0">
+                  <p className="font-medium truncate">
+                    {tx.sender_name}
+                  </p>
+
+                  <p className="text-xs text-muted-foreground truncate">
+                    {tx.sender_email}
+                  </p>
+
+                  <p className="text-xs text-muted-foreground">
+                    #{tx.transaction_id} • {formatTimestamp(tx.timestamp)}
+                  </p>
+                </div>
+
+                {/* Amount */}
+                <div className="font-semibold text-green-500 text-sm sm:text-base whitespace-nowrap">
+                  +₹{tx.amount}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+        </>
+      ):(
+        <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading user data...</p>
         </div>
       </div>
+      )}
+      
     </div>
   )
 }
