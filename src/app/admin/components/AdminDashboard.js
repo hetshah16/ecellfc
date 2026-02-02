@@ -14,6 +14,7 @@ export default function AdminDashboard({ admin }) {
 
   useEffect(() => {
     let mounted = true
+    console.log("Fetching users for admin dashboard")
     fetch("/api/admin/users")
       .then((r) => r.json())
       .then((data) => {

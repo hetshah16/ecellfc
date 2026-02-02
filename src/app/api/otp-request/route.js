@@ -40,15 +40,15 @@ export async function POST(req) {
         SELECT COUNT(*) AS count
         FROM otp_requests
         WHERE ip_address = ?
-        AND created_at > NOW() - INTERVAL 1 HOUR
+        AND created_at > NOW() - INTERVAL 10 MINUTE
         `,
         [ip]
     );
     
     // console.log(ipRows[0],"iprows");
-    if (ipRows[0].count >= 10) {
+    if (ipRows[0].count >= 100) {
       return NextResponse.json(
-        { error: "Too many requests from this IP. Try Later." },
+        { error: "Too many requests from this IP. Try Later or Try using different network." },
         { status: 429 }
       );
     }

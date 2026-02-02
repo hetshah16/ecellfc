@@ -48,6 +48,12 @@ export default function AdminNavbar() {
           >
             Logs
           </Link>
+          <Link
+            href="/admin/leaderboard"
+            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
+          >
+            Leaderboard
+          </Link>
         </div>
 
         {/* Logout Button */}
