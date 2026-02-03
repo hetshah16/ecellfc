@@ -54,6 +54,17 @@ export default function SellerNavbar({seller}) {
             </Link>
 
             <Link
+              href="/seller/profile"
+              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+                isActive("/seller/profile")
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Profile
+            </Link>
+
+            <Link
               href="/seller/logs"
               className={`px-4 py-2 rounded-lg transition-colors font-medium ${
                 isActive("/seller/logs")

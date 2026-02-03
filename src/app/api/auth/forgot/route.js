@@ -3,15 +3,9 @@ import pool from "@/lib/db";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: Number(process.env.SMTP_PORT || 587),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER || 'het.shah23@spit.ac.in',
-    pass: process.env.SMTP_PASS ||'rxst wngp vxuq tbvl',
-  },
-});
+const smtpUsers = JSON.parse(process.env.SMTP_USER_ARR || "[]");
+const smtpPasswords = JSON.parse(process.env.SMTP_PASS_ARR || "[]");
+const size = smtpUsers.length;
 
 export async function POST(req) {
   try {
@@ -32,10 +26,32 @@ export async function POST(req) {
     const expires = new Date(Date.now() + 1000 * 60 * 60-offset).toISOString().slice(0, 19).replace('T', ' '); // 1 hour
 
     // store token
-    await pool.execute(
+    const [result]=await pool.execute(
       "INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)",
       [email, token, expires]
     );
+
+    if (size === 0 || smtpPasswords.length !== size) {
+      throw new Error("SMTP env config invalid");
+    }
+
+    // modulo logic
+    const index = result.insertId % size;
+
+    const SMTP_USER = smtpUsers[index];
+    const SMTP_PASS = smtpPasswords[index];
+
+    // create transporter dynamically
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: false,
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+    });
+
 
     // send email with reset link
     const resetUrl = `${process.env.APP_URL}/auth/reset?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
