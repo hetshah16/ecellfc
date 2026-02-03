@@ -57,6 +57,12 @@ export async function POST(req) {
         { status: 401 }
       );
     }
+    if(newPassword.length<6){
+      return NextResponse.json(
+        { error: "Password must be at least 6 characters long" },
+        { status: 400 }
+      );
+    }
 
     // 🔐 Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
