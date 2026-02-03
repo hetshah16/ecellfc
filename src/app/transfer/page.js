@@ -59,7 +59,7 @@ export default function TransferPage() {
       }
     }
 
-    if (user) fetchUsers()
+    if (!user) fetchUsers()
 
     return () => {
       mounted = false
@@ -73,7 +73,8 @@ export default function TransferPage() {
     return users.filter(
       (u) =>
         (u.name || "").toLowerCase().includes(s) ||
-        (u.email || "").toLowerCase().includes(s)
+        (u.email || "").toLowerCase().includes(s) ||
+        String(u.user_id).includes(s),
     )
   }, [q, users])
 
