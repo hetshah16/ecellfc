@@ -81,13 +81,14 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
           <div className="flex gap-4">
             <button
               type="submit"
-              className="w-1/2 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+              className="w-1/2 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
             >
               Continue
             </button>
             <button
               onClick={() => setPay(false)}
-              className="w-1/2 py-3 bg-muted text-foreground hover:bg-primary/90 font-semibold rounded-lg transition-colors"
+              disabled={phase === "sending"}
+              className="w-1/2 py-3 bg-muted text-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold rounded-lg transition-colors"
             >
               Cancel
             </button>
@@ -123,14 +124,16 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
           <div className="flex gap-2">
             <button
               type="submit"
-              className="flex-1 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+              disabled={phase === "sending"}
+              className="flex-1 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
             >
-              Confirm
+              {phase === "sending" ? "Processing..." : "Confirm"}
             </button>
             <button
               type="button"
+              disabled={phase === "sending"}
               onClick={() => setPhase("ready")}
-              className="flex-1 py-3 bg-muted hover:bg-muted/80 text-foreground font-semibold rounded-lg transition-colors"
+              className="flex-1 py-3 bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-semibold rounded-lg transition-colors"
             >
               Cancel
             </button>

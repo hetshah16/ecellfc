@@ -73,16 +73,24 @@ import ResetPasswordClient from "./ResetPasswordClient";
 
 export default function ResetPasswordPage() {
   return (
-    <main style={{ padding: 24 }}>
-      <div style={{ maxWidth: 680, margin: "2rem auto" }}>
-        <h1 style={{ marginBottom: 8 }}>Reset Password</h1>
-        <p style={{ marginTop: 0, color: "#6b7280" }}>
-          Enter a new password for your account. The reset token will be read from the URL.
-        </p>
+    <main className="min-h-screen bg-background flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Reset Password</h1>
+          <p className="text-muted-foreground">
+            Enter a new password for your account. The reset token will be read from the URL.
+          </p>
+        </div>
 
-        <Suspense fallback={<div style={{ padding: 18 }}>Loading reset form…</div>}>
-          <ResetPasswordClient />
-        </Suspense>
+        <div className="bg-card border border-border rounded-xl p-8">
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-8">
+              <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+            </div>
+          }>
+            <ResetPasswordClient />
+          </Suspense>
+        </div>
       </div>
     </main>
   );

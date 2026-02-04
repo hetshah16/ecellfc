@@ -107,11 +107,11 @@ export default function ProfilePage() {
       return (
         <>
           
-          <div style={{ color: "#000000ff", fontWeight: 700, marginTop: 4 }}>–</div>
-          <div style={{ marginTop: 8 }}>
+          <div className="text-foreground font-bold mt-1">–</div>
+          <div className="mt-3">
             <button
               onClick={() => openModal("set")}
-              style={buttonStyle}
+              className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
             >
               Set PIN
             </button>
@@ -122,25 +122,25 @@ export default function ProfilePage() {
       // PIN exists
       return (
         <>
-          <div style={{ color: "#000000ff", fontWeight: 700, marginTop: 4 }}>
+          <div className="text-foreground font-bold mt-1">
             {pinVisible ? (
-              <span style={{ letterSpacing: 2 }}>{String(pin)}</span>
+              <span className="tracking-wider">{String(pin)}</span>
             ) : (
-              <span>****</span>
+              <span>••••</span>
             )}
           </div>
-          <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
+          <div className="mt-3 flex gap-2 flex-wrap">
             {!pinVisible && (
               <button
                 onClick={() => openModal("reveal")}
-                style={buttonStyle}
+                className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
               >
                 Show PIN
               </button>
             )}
             <button
               onClick={() => openModal("update")}
-              style={buttonStyle}
+              className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
             >
               Update PIN
             </button>
@@ -161,207 +161,163 @@ export default function ProfilePage() {
       alert("Unable to process request.")
     }
   }
-  const buttonStyle = {
-    padding: "8px 12px",
-    borderRadius: 8,
-    border: "1px solid #e6e6e6",
-    background: "#fff",
-    cursor: "pointer",
-    color: "#000000ff"
-  };
 
   return (
     <>
     {user ?(<>
       <Navbar coins={user?.coins} user={user?.name}/>
-      <div style={{ maxWidth: 820, margin: "2rem auto", padding: 12 }}>
+      <main className="min-h-screen bg-background">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <h1 style={{ marginBottom: 8 }}>My Profile</h1>
-        <p style={{ color: "#6b7280" }}>
-          Manage your account securely. You can set, reveal, or update your 4-digit PIN.
-        </p>
-
-        {loadingUser ? (
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <div className="inline-block mb-4">
-                <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
-              </div>
-              <p className="text-muted-foreground">Loading user data...</p>
-            </div>
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2">My Profile</h1>
+            <p className="text-muted-foreground text-sm">
+              Manage your account securely. You can set, reveal, or update your 4-digit PIN.
+            </p>
           </div>
-        ) : fetchError ? (
-          <p style={{ color: "#b91c1c" }}>{fetchError}</p>
-        ) : (
-          user && (
-            <div
-              style={{
-                marginTop: 18,
-                background: "#fff",
-                padding: 16,
-                borderRadius: 10,
-                boxShadow: "0 8px 24px rgba(2,6,23,0.04)",
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 12,
-                }}
-              >
-                <div>
-                  <div style={{ color: "#000000ff", fontSize: 13 }}>User ID</div>
-                  <div style={{ color: "#000000ff",fontWeight: 700, marginTop: 4 }}>
-                    {user.user_id}
-                  </div>
-                </div>
 
-                <div>
-                  <div style={{ color: "#000000ff", fontSize: 13 }}>Name</div>
-                  <div style={{ color: "#000000ff",fontWeight: 700, marginTop: 4 }}>
-                    {user.name}
-                  </div>
+          {loadingUser ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <div className="inline-block mb-4">
+                  <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
                 </div>
-
-                <div>
-                  <div style={{ color: "#000000ff", fontSize: 13 }}>Email</div>
-                  <div style={{ color: "#000000ff", fontWeight: 700, marginTop: 4 }}>
-                    {user.email}
-                  </div>
-                </div>
-
-                <div>
-                  <div style={{ color: "#000000ff", fontSize: 13 }}>PIN</div>
-                  {renderPinSection()}
-                </div>
+                <p className="text-muted-foreground">Loading user data...</p>
               </div>
             </div>
-          )
-        )}
+          ) : fetchError ? (
+            <div className="p-4 rounded-lg bg-destructive/10 border border-destructive text-destructive">
+              {fetchError}
+            </div>
+          ) : (
+            user && (
+              <div className="bg-card border border-border rounded-xl p-6 sm:p-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                  {/* User ID */}
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">User ID</label>
+                    <div className="text-lg font-semibold text-foreground mt-2 break-all">
+                      {user.user_id}
+                    </div>
+                  </div>
 
-        {/* Password / PIN Modal */}
-        {showPasswordModal && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 1400,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "rgba(6,6,10,0.5)",
-            }}
-          >
-            <div
-              style={{
-                width: 420,
-                background: "#fff",
-                borderRadius: 10,
-                padding: 20,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-              }}
-            >
-              <h3 style={{ color: "#000000ff", marginTop: 0, marginBottom: 12 }}>
-                {mode === "reveal"
-                  ? "Verify your password"
-                  : mode === "set"
-                  ? "Set your PIN"
-                  : "Update your PIN"}
-              </h3>
+                  {/* Name */}
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Name</label>
+                    <div className="text-lg font-semibold text-foreground mt-2">
+                      {user.name}
+                    </div>
+                  </div>
 
-              <form onSubmit={handleModalSubmit} style={{ display: "grid", gap: 12 }}>
-                <input
-                  type="password"
-                  placeholder="Enter account password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{
-                    padding: 10,
-                    borderRadius: 8,
-                    border: "1px solid #d1d5db",
-                    outline: "none",
-                    fontSize: 14,
-                    color: "#111",
-                  }}
-                />
-                {(mode === "set" || mode === "update") && (
-                  <input
-                    type="password"
-                    inputMode="numeric"
-                    placeholder="Enter new 4-digit PIN"
-                    pattern="^[1-9][0-9]{3}$"
-                    value={newPin}
-                    onChange={(e) => setNewPin(e.target.value)}
-                    maxLength={4}
-                    minLength={4}
-                    onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
-                    onInput={(e) => e.target.setCustomValidity("")}
-                    style={{
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "1px solid #d1d5db",
-                      outline: "none",
-                      fontSize: 14,
-                      color: "#000000ff"
-                    }}
-                  />
+                  {/* Email */}
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">Email</label>
+                    <div className="text-lg font-semibold text-foreground mt-2 break-all">
+                      {user.email}
+                    </div>
+                  </div>
+
+                  {/* PIN */}
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">PIN</label>
+                    {renderPinSection()}
+                  </div>
+                </div>
+              </div>
+            )
+          )}
+
+          {/* Password / PIN Modal */}
+          {showPasswordModal && (
+            <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+              <div className="bg-card border border-border rounded-xl p-6 sm:p-8 w-full max-w-md shadow-lg">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">
+                  {mode === "reveal"
+                    ? "Verify your password"
+                    : mode === "set"
+                    ? "Set your PIN"
+                    : "Update your PIN"}
+                </h3>
+
+                <form onSubmit={handleModalSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="Enter account password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    />
+                  </div>
                   
-                )}
-                <button
-              type="button"
-              onClick={handleForgot}
-              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-            >
-              Forgot password?
-            </button>
+                  {(mode === "set" || mode === "update") && (
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        New 4-digit PIN
+                      </label>
+                      <input
+                        type="password"
+                        inputMode="numeric"
+                        placeholder="Enter new PIN"
+                        pattern="^[1-9][0-9]{3}$"
+                        value={newPin}
+                        onChange={(e) => setNewPin(e.target.value)}
+                        maxLength={4}
+                        minLength={4}
+                        onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
+                        onInput={(e) => e.target.setCustomValidity("")}
+                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      />
+                    </div>
+                  )}
 
-                {modalError && (
-                  <div style={{ color: "#b91c1c" }}>{modalError}</div>
-                )}
+                  {modalError && (
+                    <div className="p-3 rounded-lg bg-destructive/10 border border-destructive text-destructive text-sm">
+                      {modalError}
+                    </div>
+                  )}
 
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 8,
-                    justifyContent: "flex-end",
-                  }}
-                >
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswordModal(false)}
+                      className="flex-1 px-4 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors font-medium"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={modalLoading}
+                      className="flex-1 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-colors disabled:opacity-50"
+                    >
+                      {modalLoading
+                        ? "Processing…"
+                        : mode === "reveal"
+                        ? "Verify & Show"
+                        : mode === "set"
+                        ? "Set PIN"
+                        : "Update PIN"}
+                    </button>
+                  </div>
+
                   <button
                     type="button"
-                    onClick={() => setShowPasswordModal(false)}
-                    style={buttonStyle}
+                    onClick={handleForgot}
+                    className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
                   >
-                    Cancel
+                    Forgot password?
                   </button>
-                  <button
-                    type="submit"
-                    disabled={modalLoading}
-                    style={{
-                      padding: "8px 12px",
-                      borderRadius: 8,
-                      border: "none",
-                      background: "#6366f1",
-                      color: "#fff",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {modalLoading
-                      ? "Processing…"
-                      : mode === "reveal"
-                      ? "Verify & Show"
-                      : mode === "set"
-                      ? "Set PIN"
-                      : "Update PIN"}
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </main>
       </>
-    ):(<div className="flex items-center justify-center min-h-[400px]">
+    ):(<div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="inline-block mb-4">
             <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>

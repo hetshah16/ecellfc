@@ -13,6 +13,7 @@ export default function ResetPasswordClient() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -20,10 +21,12 @@ export default function ResetPasswordClient() {
     setMessage("");
 
     if (newPassword !== confirmPassword) {
+      setMessageType("error");
       setMessage("Passwords do not match");
       return;
     }
     if (!token || !email) {
+      setMessageType("error");
       setMessage("Missing email or token in the URL");
       return;
     }
@@ -38,13 +41,16 @@ export default function ResetPasswordClient() {
 
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
+        setMessageType("success");
         setMessage("Password reset successful! Redirecting to login...");
         setTimeout(() => router.push("/login"), 1400);
       } else {
+        setMessageType("error");
         setMessage(data?.error || `Error resetting password (status ${res.status})`);
       }
     } catch (err) {
       console.error("Reset submit error:", err);
+      setMessageType("error");
       setMessage("Server error");
     } finally {
       setLoading(false);
@@ -52,45 +58,51 @@ export default function ResetPasswordClient() {
   };
 
   return (
-    <div style={{ marginTop: 14 }}>
+    <div className="space-y-4">
       {message && (
-        <div style={{ marginBottom: 12, color: message.startsWith("Password reset successful") ? "#065f46" : "#b91c1c" }}>
+        <div className={`p-4 rounded-lg border ${
+          messageType === "success" 
+            ? "bg-green-500/10 border-green-500/30 text-green-400" 
+            : "bg-destructive/10 border-destructive/30 text-destructive"
+        }`}>
           {message}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: 10 }}>
-        <input
-          type="password"
-          placeholder="New password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-          style={{ padding: 10, borderRadius: 8, border: "1px solid #e6e6e6" }}
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            New Password
+          </label>
+          <input
+            type="password"
+            placeholder="Enter new password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          style={{ padding: 10, borderRadius: 8, border: "1px solid #e6e6e6" }}
-        />
+        <div>
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+          />
+        </div>
 
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="flex gap-3 pt-4">
           <button
             type="submit"
             disabled={loading}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 8,
-              border: "none",
-              background: "#6366f1",
-              color: "#fff",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
+            className="flex-1 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-colors disabled:opacity-50"
           >
             {loading ? "Resetting…" : "Reset Password"}
           </button>
@@ -98,14 +110,7 @@ export default function ResetPasswordClient() {
           <button
             type="button"
             onClick={() => router.push("/login")}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 8,
-              border: "1px solid #e6e6e6",
-              background: "#fff",
-              color: "#374151",
-              cursor: "pointer",
-            }}
+            className="flex-1 px-4 py-2 border border-border bg-card hover:bg-muted text-foreground font-medium rounded-lg transition-colors"
           >
             Cancel
           </button>

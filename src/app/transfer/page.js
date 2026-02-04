@@ -13,7 +13,7 @@ export default function TransferPage() {
   const [user, setUser] = useState(null)
   const [q, setQ] = useState("")
   const [selected, setSelected] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // Fetch current user
   useEffect(() => {
@@ -31,6 +31,8 @@ export default function TransferPage() {
         } else {
           console.error("Failed to fetch user:", err)
         }
+      } finally {
+        setLoading(false)
       }
     }
     fetchUser()
@@ -56,10 +58,12 @@ export default function TransferPage() {
         setUsers(filteredUsers)
       } catch (error) {
         console.error("Failed to fetch users:", error)
+      } finally {
+        if (user) setLoading(false)
       }
     }
 
-    if (!user) fetchUsers()
+    if (user) fetchUsers()
 
     return () => {
       mounted = false
@@ -80,6 +84,19 @@ export default function TransferPage() {
 
   const handleSelect = (u) => {
     setSelected(u)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading transfer page...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!user) return null // or a loading spinner

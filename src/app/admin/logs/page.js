@@ -134,7 +134,7 @@ export default function AdminLogsPage() {
   const [rows, setRows] = useState([])
   const [methods, setMethods] = useState([])
   const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState(null)
   useEffect(() => {
     const fetchAdmin = async () => {
@@ -157,8 +157,8 @@ export default function AdminLogsPage() {
   }, [router])
 
   useEffect(() => {
-    fetchLogs()
-  }, [page, sort])
+    if (admin) fetchLogs()
+  }, [page, sort, admin])
 
   async function fetchLogs() {
     setLoading(true)

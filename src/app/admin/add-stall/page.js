@@ -201,12 +201,13 @@ export default function AdminAddStallPage() {
   const router = useRouter()
   const [admin, setAdmin] = useState(null)
   const [stalls, setStalls] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [form, setForm] = useState({ stall_name: "", email: "", password: "", coins: 0 })
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState("")
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false)
     useEffect(() => {
     const fetchAdmin = async () => {
       try {
@@ -226,7 +227,11 @@ export default function AdminAddStallPage() {
     fetchAdmin()
   }, [router])
   useEffect(() => {
-    fetchStalls()
+    const init = async () => {
+      await fetchStalls()
+      setInitialLoadComplete(true)
+    }
+    init()
   }, [])
 
   async function fetchStalls() {
@@ -301,6 +306,19 @@ export default function AdminAddStallPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (!admin || !initialLoadComplete) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block mb-4">
+            <div className="w-12 h-12 border-4 border-border border-t-primary rounded-full animate-spin"></div>
+          </div>
+          <p className="text-muted-foreground">Loading admin panel...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -159,64 +159,69 @@ export default function SellerHomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="space-y-6">
               {/* Add Item Card */}
               <div
                 onClick={openModal}
-                className={`border border-border rounded-xl bg-card hover:shadow-lg transition flex flex-col items-center justify-center min-h-[130px] max-h-[130px]
-                ${seller ? "cursor-pointer" : "opacity-60 cursor-not-allowed"}`}
+                className={`border border-border rounded-xl bg-card hover:shadow-lg transition p-6 flex items-center justify-center min-h-[140px]
+                ${seller ? "cursor-pointer hover:border-primary/50" : "opacity-60 cursor-not-allowed"}`}
               >
-                <div className="text-4xl font-bold text-primary">+</div>
-                <div className="text-muted-foreground font-medium mt-2">
-                  Add new item
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">+</div>
+                  <div className="text-muted-foreground font-medium">
+                    Add new item
+                  </div>
                 </div>
               </div>
 
-              {/* Items */}
+              {/* Items Grid */}
               {items.length === 0 ? (
-                <div className="col-span-full text-center text-muted-foreground py-12">
-                  No items yet. Click the + button to add one!
+                <div className="text-center text-muted-foreground py-12 bg-card border border-border rounded-xl">
+                  No items yet. Click the + button above to add one!
                 </div>
               ) : (
-                items.map((item) => (
-                  <div
-                    key={item.item_id}
-                    className="bg-card border border-border rounded-xl p-4 hover:shadow-md transition min-h-[130px] max-h-[130px] flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="font-semibold text-foreground mb-1">
-                        {item.item_name}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                  {items.map((item) => (
+                    <div
+                      key={item.item_id}
+                      className="bg-card border border-border rounded-xl p-5 hover:shadow-md transition flex flex-col justify-between h-full"
+                    >
+                      <div>
+                        <div className="font-semibold text-foreground text-base line-clamp-2 mb-2 leading-snug">
+                          {item.item_name}
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-primary font-bold text-xl">₹{item.price}</span>
+                          <span className="text-muted-foreground text-sm">E-coins</span>
+                        </div>
                       </div>
-                      <div className="text-primary font-bold text-lg">
-                        ₹{item.price}
-                      </div>
-                    </div>
 
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => {
-                          setEditItem(item)
-                          setForm({
-                            item_name: item.item_name,
-                            price: item.price,
-                            stall_id: seller.stall_id,
-                          })
-                          setShowModal(true)
-                        }}
-                        className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-semibold hover:opacity-90 transition"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        onClick={() => setDeleteItem(item)}
-                        className="flex-1 bg-destructive text-destructive-foreground rounded-lg py-2 font-semibold hover:bg-destructive/90 transition"
+                      <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                        <button
+                          onClick={() => {
+                            setEditItem(item)
+                            setForm({
+                              item_name: item.item_name,
+                              price: item.price,
+                              stall_id: seller.stall_id,
+                            })
+                            setShowModal(true)
+                          }}
+                          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-2 font-semibold transition text-sm"
                         >
-                        Delete
-                      </button>
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => setDeleteItem(item)}
+                          className="flex-1 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg py-2 font-semibold transition text-sm"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           </main>
