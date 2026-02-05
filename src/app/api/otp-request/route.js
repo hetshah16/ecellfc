@@ -3,13 +3,22 @@ import pool from "@/lib/db";
 
 export async function POST(req) {
   try {
-    const { phone } = await req.json();
+    const { phone,email } = await req.json();
 
     if (!phone || !/^[6-9]\d{9}$/.test(phone)) {
       return NextResponse.json(
         { error: "Invalid phone number" },
         { status: 400 }
       );
+    }
+    
+    const [existing] = await pool.execute("SELECT * FROM user WHERE email = ?", [email]);
+    if (existing.length) {
+      return new Response(JSON.stringify({ error: "Email already in use" }), { status: 400 });
+    }
+    const [existingPhone] = await pool.execute("SELECT * FROM user WHERE phone = ?", [phone]);
+    if (existingPhone.length) {
+      return new Response(JSON.stringify({ error: "Phone number already in use" }), { status: 400 });
     }
 
     const ip =

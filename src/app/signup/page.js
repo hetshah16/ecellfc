@@ -28,6 +28,8 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  
+
   const [cooldown, setCooldown] = useState(0);
   const COOLDOWN_TIME = 60;
 
@@ -91,7 +93,7 @@ export default function SignupPage() {
     const phoneError = validateIndianPhone();
     if (phoneError) return setError(phoneError);
 
-    await axios.post("/api/otp-request", { phone });
+    await axios.post("/api/otp-request", { phone,email });
 
     const fullPhoneNumber = `+91${phone}`;
 
@@ -122,14 +124,20 @@ export default function SignupPage() {
 
   /* -------------------- VERIFY OTP -------------------- */
   const verifyOTP = async () => {
-    if (!window.confirmationResult) return setError("Request OTP first");
 
     try {
       await window.confirmationResult.confirm(otp);
-      setOtpVerified(true);
-      setError("");
-    } catch {
-      setError("Invalid OTP");
+      
+    } catch(err) {
+        if (err.code === "auth/invalid-verification-code") {
+          setError("Invalid OTP");
+        } else if (err.code === "auth/code-expired") {
+          setError("OTP expired. Please request a new one.");
+        } else {
+          setError("OTP verification failed");
+        }
+
+        throw err; // 👈 VERY IMPORTANT
     }
   };
 
@@ -138,11 +146,14 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    const v = validate();
+    const v = validateBeforeOTP();
     if (v) return setError(v);
+    if (!window.confirmationResult) return setError("Request OTP first");
 
     try {
       setLoading(true);
+      await verifyOTP();
+      
       await axios.post("/api/signup", {
         name: displayName,
         email,
@@ -151,10 +162,14 @@ export default function SignupPage() {
       });
       setSettingPin(true);
     } catch(err) {
-      const message =
-    err?.response?.data?.error || "Something went wrong. Please try again.";
+        if (err.code?.startsWith("auth/")) return;
 
-  setError(message);
+      const message =
+        err?.response?.data?.error ||
+        err?.message ||
+        "Something went wrong. Please Refresh and try again.";
+
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -219,6 +234,7 @@ export default function SignupPage() {
               <div>
                 <label className="block text-sm font-medium mb-2">Email</label>
                 <input
+                    type="email"
                     placeholder="Email"
                   value={email}
                   disabled={otpVerified}
@@ -307,13 +323,13 @@ export default function SignupPage() {
                     onChange={(e) => setOtp(e.target.value)}
                     className="w-full px-4 py-2.5 bg-input border rounded-lg"
                   />
-                  <button
+                  {/* <button
                     type="button"
                     onClick={verifyOTP}
                     className="w-full py-2.5 bg-green-600 text-white rounded-lg"
                   >
                     Verify OTP
-                  </button>
+                  </button> */}
                 </>
               )}
 
