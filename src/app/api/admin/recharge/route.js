@@ -21,9 +21,12 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-
+    
     // ✅ 2. Input validation
-    const { user_id,email,name, amount, mode } = await req.json();
+    const { user_id,email,name, amount} = await req.json();
+   
+    const mode = payload.email;
+    
     if (!user_id || !amount || amount <= 0 || !mode) {
       return NextResponse.json(
         { error: "Invalid input. user_id, amount, and mode are required." },
