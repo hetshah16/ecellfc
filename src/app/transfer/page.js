@@ -63,7 +63,7 @@ export default function TransferPage() {
       }
     }
 
-    if (user) fetchUsers()
+    if (!user) fetchUsers()
 
     return () => {
       mounted = false

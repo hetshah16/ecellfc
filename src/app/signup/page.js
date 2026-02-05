@@ -9,7 +9,7 @@ import { auth } from "@/lib/firebaseClient";
 
 export default function SignupPage() {
   const router = useRouter();
-
+  const MIN_LOADING_TIME = 3000; // 3 seconds
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +19,7 @@ export default function SignupPage() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-
+  const [otpsending, setOtpsending] = useState(false);
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
   const [settingPin, setSettingPin] = useState(false);
@@ -78,26 +78,33 @@ export default function SignupPage() {
     return () => clearTimeout(timer);
   }, []);
 
+
   /* -------------------- SEND OTP -------------------- */
   const sendOTP = async () => {
-    setError("");
-    try {
+    const startTime = Date.now();
     const v = validateBeforeOTP();
     if (v) return setError(v);
-
+    setError("");
     if (phone.startsWith("+")) {
       setError("Phone number should not include country code");
       return;
     }
-
+    
     const phoneError = validateIndianPhone();
     if (phoneError) return setError(phoneError);
-
-    await axios.post("/api/otp-request", { phone,email });
-
-    const fullPhoneNumber = `+91${phone}`;
-
+    setOtpsending(true);
     
+    try {
+        // const elapsed = Date.now() - startTime;
+        // const remaining = MIN_LOADING_TIME - elapsed;
+        // if (remaining > 0) {
+        //   await new Promise(res => setTimeout(res, remaining));
+        // }
+      await axios.post("/api/otp-request", { phone,email });
+
+      const fullPhoneNumber = `+91${phone}`;
+
+      
       const confirmationResult = await signInWithPhoneNumber(
         auth,
         fullPhoneNumber,
@@ -106,9 +113,11 @@ export default function SignupPage() {
 
       window.confirmationResult = confirmationResult;
       await axios.post("/api/otp-log", { phone });
+      setOtpsending(false);
       setOtpSent(true);
       setCooldown(COOLDOWN_TIME);
     } catch (err) {
+      setOtpsending(false);
       setError(
       err.response?.data?.error || err.message || "OTP failed"
     );
@@ -136,7 +145,7 @@ export default function SignupPage() {
         } else {
           setError("OTP verification failed");
         }
-
+        
         throw err; // 👈 VERY IMPORTANT
     }
   };
@@ -162,14 +171,15 @@ export default function SignupPage() {
       });
       setSettingPin(true);
     } catch(err) {
-        if (err.code?.startsWith("auth/")) return;
-
+        
+      if (err.code?.startsWith("auth/")) return;
       const message =
         err?.response?.data?.error ||
         err?.message ||
         "Something went wrong. Please Refresh and try again.";
-
+        
       setError(message);
+      
     } finally {
       setLoading(false);
     }
@@ -275,7 +285,7 @@ export default function SignupPage() {
                   }}
                   className="w-full px-4 py-2.5 bg-input border rounded-lg"
                 />
-                {!otpVerified && otpSent && (
+                {!otpVerified && otpSent && !otpsending && (
                 <div className="flex items-center justify-between text-sm">
                     <button
                     type="button"
@@ -303,7 +313,7 @@ export default function SignupPage() {
                 </div>
               )}
 
-              {!otpVerified && !otpSent && (
+              {!otpVerified && !otpSent && !otpsending && (
                 <button
                   type="button"
                   onClick={sendOTP}
@@ -312,9 +322,15 @@ export default function SignupPage() {
                   Send OTP
                 </button>
               )}
+              {otpsending && (
+                  <button
+                    disabled
+                    className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
+                  >
+                    Sending OTP...
+                  </button>
+                )}
               
-
-
               {otpSent && !otpVerified && (
                 <>
                   <input
