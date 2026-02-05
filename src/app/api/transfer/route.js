@@ -20,9 +20,10 @@ export async function POST(req) {
     }
 
     // ✅ 3. Get request data
-    const { sender_id, receiver_id, amount, password } = await req.json()
+    const { receiver_id, amount, password } = await req.json()
     const amt = Number(amount)
-
+    const sender_id = payload.user_id
+    console.log(sender_id)  
     if (!sender_id || !receiver_id || !amt || amt <= 0) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 })
     }
