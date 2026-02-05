@@ -12,7 +12,7 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// ✅ THIS LINE FIXES YOUR ERROR
+
 
 const app = getApps().length
   ? getApps()[0]
