@@ -211,14 +211,14 @@ export default function AdminAddStallPage() {
     useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        const res = await axios.get("/api/admin/me")
+        const res = await axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/me")
         setAdmin(res.data.admin)
       } catch (err) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {
           alert("Session expired or invalid. Please log in again.")
-          router.push("/admin/login")
+          router.push("/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/login")
         } else {
-          console.error("Failed to fetch admin:", err)
+          console.error("Failed to fetch Super admin:", err)
         }
       } finally {
         setLoading(false)
@@ -238,7 +238,7 @@ export default function AdminAddStallPage() {
     setLoading(true)
     setError("")
     try {
-      const res = await fetch("/api/admin/stalls")
+      const res = await fetch("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/stalls")
       const text = await res.text()
       const data = text ? JSON.parse(text) : null
       if (!res.ok) {
@@ -284,7 +284,7 @@ export default function AdminAddStallPage() {
     }
     setSubmitting(true)
     try {
-      const res = await fetch("/api/admin/stalls", {
+      const res = await fetch("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/stalls", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

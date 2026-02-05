@@ -12,7 +12,7 @@ export default function LeaderboardPage() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await axios.get("/api/admin/leaderboard")
+        const res = await axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/leaderboard")
         setData(res.data)
       } catch (err) {
         console.error("Failed to load leaderboard", err)

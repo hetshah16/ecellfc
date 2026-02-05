@@ -37,22 +37,10 @@ export default function AdminNavbar() {
             Recharge
           </Link>
           <Link
-            href="/admin/add-stall"
-            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
-          >
-            Add Stalls
-          </Link>
-          <Link
             href="/admin/logs"
             className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
           >
             Logs
-          </Link>
-          <Link
-            href="/admin/leaderboard"
-            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
-          >
-            Leaderboard
           </Link>
         </div>
 

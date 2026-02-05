@@ -14,6 +14,10 @@ export const signToken2 = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET_SELLER, { expiresIn: "5h" });
 };
 
+export const signToken3 = (payload) => {
+  return jwt.sign(payload, process.env.JWT_SECRET_SUPERADMIN, { expiresIn: "5h" });
+};
+
 
 export const verifyToken = (token) => {
   try {
@@ -34,6 +38,14 @@ export const verifyToken1 = (token) => {
 export const verifyToken2 = (token) => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET_SELLER);
+  } catch (err) {
+    return null;
+  }
+};
+
+export const verifyToken3 = (token) => {
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_SUPERADMIN);
   } catch (err) {
     return null;
   }
