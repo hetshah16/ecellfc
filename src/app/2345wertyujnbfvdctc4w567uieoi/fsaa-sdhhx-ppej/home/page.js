@@ -27,7 +27,7 @@ export default function SuperadminTransferPage() {
       try {
         const [uRes, sRes] = await Promise.all([
           axios.get("/api/admin/users"),
-          axios.get("/api/stalls")
+          axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/getstalls")
         ])
         setUsers(uRes.data || [])
         setStalls(sRes.data || [])
@@ -113,7 +113,8 @@ export default function SuperadminTransferPage() {
       </div>
     )
   }
-
+  console.log("USERS", users)
+  console.log("STALLS", stalls)
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
