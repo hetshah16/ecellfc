@@ -100,6 +100,7 @@ export default function TransferPage() {
     )
   }
 
+  
   if (!user) return null // or a loading spinner
 
   return (
