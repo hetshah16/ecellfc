@@ -14,18 +14,18 @@ export async function POST(req) {
     }
 
     const admin = rows[0];
-
+    console.log("Admin found:", admin);
     // Compare password
     const valid = await bcrypt.compare(password, admin.password);
     if (!valid) {
       return new Response(JSON.stringify({ error: "Invalid email or password" }), { status: 401 });
     }
 
-    const token = signToken3({ admin_id: admin.admin_id, email: admin.email});
+    const token = signToken3({ admin_id: admin.name, email: admin.email});
 
     const response = NextResponse.json({
       message: "Login successful",
-      user: {admin_id: admin.admin_id, email: admin.email},
+      user: {admin_id: admin.name, email: admin.email},
     });
 
     response.cookies.set({
