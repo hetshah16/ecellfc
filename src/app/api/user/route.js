@@ -1,9 +1,24 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
-
+import { verifyToken } from "@/lib/jwt";
 export async function POST(req) {
   try {
-    const { user_id } = await req.json(); // ✅ await here
+    // ✅ 1. Read token from HTTP-only cookie
+    const token = req.cookies.get("token")?.value
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    // ✅ 2. Verify token safely
+    let payload
+    try {
+      payload = verifyToken(token)
+    } catch {
+      return NextResponse.json({ error: "Invalid session. Please log in again." }, { status: 401 })
+    }
+    const user_id = payload.user_id
+
+    // ✅ 3. Query user data from database
 
     const [rows] = await pool.execute(
       "SELECT * FROM user WHERE user_id = ?", 

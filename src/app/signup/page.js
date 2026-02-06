@@ -169,7 +169,9 @@ export default function SignupPage() {
         password,
         phone,
       });
-      setSettingPin(true);
+      // setSettingPin(true);
+      await axios.post("/api/login", { email, password });
+      router.push("/setpin");
     } catch(err) {
         
       if (err.code?.startsWith("auth/")) return;

@@ -1,10 +1,24 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import pool from "@/lib/db"; // adjust import path if needed
-
+import { verifyToken } from "@/lib/jwt";
 export async function POST(req) {
   try {
-    const { user_id, password, pin } = await req.json();
+    // ✅ 1. Read token from HTTP-only cookie
+    const token = req.cookies.get("token")?.value
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    // ✅ 2. Verify token safely
+    let payload
+    try {
+      payload = verifyToken(token)
+    } catch {
+      return NextResponse.json({ error: "Invalid session. Please log in again." }, { status: 401 })
+    }
+    const user_id = payload.user_id;
+    const { password, pin } = await req.json();
 
     if (!user_id || !password || !pin) {
       return NextResponse.json(

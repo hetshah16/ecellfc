@@ -20,33 +20,35 @@ export const signToken3 = (payload) => {
 
 
 export const verifyToken = (token) => {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch (err) {
-    return null;
-  }
+  return jwt.verify(token, process.env.JWT_SECRET);
 };
 
 export const verifyToken1 = (token) => {
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET_ADMIN);
-  } catch (err) {
-    return null;
-  }
+  return jwt.verify(token, process.env.JWT_SECRET_ADMIN);
 };
 
 export const verifyToken2 = (token) => {
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET_SELLER);
-  } catch (err) {
-    return null;
-  }
+  return jwt.verify(token, process.env.JWT_SECRET_SELLER);
 };
 
 export const verifyToken3 = (token) => {
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET_SUPERADMIN);
-  } catch (err) {
-    return null;
-  }
+  return jwt.verify(token, process.env.JWT_SECRET_SUPERADMIN);
 };
+
+
+// export const verifyToken1 = (token) => {
+//   try {
+//     return jwt.verify(token, process.env.JWT_SECRET_ADMIN);
+//   } catch (err) {
+//     return null;
+//   }
+// };
+
+// export const verifyToken2 = (token) => {
+//   try {
+//     return jwt.verify(token, process.env.JWT_SECRET_SELLER);
+//   } catch (err) {
+//     return null;
+//   }
+// };
+
