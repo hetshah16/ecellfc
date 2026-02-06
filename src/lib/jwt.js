@@ -25,9 +25,11 @@ export const verifyToken = (token) => {
 
 export const verifyToken1 = (token) => {
   return jwt.verify(token, process.env.JWT_SECRET_ADMIN);
+  return jwt.verify(token, process.env.JWT_SECRET_ADMIN);
 };
 
 export const verifyToken2 = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET_SELLER);
   return jwt.verify(token, process.env.JWT_SECRET_SELLER);
 };
 
