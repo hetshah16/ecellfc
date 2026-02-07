@@ -60,6 +60,12 @@ export default function AdminNavbar() {
           >
             Best-Eater
           </Link>
+          <Link
+            href="/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/page-settings"
+            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
+          >
+            Page Settings
+          </Link>
         </div>
 
         {/* Logout Button */}
