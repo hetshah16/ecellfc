@@ -37,7 +37,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
         receiver_email: selected.email,
         amount: Number(amount),
       })
-      // setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
+      setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
       setSuccess(res.data.message || "Payment successful")
       setPhase("done")
       setAmount("")
@@ -47,7 +47,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
         setPhase("")
         setSelected(null);
       }, 3000)
-
+      // window.location.reload();
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.error || "Payment failed")
