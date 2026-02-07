@@ -111,7 +111,7 @@ export default function LoginPage() {
               </div>
             )}
             {success && (
-              <div className="p-3 bg-green-100 border border-green-500 rounded-lg text-green-700 text-sm">
+              <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
                 Signin successful! Redirecting...
               </div>
             )}

@@ -71,6 +71,9 @@ export default function AdminDashboard({ admin }) {
       setSelected(null)
       setAmount("")
 
+      setTimeout(() => {
+        setMsg(null)
+      }, 1000)
       const updatedRes = await axios.get("/api/admin/users")
       const updated = updatedRes.data
       setUsers(Array.isArray(updated) ? updated : users)
@@ -80,6 +83,9 @@ export default function AdminDashboard({ admin }) {
       } else {
         setErr("Network error")
       }
+      setTimeout(() => {
+        setErr(null)
+      }, 3000)
     } finally {
       setLoading(false)
     }
@@ -137,9 +143,11 @@ export default function AdminDashboard({ admin }) {
         <h3 className="text-lg font-semibold mb-6">Recharge E-coins</h3>
 
         {!selected ? (
-          <div className="text-center py-8 text-muted-foreground">
-            <p className="text-sm">Select a user from the list to recharge</p>
-          </div>
+          !err && !msg && (
+            <div className="text-center py-8 text-muted-foreground">
+              <p className="text-sm">Select a user from the list to recharge</p>
+            </div>
+          )
         ) : (
           <div className="space-y-4">
             {/* User Details */}
@@ -193,20 +201,20 @@ export default function AdminDashboard({ admin }) {
                 Clear
               </button>
             </div>
-
-            {/* Messages */}
-            {err && (
-              <div className="p-3 bg-destructive/10 border border-destructive rounded-lg text-sm text-destructive">
-                {err}
-              </div>
-            )}
-            {msg && (
-              <div className="p-3 bg-green-500/10 border border-green-500/50 rounded-lg text-sm text-green-400">
-                {msg}
-              </div>
-            )}
           </div>
-        )}
+          )}
+
+          {/* Messages */}
+          {err && (
+            <div className="p-3 mt-4 bg-destructive/10 border border-destructive rounded-lg text-sm text-destructive">
+              {err}
+            </div>
+          )}
+          {msg && (
+            <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
+              {msg}
+            </div>
+          )}
       </div>
     </div>
   )
