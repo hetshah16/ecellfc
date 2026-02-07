@@ -52,7 +52,7 @@ export default function HomePage() {
         const res = await axios.get("/api/stalls")
         const stallsWithPhotos = res.data.map((s) => ({
           ...s,
-          photo_url: foodimages[s.stall_id-4],
+          photo_url: foodimages[s.stall_id % (foodimages.length-1)+1] // assign photos in a round-robin way,
         }))
         setStalls(stallsWithPhotos)
       } catch (error) {

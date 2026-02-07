@@ -1,5 +1,7 @@
 "use client"
 
+import React from "react";
+
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
@@ -10,7 +12,7 @@ import MenuCard from "@/app/components/MenuCard"
 
 export default function StallPage({ params }) {
   const router = useRouter()
-  const { stall_id } = params
+  const { stall_id } = React.use(params);
 
   const [stall, setStall] = useState(null)
   const [items, setItems] = useState([])
@@ -62,10 +64,27 @@ export default function StallPage({ params }) {
               <h1 className="text-3xl sm:text-4xl font-bold tracking-wide">
                 {stall}
               </h1>
-              <p className="text-muted-foreground mt-1">Menu</p>
+
             </div>
 
             {/* Payment Section — UNCHANGED */}
+            {/* Payment CTA Card */}
+            {!pay  && (
+              <div className="bg-card border border-border rounded-xl p-5 mb-8 flex items-center justify-between shadow-sm">
+                <div>
+                  <h3 className="text-lg font-semibold">Ready to place your order?</h3>
+                  
+                </div>
+
+                <button
+                  onClick={() => setPay(true)}
+                  className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition whitespace-nowrap"
+                >
+                  Proceed to Payment
+                </button>
+              </div>
+            )}
+
             {pay && (
               <div className="bg-card border border-border rounded-lg p-6 mb-10">
                 <h2 className="text-2xl font-bold mb-2">Order Summary</h2>
@@ -78,7 +97,7 @@ export default function StallPage({ params }) {
                   user={user}
                   setPay={setPay}
                   setUser={setUser}
-                />
+                  />
               </div>
             )}
 
@@ -93,6 +112,7 @@ export default function StallPage({ params }) {
               </div>
             ) : !pay ? (
               <>
+                <p className="text-muted-foreground mt-1 text-center">Menu</p>  
                 {/* Printed-menu style list */}
                 <div className="divide-y divide-border">
                   {items.map((item) => (
@@ -101,14 +121,7 @@ export default function StallPage({ params }) {
                 </div>
 
                 {/* Proceed Button — UNCHANGED */}
-                <div className="flex justify-end mt-10">
-                  <button
-                    onClick={() => setPay(true)}
-                    className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-md transition"
-                  >
-                    Proceed to Payment
-                  </button>
-                </div>
+
               </>
             ) : null}
           </main>
