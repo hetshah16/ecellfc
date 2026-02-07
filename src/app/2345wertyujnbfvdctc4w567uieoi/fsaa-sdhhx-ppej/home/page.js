@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 import Navbar from "../components/AdminNavbar"
 import axios from "axios"
 
@@ -20,9 +21,33 @@ export default function SuperadminTransferPage() {
   const [reason, setReason] = useState("")
   const [loading, setLoading] = useState(true)
 
+  const [admin, setAdmin] = useState(null);
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/me")
+        setAdmin(res.data.admin)
+      } catch (err) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          alert("Session expired or invalid. Please log in again.")
+          router.push("/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/login")
+        } else {
+          console.error("Failed to fetch Super admin:", err)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAdmin()
+  }, [router])
+
+
   /* ================= FETCH DATA ================= */
 
   useEffect(() => {
+    if(!admin) return;
     const fetchAll = async () => {
       try {
         const [uRes, sRes] = await Promise.all([

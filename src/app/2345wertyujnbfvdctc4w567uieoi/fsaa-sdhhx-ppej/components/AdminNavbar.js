@@ -54,6 +54,12 @@ export default function AdminNavbar() {
           >
             Leaderboard
           </Link>
+          <Link
+            href="/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/best-eater"
+            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
+          >
+            Best-Eater
+          </Link>
         </div>
 
         {/* Logout Button */}

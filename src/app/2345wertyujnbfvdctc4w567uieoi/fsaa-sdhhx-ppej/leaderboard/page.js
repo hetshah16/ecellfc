@@ -2,12 +2,34 @@
 
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useRouter } from "next/navigation"
 import LeaderboardChart from "../components/LeaderboardChart"
 import AdminNavbar from "../components/AdminNavbar"
 
 export default function LeaderboardPage() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [admin, setAdmin] = useState(null);
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/me")
+        setAdmin(res.data.admin)
+      } catch (err) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          alert("Session expired or invalid. Please log in again.")
+          router.push("/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/login")
+        } else {
+          console.error("Failed to fetch Super admin:", err)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAdmin()
+  }, [router])
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
