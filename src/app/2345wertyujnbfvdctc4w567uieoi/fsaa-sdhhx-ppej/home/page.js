@@ -47,7 +47,7 @@ export default function SuperadminTransferPage() {
   /* ================= FETCH DATA ================= */
 
   useEffect(() => {
-    if(!admin) return;
+    
     const fetchAll = async () => {
       try {
         const [uRes, sRes] = await Promise.all([
