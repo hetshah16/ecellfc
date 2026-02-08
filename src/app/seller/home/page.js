@@ -20,7 +20,7 @@ export default function SellerHomePage() {
   const [error, setError] = useState("")
   const [successMsg, setSuccessMsg] = useState("")
   const [submitting, setSubmitting] = useState(false)
-
+  const [deleting, setDeleting] = useState(false)
   /* ================= FETCH SELLER ================= */
   useEffect(() => {
     const fetchSeller = async () => {
@@ -132,6 +132,7 @@ export default function SellerHomePage() {
   }
 
   async function handleDeleteConfirm() {
+    setDeleting(true)
     try {
       await axios.post("/api/seller/delete-items", {
         item_id: deleteItem.item_id,
@@ -140,8 +141,10 @@ export default function SellerHomePage() {
       setSuccessMsg("Item deleted successfully!")
       await fetchItems()
       setDeleteItem(null)
-    } catch {
-      setError("Failed to delete item")
+    } catch (err) {
+      setError(err?.response?.data?.error || "Failed to delete item")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -326,12 +329,19 @@ export default function SellerHomePage() {
                   >
                     Cancel
                   </button>
+                  { deleting ? (
+                    <button
+                      disabled
+                      className="flex-1 bg-red-600/50 text-white rounded-lg py-2 font-semibold cursor-not-allowed"
+                      >
+                      Deleting...
+                      </button>):(
                   <button
                     onClick={handleDeleteConfirm}
                     className="flex-1 bg-red-600 text-white rounded-lg py-2 font-semibold hover:bg-red-700 transition"
                   >
                     Delete
-                  </button>
+                  </button>)}
                 </div>
               </div>
             </div>
