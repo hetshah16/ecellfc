@@ -23,7 +23,7 @@ export async function POST(req) {
     const { receiver_id, amount, password } = await req.json()
     const amt = Number(amount)
     const sender_id = payload.user_id
-    console.log(sender_id)  
+    // console.log(sender_id)  
     if (!sender_id || !receiver_id || !amt || amt <= 0) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 })
     }

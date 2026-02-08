@@ -19,7 +19,7 @@ export default function HomePage() {
         const res = await axios.post("/api/user", {
           user_id: r.data.user.user_id,
         })
-        console.log(res.data)
+        // console.log(res.data)
         setUser(res.data)
         
         if (!res.data.pin) {

@@ -47,7 +47,7 @@ export default function SuperadminTransferPage() {
   /* ================= FETCH DATA ================= */
 
   useEffect(() => {
-    
+
     const fetchAll = async () => {
       try {
         const [uRes, sRes] = await Promise.all([
@@ -138,8 +138,8 @@ export default function SuperadminTransferPage() {
       </div>
     )
   }
-  console.log("USERS", users)
-  console.log("STALLS", stalls)
+  // console.log("USERS", users)
+  // console.log("STALLS", stalls)
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

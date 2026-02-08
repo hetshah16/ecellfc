@@ -14,7 +14,7 @@ export async function POST(req) {
     }
 
     const admin = rows[0];
-    console.log("Admin found:", admin);
+    // console.log("Admin found:", admin);
     // Compare password
     const valid = await bcrypt.compare(password, admin.password);
     if (!valid) {

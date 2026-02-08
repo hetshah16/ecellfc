@@ -23,6 +23,7 @@ export async function GET(req) {
    const [rows] = await pool.execute(
     `
     SELECT 
+      CONCAT('#P', transaction_id) AS id,
       receiver_name AS name,
       CONCAT('Stall ID: ', receiver_id) AS email,
       -amount AS amount,

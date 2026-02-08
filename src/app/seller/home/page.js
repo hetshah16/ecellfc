@@ -106,7 +106,7 @@ export default function SellerHomePage() {
     setSubmitting(true)
     try {
       if (editItem) {
-        console.log("Editing item:", editItem.item_id, form.price)
+        // console.log("Editing item:", editItem.item_id, form.price)
         await axios.post("/api/seller/edit-items", {
           stall_id: form.stall_id,
           item_id: editItem.item_id,
@@ -191,7 +191,7 @@ export default function SellerHomePage() {
                           {item.item_name}
                         </div>
                         <div className="flex items-baseline gap-1">
-                          <span className="text-primary font-bold text-xl">₹{item.price}</span>
+                          <span className="text-primary font-bold text-xl">{item.price} ⓔ</span>
                           <span className="text-muted-foreground text-sm">E-coins</span>
                         </div>
                       </div>
@@ -250,7 +250,7 @@ export default function SellerHomePage() {
                   />
 
                   <label className="block text-sm font-medium mb-1">
-                    Price (₹)
+                    Price (ⓔ)
                   </label>
                   <input
                     type="number"

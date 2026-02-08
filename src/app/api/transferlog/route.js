@@ -25,6 +25,7 @@ export async function GET(req) {
     SELECT *
     FROM (
         SELECT 
+            CONCAT('#T', transfer_id) AS id,
             receiver_name AS name,
             receiver_email AS email,
             -amount AS amount,
@@ -35,6 +36,7 @@ export async function GET(req) {
         UNION ALL
 
         SELECT 
+            CONCAT('#T', transfer_id) AS id,
             sender_name AS name,
             sender_email AS email,
             amount,

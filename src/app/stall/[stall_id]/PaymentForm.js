@@ -48,7 +48,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
         setError(err.response.data.error || "Payment failed")
       } else {
         setError("Network error")
-        console.log(err)
+        // console.log(err)
       }
       setPhase("ready")
       setPassword("")

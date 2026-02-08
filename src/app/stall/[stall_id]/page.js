@@ -70,7 +70,7 @@ export default function StallPage({ params }) {
             {/* Payment Section — UNCHANGED */}
             {/* Payment CTA Card */}
             {!pay  && (
-              <div className="bg-card border border-border rounded-xl p-5 mb-8 flex items-center justify-between shadow-sm">
+              <div className="bg-card border border-border rounded-xl p-5 mb-8 flex items-center justify-between shadow-sm gap-5">
                 <div>
                   <p className="text-lg font-semibold">Ready to place your order ?</p>
                   
@@ -112,7 +112,7 @@ export default function StallPage({ params }) {
               </div>
             ) : !pay ? (
               <>
-                <p className="text-muted-foreground mt-1 text-center">Menu</p>  
+                <p className="text-lg font-bold mt-1 text-center">Menu</p>  
                 {/* Printed-menu style list */}
                 <div className="divide-y divide-border">
                   {items.map((item) => (

@@ -23,6 +23,7 @@ export async function GET(req) {
     const [rows] = await pool.execute(
     `
     SELECT 
+        CONCAT('#R',recharge_id) AS id,
         'E-Cell Recharge' AS name,
         'ecell@spit.ac.in' AS email,
         amount,

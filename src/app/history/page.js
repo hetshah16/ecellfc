@@ -78,21 +78,24 @@ export default function History() {
                 className="flex items-center justify-between p-4 bg-card border border-border rounded-xl"
               >
                 <div className="min-w-0">
-                  <p className="font-medium truncate">{tx.name}</p>
+                  <p className="font-medium truncate">{tx.name} <span className="text-xs text-muted-foreground">{tx.email}</span></p>
                   <p className="text-xs text-muted-foreground truncate">
-                    {tx.email}
+                    Transaction ID: {tx.id} 
                   </p>
+                  {/* <p className="text-xs text-muted-foreground truncate">
+                    
+                  </p> */}
                   <p className="text-xs text-muted-foreground">
-                    {new Date(tx.timestamp).toLocaleString()}
+                     {new Date(tx.timestamp).toLocaleString()}
                   </p>
                 </div>
 
                 <div
-                  className={`font-semibold text-sm sm:text-base ${
+                  className={`font-semibold whitespace-nowrap text-sm sm:text-base ${
                     tx.amount < 0 ? "text-red-500" : "text-green-500"
                   }`}
                 >
-                  {tx.amount > 0 ? "+" : "-"}₹{Math.abs(tx.amount)}
+                  {tx.amount > 0 ? "+" : "-"}{Math.abs(tx.amount)} ⓔ
                 </div>
               </div>
             ))}

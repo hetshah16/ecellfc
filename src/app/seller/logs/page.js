@@ -119,7 +119,7 @@ export default function SellerLogsPage() {
 
                 {/* Amount */}
                 <div className="font-semibold text-green-500 text-sm sm:text-base whitespace-nowrap">
-                  +₹{tx.amount}
+                  +{tx.amount} ⓔ
                 </div>
               </div>
             ))}

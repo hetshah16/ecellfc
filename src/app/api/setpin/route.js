@@ -21,7 +21,7 @@ export async function POST(req) {
 
     const email = payload.email
     const { pin } = await req.json();
-    console.log(email, pin);
+    // console.log(email, pin);
     // Validation
     if (!/^\d{4}$/.test(pin)) 
       { return NextResponse.json({ error: "Invalid PIN format" }, { status: 400 }); 

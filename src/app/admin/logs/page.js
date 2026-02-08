@@ -140,7 +140,7 @@ export default function AdminLogsPage() {
     const fetchAdmin = async () => {
       try {
         const res = await axios.get("/api/admin/me")
-        console.log("Admin data:", res.data)
+        // console.log("Admin data:", res.data)
           setAdmin(res.data.admin)
       } catch (err) {
         if (err.response && (err.response.status === 401 || err.response.status === 403)) {

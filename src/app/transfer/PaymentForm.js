@@ -49,7 +49,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
         setError(err.response.data.error || "Payment failed")
       } else {
         setError("Network error")
-        console.log(err)
+        // console.log(err)
       }
       setPhase("ready")
       setPassword("")
