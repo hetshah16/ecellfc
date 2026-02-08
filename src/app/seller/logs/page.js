@@ -73,9 +73,9 @@ export default function SellerLogsPage() {
       <main className="max-w-3xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-1">Transaction Logs</h2>
+          <h2 className="text-2xl font-bold mb-1">Payments Logs</h2>
           <p className="text-muted-foreground">
-            View all transactions and payments received
+            View all payments received
           </p>
         </div>
 
