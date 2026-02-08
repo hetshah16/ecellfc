@@ -31,11 +31,15 @@ export default function Navbar({ coins, user }) {
       <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/home" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
+          <Link href="/profile" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               E
             </div>
-            <span className="hidden sm:inline">E-Cell Food</span>
+            <span className="hidden sm:inline">E-Cell FC 2k26</span>
+            <div className="justify-end flex gap-2">
+              <p className="text-xl text-muted-foreground flex justify-center items-center"></p>
+              <div className="text-xl text-muted-foreground">{user}</div>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -91,12 +95,12 @@ export default function Navbar({ coins, user }) {
           <div className="hidden md:block">
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-foreground hover:text-destructive transition-colors font-medium text-sm"
+              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
             >
               Logout
             </button>
           </div>
-
+                
           {/* Mobile Hamburger */}
           <button
             className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
@@ -108,7 +112,7 @@ export default function Navbar({ coins, user }) {
             </svg>
           </button>
         </nav>
-
+                
         {/* Mobile Menu */}
         {open && (
           <div className="md:hidden border-t border-border bg-card divide-y divide-border">
@@ -141,23 +145,24 @@ export default function Navbar({ coins, user }) {
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
             >
               Logout
             </button>
           </div>
         )}
       </header>
-      <div className="mt-6 flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
-        <div className="justify-end flex gap-2">
-          <p className="text-xl text-muted-foreground flex justify-center items-center">Hi,</p>
-          <div className="text-xl text-muted-foreground">{user}</div>
-        </div>
-        <div className="justify-end flex gap-2">
-          <p className="text-xl text-muted-foreground flex justify-center items-center">Your Balance:</p>
+      <div className="mt-3 flex justify-end items-center h-12 px-6">
+        <div className="flex gap-1">
+          <p className="text-xl text-muted-foreground flex items-center">
+            Your Balance:
+          </p>
           <div className="text-2xl font-bold text-primary">{coins} ⓔ</div>
         </div>
       </div>
+
+
+
     </div>
   )
 }

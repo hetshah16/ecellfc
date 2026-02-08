@@ -96,10 +96,10 @@ export default function SellerProfilePage() {
             {/* Info */}
             <div className="flex-1">
                 <h1 className="text-2xl font-bold">{seller.stall_name}</h1>
-                <p className="text-muted-foreground">{seller.email}</p>
+                {/* <p className="text-muted-foreground">{seller.email}</p>
                 <p className="text-sm text-muted-foreground mt-1">
                 Stall ID: <span className="font-medium">{seller.stall_id}</span>
-                </p>
+                </p> */}
             </div>
             </div>
 

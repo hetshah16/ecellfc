@@ -20,19 +20,20 @@ export async function GET(req) {
     const user_id = payload.user_id
 
     // ✅ 3. Get request data
-    const [rows] = await pool.execute(
+   const [rows] = await pool.execute(
     `
     SELECT 
-    receiver_name AS name,
-    receiver_id AS email,
-    -amount AS amount,
-    timestamp
+      receiver_name AS name,
+      CONCAT('Stall ID: ', receiver_id) AS email,
+      -amount AS amount,
+      timestamp
     FROM transaction_log
     WHERE sender_id = ?
     ORDER BY timestamp DESC;
     `,
     [user_id]
-    );
+  );
+
     return new Response(
       JSON.stringify(rows),
       {

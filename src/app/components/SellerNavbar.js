@@ -31,13 +31,18 @@ export default function SellerNavbar({seller}) {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Brand */}
           <Link
-            href="/seller/home"
+            href="/seller/profile"
             className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition"
           >
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               E
             </div>
             <span className="hidden sm:inline">Stall Console</span>
+            {/* <div className="mt-6 flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16"> */}
+              <div className="justify-end flex gap-2">
+                <p className="text-xl text-muted-foreground flex justify-center items-center"></p>
+                <div className="text-xl text-muted-foreground">{seller}</div>
+              </div>
           </Link>
 
           {/* Desktop Nav */}
@@ -72,7 +77,17 @@ export default function SellerNavbar({seller}) {
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               }`}
             >
-              Logs
+              Payments
+            </Link>
+            <Link
+              href="/seller/leaderboard"
+              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+                isActive("/seller/leaderboard")
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              }`}
+            >
+              Leaderboard
             </Link>
           </div>
 
@@ -80,7 +95,7 @@ export default function SellerNavbar({seller}) {
           <div className="hidden md:block">
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-foreground hover:text-destructive transition-colors font-medium text-sm"
+              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
             >
               Logout
             </button>
@@ -108,26 +123,33 @@ export default function SellerNavbar({seller}) {
               Home
             </Link>
             <Link
+              href="/seller/profile"
+              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+            >
+              Profile
+            </Link>
+            <Link
               href="/seller/logs"
               className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
             >
-              Logs
+              Payments
+            </Link>
+            <Link
+              href="/seller/leaderboard"
+              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+            >
+              Leaderboard
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
             >
               Logout
             </button>
           </div>
         )}
       </header>
-        <div className="mt-6 flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16">
-          <div className="justify-end flex gap-2">
-            <p className="text-xl text-muted-foreground flex justify-center items-center">Hi,</p>
-            <div className="text-xl text-muted-foreground">{seller}</div>
-          </div>
-        </div>
+        
     </div>
   )
 }
