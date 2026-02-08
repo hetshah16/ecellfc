@@ -41,10 +41,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
       setPhase("done")
       setAmount("")
       setPassword("")
-      setTimeout(() => {
-        setSuccess("")
-        setPhase("ready")
-      }, 3000)
+
 
     } catch (err) {
       if (err.response && err.response.data) {
@@ -136,7 +133,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
               className="flex-1 py-3 bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-semibold rounded-lg transition-colors"
             >
               Cancel
-            </button>
+            </button> 
           </div>
             <button
               type="button"
@@ -171,6 +168,21 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
           {success}
         </div>
       )}
+
+      {success && (
+        <button
+          onClick={() => {
+            setSuccess("")
+            setPhase("ready")
+            setPay(false)
+          }}
+          className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+        >
+          Done
+        </button>
+
+      )}
+
       
     </div>
   )

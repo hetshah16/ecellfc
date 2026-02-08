@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const [emailsending, setemailsending] = useState(false);
   const [pin, setPin] = useState(null);
   const [pinVisible, setPinVisible] = useState(false); // track if PIN has been revealed
+  const [newconfirmPin, setNewconfirmPin] = useState("");
 
   // Modal states
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -62,6 +63,10 @@ export default function ProfilePage() {
         setPin(res.data.pin);
         setPinVisible(true);
       } else if (mode === "set" || mode === "update") {
+          if (newPin !== newconfirmPin) {
+            setModalError("PIN and confirmation do not match.");
+            return;
+          }
         if (!newPin || newPin.length !== 4){
           setModalError("PIN must be exactly 4 digits.");
           return;
@@ -80,6 +85,7 @@ export default function ProfilePage() {
       setShowPasswordModal(false);
       setPassword("");
       setNewPin("");
+      setNewconfirmPin("");
     } catch (err) {
       console.error(err);
       setModalError(
@@ -158,7 +164,7 @@ export default function ProfilePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),
       })
-      // alert("A link was sent to your email to reset your PIN.")
+      
       setemailsending(false);
       setemailsent(true);
       setTimeout(() => { setemailsent(false); }, 4000);
@@ -277,6 +283,28 @@ export default function ProfilePage() {
                         className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       />
                     </div>
+                    
+                  )}
+                  {(mode === "set" || mode === "update") && (
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        Confirm 4-digit PIN
+                      </label>
+                      <input
+                        type="password"
+                        inputMode="numeric"
+                        placeholder="Confirm new PIN"
+                        pattern="^[1-9][0-9]{3}$"
+                        value={newconfirmPin}
+                        onChange={(e) => setNewconfirmPin(e.target.value)}
+                        maxLength={4}
+                        minLength={4}
+                        onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
+                        onInput={(e) => e.target.setCustomValidity("")}
+                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      />
+                    </div>
+                    
                   )}
 
                   {modalError && (
@@ -310,7 +338,7 @@ export default function ProfilePage() {
 
                 {emailsent ? (
                   <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
-                    A link was sent to your email to reset your PIN.
+                    A link was sent to your email to reset your account password.
                   </div>
                 ):(
                   emailsending ? (

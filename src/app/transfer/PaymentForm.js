@@ -42,11 +42,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
       setPhase("done")
       setAmount("")
       setPassword("")
-      setTimeout(() => {
-        setSuccess("")
-        setPhase("")
-        setSelected(null);
-      }, 3000)
+
       // window.location.reload();
     } catch (err) {
       if (err.response && err.response.data) {
@@ -164,13 +160,27 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
           {success}
         </div>
       )}
-      {!success &&(<button
+      {!success && phase!=="sending" &&(<button
         type="button"
         onClick={handleForgot}
         className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
       >
         Forgot PIN?
       </button>)}
+      {success && (
+        <button
+          onClick={() => {
+            setSuccess("")
+            setPhase("ready")
+            setPay(false)
+            setSelected(null)
+          }}
+          className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+        >
+          Done
+        </button>
+
+      )}
     </div>
   )
 }

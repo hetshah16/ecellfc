@@ -80,14 +80,14 @@ export default function StallPage({ params }) {
                   onClick={() => setPay(true)}
                   className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition whitespace-nowrap"
                 >
-                  Proceed to Pay
+                  Pay Now
                 </button>
               </div>
             )}
 
             {pay && (
               <div className="bg-card border border-border rounded-lg p-6 mb-10">
-                <h2 className="text-2xl font-bold mb-2">Order Summary</h2>
+                <h2 className="text-2xl font-bold mb-2">Order Payment</h2>
                 <p className="text-muted-foreground mb-6">
                   Complete your payment to place an order
                 </p>

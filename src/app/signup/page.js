@@ -218,7 +218,7 @@ export default function SignupPage() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
                 E
               </div>
-              <span>E-Cell Food</span>
+              <span>E-Cell FC 2k26</span>
             </Link>
           </div>
 
@@ -356,19 +356,36 @@ export default function SignupPage() {
                   OTP verified successfully
                 </p>
               )}
-
+              {loading ? (
               <button
-                disabled={loading || (otpVerified && false)}
-                className="w-full py-2.5 bg-primary text-primary-foreground rounded-lg"
+                disabled
+                className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
               >
-                {loading ? "Creating..." : "Create Account"}
+                Creating Account...
               </button>
+              ): (
+                otp.length === 6 ? (
+                <button
+                  className="w-full py-2.5 bg-primary text-primary-foreground rounded-lg"
+                >
+                  Create Account
+                </button>
+              ) :(
+                <button
+                 disabled
+                  className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
+                >
+                  Create Account
+                </button>
+              )
+            )}
+              
             </form>
 
             <div className="mt-8 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link href="/login" className="text-primary font-medium">
-                Sign in
+                Login 
               </Link>
             </div>
           </div>

@@ -54,6 +54,7 @@ export default function LoginPage() {
       })
       setemailsending(false);
       setemailsent(true);
+      setTimeout(() => { setemailsent(false); }, 4000);
       // alert("If that email exists, a reset link was sent.")
     } catch (err) {
       alert("Unable to process request.")
@@ -68,7 +69,7 @@ export default function LoginPage() {
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
             E
           </div>
-          <span>E-Cell Food</span>
+          <span>E-Cell FC 2k26</span>
         </Link>
       </div>
 

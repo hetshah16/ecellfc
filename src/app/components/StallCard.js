@@ -13,11 +13,11 @@ export default function StallCard({ stall }) {
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors line-clamp-1">
                 {stall.stall_name}
               </h3>
-              <p className="text-xs text-muted-foreground mt-1">ID: #{stall.stall_id}</p>
+              <p className="text-xs text-muted-foreground mt-1">Stall Id: {stall.stall_id}</p>
             </div>
           </div>
           <div className="pt-4 border-t border-border flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Tap to explore</span>
+            <span className="text-xs text-muted-foreground">Explore and Order </span>
             <svg
               className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform"
               fill="none"

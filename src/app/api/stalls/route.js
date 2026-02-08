@@ -19,7 +19,7 @@ export async function GET(req) {
     }
 
     const [rows] = await pool.execute(
-      "SELECT stall_id, stall_name, coins, created_at, updated_at FROM food_stall ORDER BY stall_name ASC"
+      "SELECT stall_id, stall_name, coins, created_at, updated_at FROM food_stall ORDER BY stall_id ASC"
     );
 
     return new Response(JSON.stringify(rows), {

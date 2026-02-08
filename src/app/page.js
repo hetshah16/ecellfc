@@ -13,14 +13,14 @@ export default function LandingPage() {
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               E
             </div>
-            <span className="hidden sm:inline">E-Cell Food</span>
+            <span className="hidden sm:inline">E-Cell FC 2k26</span>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push("/login")}
               className="px-4 py-2 text-foreground hover:text-primary transition-colors font-medium"
             >
-              Sign In
+              Login
             </button>
             <button
               onClick={() => router.push("/signup")}
@@ -55,7 +55,7 @@ export default function LandingPage() {
               onClick={() => router.push("/login")}
               className="px-8 py-3 bg-card text-foreground border border-border rounded-lg hover:bg-card/80 font-semibold transition-colors"
             >
-              Sign In
+              Already have an account? Login
             </button>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-card/30 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
-          <p>© 2025 E-Cell Food Challenge. All rights reserved.</p>
+          <p>© 2026 E-Cell Food Challenge. All rights reserved.</p>
         </div>
       </footer>
     </div>
