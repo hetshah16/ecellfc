@@ -12,7 +12,8 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-
+  const [emailsent, setemailsent] = useState(false);
+  const [emailsending, setemailsending] = useState(false);
   const validate = () => {
     if (!email) return "Email is required"
     if (!/^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$/.test(email)) return "Enter a valid email"
@@ -44,13 +45,16 @@ export default function LoginPage() {
   const handleForgot = async () => {
     const email = prompt("Enter your account email to receive a reset link:")
     if (!email) return
+    setemailsending(true);
     try {
       await fetch("/api/auth/forgot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       })
-      alert("If that email exists, a reset link was sent.")
+      setemailsending(false);
+      setemailsent(true);
+      // alert("If that email exists, a reset link was sent.")
     } catch (err) {
       alert("Unable to process request.")
     }
@@ -134,13 +138,25 @@ export default function LoginPage() {
                 Create one
               </Link>
             </p>
-            <button
-              type="button"
-              onClick={handleForgot}
-              className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-            >
-              Forgot password?
-            </button>
+            {emailsent ? (
+              <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                If that email exists, a reset link was sent.
+              </div>
+            ):(
+              emailsending ? (
+                <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                  Sending reset link...
+                </div>
+              ) : (
+                <button
+                type="button"
+                onClick={handleForgot}
+                className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
+                Forgot password?
+              </button>
+              )
+            )}
+            
           </div>
         </div>
       </div>

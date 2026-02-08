@@ -11,7 +11,8 @@ export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [fetchError, setFetchError] = useState(null);
-
+  const [emailsent, setemailsent] = useState(false);
+  const [emailsending, setemailsending] = useState(false);
   const [pin, setPin] = useState(null);
   const [pinVisible, setPinVisible] = useState(false); // track if PIN has been revealed
 
@@ -150,15 +151,19 @@ export default function ProfilePage() {
     }
   };
   const handleForgot = async () => {
+    setemailsending(true);
     try {
       await fetch("/api/auth/forgot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),
       })
-      alert("A link was sent to your email to reset your PIN.")
+      // alert("A link was sent to your email to reset your PIN.")
+      setemailsending(false);
+      setemailsent(true);
+      setTimeout(() => { setemailsent(false); }, 4000);
     } catch (err) {
-      alert("Unable to process request.")
+      alert("Unable to send reset link.")
     }
   }
 
@@ -303,13 +308,24 @@ export default function ProfilePage() {
                     </button>
                   </div>
 
-                  <button
+                {emailsent ? (
+                  <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                    A link was sent to your email to reset your PIN.
+                  </div>
+                ):(
+                  emailsending ? (
+                    <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                      Sending reset link...
+                    </div>
+                  ) : (
+                    <button
                     type="button"
                     onClick={handleForgot}
-                    className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-                  >
+                    className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors py-2">
                     Forgot password?
                   </button>
+                  )
+                )}
                 </form>
               </div>
             </div>
