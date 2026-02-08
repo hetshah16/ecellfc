@@ -108,7 +108,7 @@ const me =
       </div>
     )
   }
-   const top3 = leaders.slice(0, 3)
+   const top3 = page===1?leaders.slice(0, 3):[];
   // ✅ Page live
   return (
     <div className="min-h-screen bg-background">
