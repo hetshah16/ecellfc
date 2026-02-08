@@ -42,17 +42,29 @@ export default function PageSettingsAdminPage() {
   }, [])
 
   const updatePage = async (page) => {
-    try {
-      await axios.post("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/page-settings/update", {
+  try {
+    await axios.post(
+      "/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/page-settings/update",
+      {
         ...page,
-        updated_by: admin.admin_id
-      })
-      alert("Saved")
-    } catch (err) {
-      alert("Failed to update")
-    }
+        opens_at: localToUTC(page.opens_at),
+        closes_at: localToUTC(page.closes_at),
+        updated_by: admin.admin_id,
+      }
+    )
+    alert("Saved")
+  } catch (err) {
+    alert("Failed to update")
   }
+}
 
+
+    const localToUTC = (localDateTime) => {
+        if (!localDateTime) return null
+
+        const date = new Date(localDateTime) // browser local time (IST)
+        return date.toISOString().slice(0, 19).replace("T", " ")
+    }
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
