@@ -71,9 +71,7 @@ export default function AdminDashboard({ admin }) {
       setSelected(null)
       setAmount("")
 
-      setTimeout(() => {
-        setMsg(null)
-      }, 1000)
+      
       const updatedRes = await axios.get("/api/admin/users")
       const updated = updatedRes.data
       setUsers(Array.isArray(updated) ? updated : users)
@@ -214,6 +212,18 @@ export default function AdminDashboard({ admin }) {
             <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
               {msg}
             </div>
+          )}
+          {msg && (
+            <button
+              onClick={() => {
+                setMsg(null)
+                setErr(null)
+              }}
+              className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+            >
+              Done
+            </button>
+     
           )}
       </div>
     </div>

@@ -79,7 +79,7 @@ export default function LoginPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-            <p className="text-muted-foreground">Sign in to your account</p>
+            <p className="text-muted-foreground">Login in to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -117,7 +117,7 @@ export default function LoginPage() {
             )}
             {success && (
               <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
-                Signin successful! Redirecting...
+                Login successful! Redirecting...
               </div>
             )}
 
@@ -127,7 +127,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-2.5 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Logining in..." : "Login"}
             </button>
           </form>
 

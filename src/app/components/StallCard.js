@@ -13,7 +13,7 @@ export default function StallCard({ stall }) {
               <h3 className="font-semibold text-lg group-hover:text-primary transition-colors line-clamp-1">
                 {stall.stall_name}
               </h3>
-              <p className="text-xs text-muted-foreground mt-1">Stall Id: {stall.stall_id}</p>
+              <p className="text-xs text-muted-foreground mt-1">Stall ID: {stall.stall_id}</p>
             </div>
           </div>
           <div className="pt-4 border-t border-border flex items-center justify-between">
