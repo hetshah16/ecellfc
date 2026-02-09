@@ -31,16 +31,27 @@ export default function Navbar({ coins, user }) {
       <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/profile" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
-            <Link href="/home" className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+          <div className="flex items-center gap-3">
+          {/* Logo + App Name → /home */}
+          <Link
+            href="/home"
+            className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition"
+          >
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               E
-            </Link>
-            <span className="hidden sm:inline">E-Cell FC 2k26</span>
-            <div className="justify-end flex gap-2">
-              <p className="text-xl text-muted-foreground flex justify-center items-center"></p>
-              <div className="text-xl text-muted-foreground">{user}</div>
             </div>
+            <span className="hidden sm:inline">E-Cell FC 2k26</span>
           </Link>
+
+          {/* Username → /profile */}
+          <Link
+            href="/profile"
+            className="text-base text-muted-foreground font-medium hover:text-foreground transition leading-none"
+          >
+            {user}
+          </Link>
+          </div>
+
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
