@@ -38,11 +38,12 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
         amount: Number(amount),
       })
       setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
-      setSuccess(res.data.message || "Payment successful")
+      // setSuccess(res.data.message || "Payment successful")
+      setSuccess(`Transfer of ${amount} ⓔ to ${selected.name} successful.`)
       setPhase("done")
       setAmount("")
       setPassword("")
-
+      
       // window.location.reload();
     } catch (err) {
       if (err.response && err.response.data) {
@@ -53,6 +54,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
       }
       setPhase("ready")
       setPassword("")
+      
     }
   }
 
@@ -156,7 +158,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
       )}
 
       {success && (
-        <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
+        <div className="p-4 mt-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
           {success}
         </div>
       )}

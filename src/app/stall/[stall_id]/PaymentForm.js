@@ -37,7 +37,8 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
         password: password,
       })
       setUser(prev => ({...prev, coins: prev.coins - Number(amount)}))
-      setSuccess(res.data.message || "Payment successful")
+      // setSuccess(res.data.message || "Payment successful")
+      setSuccess(`Payment of ${amount} ⓔ to ${stall} successful.`)
       setPhase("done")
       setAmount("")
       setPassword("")
