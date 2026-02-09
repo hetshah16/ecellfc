@@ -121,7 +121,7 @@ export default function AdminSignupPage() {
               borderTop: "1px solid rgba(31,111,235,0.3)",
             }}
           >
-            Sign In
+            Login 
           </button>
         </form>
       </div>

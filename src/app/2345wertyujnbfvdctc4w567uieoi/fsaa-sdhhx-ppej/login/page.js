@@ -78,7 +78,7 @@ export default function AdminLoginPage() {
           {error && <div className={styles.error}>{error}</div>}
 
           <button className={styles.primaryBtn} type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

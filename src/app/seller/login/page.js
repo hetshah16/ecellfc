@@ -62,7 +62,7 @@ export default function SellerLoginPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-            <p className="text-muted-foreground">Sign in to your account</p>
+            <p className="text-muted-foreground">Login to your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
