@@ -40,6 +40,7 @@ export default function SellerProfilePage() {
     fetchSeller()
   }, [router])
 
+
   
   /* ================= UPDATE PASSWORD ================= */
   const handlePasswordUpdate = async (e) => {
