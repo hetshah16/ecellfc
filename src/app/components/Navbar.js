@@ -43,6 +43,7 @@ export default function Navbar({ coins, user }) {
             <span className="hidden sm:inline">E-Cell FC 2k26</span>
           </Link>
 
+
           {/* Username → /profile */}
           <Link
             href="/profile"
