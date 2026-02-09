@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import styles from "../../../login/page.module.css"
-
+import axios from "axios"
+import { useEffect } from "react"
 export default function AdminSignupPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -12,6 +13,7 @@ export default function AdminSignupPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [name, setName] = useState("")
+  const [admin, setAdmin] = useState(null)
   const validate = () => {
     if (!name) return "Name is required"
     if (!email) return "Email is required"
@@ -21,7 +23,24 @@ export default function AdminSignupPage() {
     if (password !== confirm) return "Passwords do not match"
     return ""
   }
-
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axios.get("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/me")
+        setAdmin(res.data.admin)
+      } catch (err) {
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          alert("Session expired or invalid. Please log in again.")
+          router.push("/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/login")
+        } else {
+          console.error("Failed to fetch Super admin:", err)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAdmin()
+  }, [router])
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
