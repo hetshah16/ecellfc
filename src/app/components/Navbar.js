@@ -32,9 +32,9 @@ export default function Navbar({ coins, user }) {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/profile" className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+            <Link href="/home" className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
               E
-            </div>
+            </Link>
             <span className="hidden sm:inline">E-Cell FC 2k26</span>
             <div className="justify-end flex gap-2">
               <p className="text-xl text-muted-foreground flex justify-center items-center"></p>
@@ -51,7 +51,7 @@ export default function Navbar({ coins, user }) {
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 }`}
             >
-              Browse
+              Browse Stalls
             </Link>
             <Link
               href="/transfer"
@@ -117,7 +117,7 @@ export default function Navbar({ coins, user }) {
         {open && (
           <div className="md:hidden border-t border-border bg-card divide-y divide-border">
             <Link href="/home" className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium">
-              Browse
+              Browse Stalls
             </Link>
             <Link
               href="/transfer"
