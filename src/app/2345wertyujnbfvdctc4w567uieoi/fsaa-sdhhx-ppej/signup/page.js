@@ -30,7 +30,7 @@ export default function AdminSignupPage() {
 
     try {
       setLoading(true)
-      const res = await fetch("/api/admin/signup", {
+      const res = await fetch("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
