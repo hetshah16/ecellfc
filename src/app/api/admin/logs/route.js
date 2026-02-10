@@ -84,7 +84,7 @@ export async function GET(req) {
     // DB is IST → convert filter UTC → IST for comparison
     if (dateFrom) {
       whereParts.push(
-        "timestamp >= CONVERT_TZ(?, '+00:00', '+05:30')"
+        "timestamp >= CONVERT_TZ(?, '+00:00', '+00:00')"
       );
       values.push(dateFrom);
     }
