@@ -164,7 +164,7 @@ export default function AdminLogsPage() {
 
   function istToUtcISOString(value) {
     // value = "YYYY-MM-DDTHH:mm"
-    return new Date(value + ":00+05:30").toISOString()
+    return new Date(value + ":00+00:00").toISOString()
   }
   /* ---------- Fetch ---------- */
   async function fetchLogs() {
