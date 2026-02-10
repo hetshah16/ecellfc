@@ -9,7 +9,7 @@ import axios from "axios"
 function formatIST(iso) {
   if (!iso) return ""
   return new Date(iso).toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
+    timeZone: "UTC",
     year: "numeric",
     month: "short",
     day: "2-digit",
@@ -258,7 +258,7 @@ export default function AdminLogsPage() {
                   <tr key={i}>
                     {headers.map((h) => (
                       <td key={h} style={styles.td}>
-                        
+                        {h === "timestamp" ? formatIST(r[h]) : String(r[h] ?? "")}
                       </td>
                     ))}
                   </tr>

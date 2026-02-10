@@ -119,7 +119,7 @@ export async function GET(req) {
         receiver_email,
         method,
         amount,
-        timestamp,
+        CONVERT_TZ(timestamp, '-05:30', '+00:00') AS timestamp
       FROM recharge_log
       ${whereSql}
       ORDER BY ${sortField} ${sortDir}
