@@ -164,7 +164,7 @@ export default function AdminLogsPage() {
 
   function istToUtcISOString(value) {
     // value = "YYYY-MM-DDTHH:mm"
-    return new Date(value + ":00+00:00").toISOString()
+    return new Date(value + ":00+11:00").toISOString()
   }
   /* ---------- Fetch ---------- */
   async function fetchLogs() {
@@ -258,7 +258,7 @@ export default function AdminLogsPage() {
                   <tr key={i}>
                     {headers.map((h) => (
                       <td key={h} style={styles.td}>
-                        {h === "timestamp" ? formatIST(r[h]) : String(r[h] ?? "")}
+                        
                       </td>
                     ))}
                   </tr>
