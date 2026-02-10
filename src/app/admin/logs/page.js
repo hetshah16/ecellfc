@@ -153,7 +153,10 @@ export default function AdminLogsPage() {
   useEffect(() => {
     axios
       .get("/api/admin/me")
-      .then((res) => setAdmin(res.data.admin))
+      .then((res) => {
+        setAdmin(res.data.admin)
+        setMethodFilter(res.data.admin.email)
+      })
       .catch(() => router.push("/admin/login"))
       .finally(() => setLoading(false))
   }, [router])
