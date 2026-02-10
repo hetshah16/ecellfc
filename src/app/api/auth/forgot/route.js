@@ -18,6 +18,11 @@ export async function POST(req) {
       // For privacy, return success even if email is not found.
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }
+    const [requests] = await pool.execute("SELECT COUNT(*) AS count FROM password_resets WHERE email = ? AND created_at > NOW() - INTERVAL 10 MINUTE", [email]);
+
+    if (requests[0].count >= 3) {
+      return new Response(JSON.stringify({ error: "Too many password reset requests. Try after 10 hours or contact the team." }), { status: 429 });
+    }
 
     // create token
     const token = crypto.randomBytes(32).toString("hex");

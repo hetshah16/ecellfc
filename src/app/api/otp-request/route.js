@@ -25,7 +25,7 @@ export async function POST(req) {
       req.headers.get("x-forwarded-for")?.split(",")[0] ||
       "unknown";
 
-    /* ---------- RATE LIMIT: PHONE ---------- */
+      
     const [phoneRows] = await pool.execute(
       `
       SELECT COUNT(*) AS count
