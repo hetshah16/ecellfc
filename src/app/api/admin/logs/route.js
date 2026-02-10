@@ -14,7 +14,23 @@ const ALLOWED_SORT_FIELDS = [
 ];
 
 export async function GET(req) {
+
   try {
+    const token = req.cookies.get("token")?.value;
+    if (!token) {
+      return NextResponse.json(
+        { error: "Not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const payload = verifyToken1(token);
+    if (!payload) {
+      return NextResponse.json(
+        { error: "Session expired. Please log in again." },
+        { status: 401 }
+      );
+    }
     const url = new URL(req.url);
     const params = url.searchParams;
 
