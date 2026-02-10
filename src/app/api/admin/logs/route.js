@@ -84,7 +84,7 @@ export async function GET(req) {
     // DB is IST → convert filter UTC → IST for comparison
     if (dateFrom) {
       whereParts.push(
-        "timestamp >= CONVERT_TZ(?, '+00:00', '+00:00')"
+        "timestamp >= CONVERT_TZ(?, '+00:00', '+05:30')"
       );
       values.push(dateFrom);
     }
@@ -119,7 +119,7 @@ export async function GET(req) {
         receiver_email,
         method,
         amount,
-        CONVERT_TZ(timestamp, '-05:30', '+00:00') AS timestamp
+        CONVERT_TZ(timestamp, '00:00', '+00:00') AS timestamp
       FROM recharge_log
       ${whereSql}
       ORDER BY ${sortField} ${sortDir}
