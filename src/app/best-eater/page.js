@@ -55,9 +55,7 @@ useEffect(() => {
   const fetchLeaderboard = async () => {
     try {
       setLoading(true)
-      const res = await axios.get(
-        `/api/best-eater?page=${page}&limit=${limit}`
-      )
+      const res = await axios.get(`/api/best-eater?page=${page}&limit=${limit}`)
       setLeaders(res.data)
     } catch (err) {
       console.error(err)
@@ -116,7 +114,7 @@ const me =
      
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">🍔 Best Eaters Leaderboard</h1>
+        <h1 className="text-3xl font-bold mb-6"> Best Eaters Leaderboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {top3.map((user, index) => (
             <div
@@ -144,7 +142,7 @@ const me =
               </p>
 
               <p className="mt-2 text-lg font-bold text-primary">
-                💰 {user.coins} E-Coins
+                {user.coins} ⓔ
               </p>
             </div>
           ))}
@@ -173,7 +171,7 @@ const me =
 
                 {/* Coins */}
                 <div className="font-semibold whitespace-nowrap">
-                  💰 {me.coins}
+                  {me.coins} ⓔ
                 </div>
               </div>
             </div>
@@ -196,7 +194,7 @@ const me =
               </div>
 
               <div className="font-semibold">
-                💰 {u.coins}
+                {u.coins} ⓔ
               </div>
             </div>
           ))}
