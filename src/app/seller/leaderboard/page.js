@@ -138,7 +138,7 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Rest of leaderboard */}
-        <div className="bg-card border rounded-2xl overflow-hidden">
+        {/* <div className="bg-card border rounded-2xl overflow-hidden">
           <div className="p-4 border-b text-sm font-medium text-muted-foreground">
             Full Rankings
           </div>
@@ -171,7 +171,7 @@ export default function LeaderboardPage() {
               )
             })}
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   )

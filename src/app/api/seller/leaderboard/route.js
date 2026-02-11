@@ -1,5 +1,5 @@
 import pool from "@/lib/db";
-import { verifyToken3 } from "@/lib/jwt"; // your token verification function
+import { verifyToken2 } from "@/lib/jwt"; // your token verification function
 export async function GET(req) {
   try {
     const token = req.cookies.get("token")?.value;
@@ -10,7 +10,7 @@ export async function GET(req) {
       );
     }
 
-    const payload = verifyToken1(token);
+    const payload = verifyToken2(token);
     if (!payload) {
       return NextResponse.json(
         { error: "Session expired. Please log in again." },
