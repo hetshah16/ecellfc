@@ -14,23 +14,23 @@ export default function LeaderboardPage() {
   const router = useRouter()
 
   // 🔐 Fetch seller info
-  useEffect(() => {
-    const fetchSeller = async () => {
-      try {
-        const r = await axios.get("/api/seller/me")
-        const sellerRes = await axios.post("/api/seller/info", {
-          stall_id: r.data.user.seller_id,
-        })
+  // useEffect(() => {
+  //   const fetchSeller = async () => {
+  //     try {
+  //       const r = await axios.get("/api/seller/me")
+  //       const sellerRes = await axios.post("/api/seller/info", {
+  //         stall_id: r.data.user.seller_id,
+  //       })
 
-        setSeller(sellerRes.data)
-      } catch (err) {
-        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-          router.push("/seller/login")
-        }
-      }
-    }
-    fetchSeller()
-  }, [router])
+  //       setSeller(sellerRes.data)
+  //     } catch (err) {
+  //       if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+  //         router.push("/seller/login")
+  //       }
+  //     }
+  //   }
+  //   fetchSeller()
+  // }, [router])
 
   // 📄 Check if page is live
   useEffect(() => {
