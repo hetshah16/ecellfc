@@ -1,6 +1,6 @@
 import pool from "@/lib/db"
 import { verifyToken3 } from "@/lib/jwt"; // your token verification function
-export async function GET() {
+export async function GET(req) {
   try {
     const token = req.cookies.get("token")?.value;
     if (!token) {
