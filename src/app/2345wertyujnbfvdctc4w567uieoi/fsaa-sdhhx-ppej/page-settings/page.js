@@ -49,7 +49,7 @@ export default function PageSettingsAdminPage() {
         ...page,
         opens_at: localToUTC(page.opens_at),
         closes_at: localToUTC(page.closes_at),
-        updated_by: admin.admin_id,
+        updated_by: admin.superadmin_id,
       }
     )
     alert("Saved")
