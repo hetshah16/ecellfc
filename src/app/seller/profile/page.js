@@ -145,7 +145,7 @@ export default function SellerProfilePage() {
 
                 <button
                 onClick={() => setShowModal(true)}
-                className="mt-6 bg-primary text-primary-foreground rounded-lg py-2 font-semibold hover:opacity-90 transition"
+                className="mt-6 bg-primary text-primary-foreground rounded-full py-2 font-semibold hover:opacity-90 transition"
                 >
                 Update Password
                 </button>
@@ -154,7 +154,7 @@ export default function SellerProfilePage() {
         </main>
             {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-                <div className="w-full max-w-md bg-card border border-border rounded-xl p-6">
+                <div className="w-full max-w-md bg-card border border-border rounded-2xl p-6">
                 <h2 className="text-2xl font-bold mb-1">Update Password</h2>
                 <p className="text-muted-foreground mb-4">
                     Enter your current password to continue
@@ -166,7 +166,7 @@ export default function SellerProfilePage() {
                     </label>
                     <input
                     type="password"
-                    className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:ring-2 focus:ring-primary"
+                    className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     />
@@ -176,7 +176,7 @@ export default function SellerProfilePage() {
                     </label>
                     <input
                     type="password"
-                    className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:ring-2 focus:ring-primary"
+                    className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     />
@@ -197,7 +197,7 @@ export default function SellerProfilePage() {
                     <button
                         type="submit"
                         disabled={submitting}
-                        className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-semibold hover:opacity-90 transition"
+                        className="flex-1 bg-primary text-primary-foreground rounded-full py-2 font-semibold hover:opacity-90 transition"
                     >
                         {submitting ? "Updating..." : "Update Password"}
                     </button>

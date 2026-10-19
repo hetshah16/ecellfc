@@ -82,7 +82,8 @@ export default function ResetPasswordPage() {
           </p>
         </div>
 
-        <div className="bg-card border border-border rounded-xl p-8">
+        <div className="bg-card border border-border rounded-[2rem] overflow-hidden p-8">
+          <div className="tile-band -mx-8 -mt-8 mb-8" />
           <Suspense fallback={
             <div className="flex items-center justify-center py-8">
               <div className="w-8 h-8 border-4 border-border border-t-primary rounded-full animate-spin"></div>

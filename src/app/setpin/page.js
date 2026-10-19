@@ -89,7 +89,8 @@ export default function SetPinPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-20 bg-card border rounded-xl p-8 shadow-lg">
+    <div className="max-w-md mx-auto mt-20 bg-card border rounded-[2rem] overflow-hidden p-8 shadow-lg">
+      <div className="tile-band -mx-8 -mt-8 mb-8" />
       <h2 className="text-2xl font-bold mb-2">Set Security PIN</h2>
       <p className="text-muted-foreground mb-6">
         Set a 4-digit PIN to protect your account
@@ -104,7 +105,7 @@ export default function SetPinPage() {
           value={pin}
           onChange={(e) => setPin(e.target.value)}
           placeholder="4-digit PIN"
-          className="w-full px-4 py-2.5 bg-input border rounded-lg"
+          className="w-full px-4 py-2.5 bg-input border rounded-xl"
         />
 
         <input
@@ -115,7 +116,7 @@ export default function SetPinPage() {
           value={confirmPin}
           onChange={(e) => setConfirmPin(e.target.value)}
           placeholder="Confirm PIN"
-          className="w-full px-4 py-2.5 bg-input border rounded-lg"
+          className="w-full px-4 py-2.5 bg-input border rounded-xl"
         />
 
         <button

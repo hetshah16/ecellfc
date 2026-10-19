@@ -18,27 +18,27 @@ export default function AdminNavbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-40 px-3 pt-3 sm:px-6">
+      <nav className="liquid-glass max-w-7xl mx-auto pl-3 sm:pl-4 pr-2 h-16 rounded-full flex items-center justify-between gap-3">
         {/* Brand */}
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+        <div className="serif flex items-center gap-2.5 font-bold text-lg">
+          <div className="serif w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-primary-foreground font-bold shadow-md ring-1 ring-white/70">
             A
           </div>
           <span className="hidden sm:inline">Admin Console</span>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-0.5 rounded-full bg-muted p-1 ring-1 ring-white/70">
           <Link
             href="/admin/home"
-            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
+            className="px-4 py-1.5 text-muted-foreground hover:text-primary rounded-full hover:bg-white/70 transition-colors font-semibold text-sm"
           >
             Recharge
           </Link>
           <Link
             href="/admin/logs"
-            className="px-4 py-2 text-foreground hover:text-primary rounded-lg hover:bg-muted/50 transition-colors font-medium text-sm"
+            className="px-4 py-1.5 text-muted-foreground hover:text-primary rounded-full hover:bg-white/70 transition-colors font-semibold text-sm"
           >
             Logs
           </Link>
@@ -47,7 +47,7 @@ export default function AdminNavbar() {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="px-4 py-2 text-foreground hover:text-destructive transition-colors font-medium text-sm"
+          className="glass-pill rounded-full px-4 py-2 text-destructive hover:bg-white/80 transition-colors font-semibold text-sm"
         >
           Logout
         </button>

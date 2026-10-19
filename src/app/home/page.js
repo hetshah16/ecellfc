@@ -63,8 +63,9 @@ return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
           {/* Stalls Section */}
           <div>
-            <div className="mb-4">
-              <h2 className="text-3xl font-bold mb-2">Available Stalls</h2>
+            <div className="mb-6">
+              <p className="script text-2xl text-gold">Buon appetito</p>
+              <h2 className="text-4xl font-bold mb-2">Available Stalls</h2>
               <p className="text-muted-foreground">
                 Browse and order from our partner food vendors
               </p>
@@ -80,11 +81,11 @@ return (
                 </div>
               </div>
             ) : stalls.length === 0 ? (
-              <div className="text-center py-16 bg-card border border-border rounded-xl">
+              <div className="text-center py-16 bg-card border border-border rounded-2xl">
                 <p className="text-muted-foreground">No stalls available yet</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 pb-16">
                 {stalls.map((stall) => (
                   <StallCard stall={stall} key={stall.stall_id} />
                 ))}

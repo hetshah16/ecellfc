@@ -93,12 +93,12 @@ export default function AdminDashboard({ admin }) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
       {/* Users List */}
       <div className="lg:col-span-2">
-        <div className="bg-card border border-border rounded-xl overflow-hidden">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden">
           {/* Search Header */}
           <div className="p-6 border-b border-border">
             <h2 className="text-xl font-semibold mb-4">User Directory</h2>
             <input
-              className="w-full px-4 py-2 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-2 bg-input border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Search by name, email or ID..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -137,7 +137,7 @@ export default function AdminDashboard({ admin }) {
       </div>
 
       {/* Recharge Panel */}
-      <div className="bg-card border border-border rounded-xl p-6 h-fit">
+      <div className="bg-card border border-border rounded-2xl p-6 h-fit">
         <h3 className="text-lg font-semibold mb-6">Recharge E-coins</h3>
 
         {!selected ? (
@@ -168,7 +168,7 @@ export default function AdminDashboard({ admin }) {
             <div>
               <label className="text-sm font-medium text-muted-foreground mb-2 block">Amount (E-coins)</label>
               <input
-                className="w-full px-4 py-2 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2 bg-input border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 type="number"
                 min="1"
                 value={amount}
@@ -181,14 +181,14 @@ export default function AdminDashboard({ admin }) {
             {/* Buttons */}
             <div className="grid grid-cols-2 gap-2">
               <button
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 onClick={handleRecharge}
                 disabled={!selected || loading}
               >
                 {loading ? "Processing..." : "Recharge"}
               </button>
               <button
-                className="px-4 py-2 bg-muted text-foreground rounded-lg hover:bg-muted/80 font-medium transition-colors"
+                className="px-4 py-2 bg-muted text-foreground rounded-full hover:bg-muted/80 font-medium transition-colors"
                 onClick={() => {
                   setSelected(null)
                   setAmount("")
@@ -204,12 +204,12 @@ export default function AdminDashboard({ admin }) {
 
           {/* Messages */}
           {err && (
-            <div className="p-3 mt-4 bg-destructive/10 border border-destructive rounded-lg text-sm text-destructive">
+            <div className="p-3 mt-4 bg-destructive/10 border border-destructive/40 rounded-lg text-sm text-destructive">
               {err}
             </div>
           )}
           {msg && (
-            <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
+            <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-700 text-sm">
               {msg}
             </div>
           )}
@@ -219,7 +219,7 @@ export default function AdminDashboard({ admin }) {
                 setMsg(null)
                 setErr(null)
               }}
-              className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+              className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full transition-colors"
             >
               Done
             </button>

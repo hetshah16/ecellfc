@@ -96,9 +96,10 @@ export default function PageSettingsAdminPage() {
                   </p>
                 </div>
 
-                <label className="flex items-center gap-2">
+                <label className="flex min-h-11 cursor-pointer items-center gap-2">
                   <input
                     type="checkbox"
+                    className="h-5 w-5"
                     checked={!!page.is_enabled}
                     onChange={(e) => {
                       const copy = [...pages]

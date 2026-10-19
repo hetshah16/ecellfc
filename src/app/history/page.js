@@ -75,7 +75,7 @@ export default function History() {
             {transactions.map((tx, idx) => (
               <div
                 key={idx}
-                className="flex items-center justify-between p-4 bg-card border border-border rounded-xl"
+                className="flex items-center justify-between p-4 bg-card border border-border rounded-2xl"
               >
                 <div className="min-w-0">
                   <p className="font-medium truncate">{tx.name} <span className="text-xs text-muted-foreground">{tx.email}</span></p>

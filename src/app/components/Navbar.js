@@ -5,6 +5,15 @@ import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import BrandMark from "./amalfi/BrandMark"
+
+const links = [
+  { href: "/home", label: "Browse Stalls" },
+  { href: "/transfer", label: "Transfer" },
+  { href: "/profile", label: "Profile" },
+  { href: "/history", label: "History" },
+  { href: "/best-eater", label: "Best Eater" },
+]
 
 export default function Navbar({ coins, user }) {
   const router = useRouter()
@@ -28,153 +37,105 @@ export default function Navbar({ coins, user }) {
 
   return (
     <div>
-      <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-          {/* Logo + App Name → /home */}
-          <Link
-            href="/home"
-            className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition"
-          >
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
-              E
-            </div>
-            <span className="hidden sm:inline">E-Cell FC 2k26</span>
-          </Link>
-
-
-          {/* Username → /profile */}
-          <Link
-            href="/profile"
-            className="text-base text-muted-foreground font-medium hover:text-foreground transition leading-none"
-          >
-            {user}
-          </Link>
-          </div>
-
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
-            <Link
-              href="/home"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/home")
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-            >
-              Browse Stalls
+      <header className="sticky top-0 z-40 px-3 pt-3 sm:px-6">
+        <nav className="liquid-glass mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 rounded-full pl-3 pr-2 sm:pl-4">
+          {/* Logo + username */}
+          <div className="flex min-w-0 items-center gap-3">
+            <Link href="/home" className="transition hover:opacity-85" aria-label="E-Cell FC home">
+              <BrandMark labelClassName="hidden sm:inline" />
             </Link>
-            <Link
-              href="/transfer"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/transfer")
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-            >
-              Transfer
-            </Link>
+
             <Link
               href="/profile"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/profile")
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
+              className="glass-pill hidden max-w-[10rem] truncate rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:text-foreground lg:block"
             >
-              Profile
-            </Link>
-            <Link
-              href="/history"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/history")
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-            >
-              History
-            </Link>
-            <Link
-              href="/best-eater"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${isActive("/best-eater")
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
-            >
-              Best Eater
+              {user}
             </Link>
           </div>
 
-          {/* Desktop Logout Button */}
+          {/* Desktop segmented navigation */}
+          <div className="hidden items-center gap-0.5 rounded-full bg-muted p-1 ring-1 ring-white/70 md:flex">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`rounded-full px-3.5 py-1.5 text-sm font-semibold transition-all lg:px-4 ${
+                  isActive(l.href)
+                    ? "bg-white text-primary shadow-md ring-1 ring-white"
+                    : "text-muted-foreground hover:bg-white/60 hover:text-foreground"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop logout */}
           <div className="hidden md:block">
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
+              className="glass-pill rounded-full px-4 py-2 text-sm font-semibold text-destructive transition hover:bg-white/80"
             >
               Logout
             </button>
           </div>
-                
-          {/* Mobile Hamburger */}
+
+          {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+            className="glass-pill grid h-11 w-11 place-items-center rounded-full transition md:hidden"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
+            aria-expanded={open}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {open ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12M18 6L6 18" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7h16M4 12h16M4 17h16" />
+              )}
             </svg>
           </button>
         </nav>
-                
-        {/* Mobile Menu */}
+
+        {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-border bg-card divide-y divide-border">
-            <Link href="/home" className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium">
-              Browse Stalls
-            </Link>
-            <Link
-              href="/transfer"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
-            >
-              Transfer
-            </Link>
-            <Link
-              href="/profile"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
-            >
-              Profile
-            </Link>
-            <Link
-              href="/history"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
-            >
-              History
-            </Link>
-            <Link
-              href="/best-eater"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
-            >
-              Best Eater
-            </Link>
+          <div className="liquid-glass animate-rise mx-auto mt-2 max-w-7xl overflow-hidden rounded-3xl p-2 md:hidden">
+            {user && (
+              <p className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {user}
+              </p>
+            )}
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`block rounded-2xl px-4 py-3 font-semibold transition-colors ${
+                  isActive(l.href) ? "bg-white text-primary shadow-sm" : "text-foreground hover:bg-white/60"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
+              className="w-full rounded-2xl px-4 py-3 text-left font-semibold text-destructive transition-colors hover:bg-white/60"
             >
               Logout
             </button>
           </div>
         )}
       </header>
-      <div className="mt-3 flex justify-end items-center h-12 px-6">
-        <div className="flex gap-1">
-          <p className="text-xl text-muted-foreground flex items-center">
-            Your Balance:
-          </p>
-          <div className="text-2xl font-bold text-primary">{coins} ⓔ</div>
+
+      {/* Balance */}
+      <div className="mx-auto mt-4 flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
+        <div className="glass-pill flex items-center gap-3 rounded-full py-1.5 pr-4 pl-1.5">
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-lemon text-lg font-bold text-navy shadow-sm ring-2 ring-white">
+            ⓔ
+          </span>
+          <p className="text-sm font-medium text-muted-foreground">Your Balance</p>
+          <div className="serif text-2xl font-bold text-primary">{coins} ⓔ</div>
         </div>
       </div>
-
-
-
     </div>
   )
 }

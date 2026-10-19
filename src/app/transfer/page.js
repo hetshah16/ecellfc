@@ -122,7 +122,7 @@ export default function TransferPage() {
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder="Name, email, or ID..."
-                className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 bg-input border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
@@ -152,7 +152,7 @@ export default function TransferPage() {
 
           {/* Payment Form */}
           {selected && (
-              <div className="bg-card border border-border rounded-xl p-4 mb-5">
+              <div className="bg-card border border-border rounded-2xl p-4 mb-5">
               <p className="text-muted-foreground mb-2">Transfer Your E-coins to</p>
               <div className="bg-muted/50 p-4 rounded-lg space-y-3">
               <div>

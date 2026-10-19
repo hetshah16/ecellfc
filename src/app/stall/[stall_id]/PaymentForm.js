@@ -72,21 +72,21 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter amount"
-              className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full px-4 py-3 bg-input border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
             <p className="text-xs text-muted-foreground mt-2">Available: {user?.coins} ⓔ</p>
           </div>
           <div className="flex gap-4">
             <button
               type="submit"
-              className="w-1/2 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
+              className="w-1/2 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-full transition-colors"
             >
               Continue
             </button>
             <button
               onClick={() => setPay(false)}
               disabled={phase === "sending"}
-              className="w-1/2 py-3 bg-muted text-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold rounded-lg transition-colors"
+              className="w-1/2 py-3 bg-muted text-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-semibold rounded-full transition-colors"
             >
               Cancel
             </button>
@@ -116,14 +116,14 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
                 onInput={(e) => e.target.setCustomValidity("")}
                 placeholder="••••"
                 required
-                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 bg-input border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
           </div>
           <div className="flex gap-2">
             <button
               type="submit"
               disabled={phase === "sending"}
-              className="flex-1 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-lg transition-colors"
+              className="flex-1 py-3 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground font-semibold rounded-full transition-colors"
             >
               {phase === "sending" ? "Processing..." : "Confirm"}
             </button>
@@ -131,7 +131,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
               type="button"
               disabled={phase === "sending"}
               onClick={() => setPhase("ready")}
-              className="flex-1 py-3 bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-semibold rounded-lg transition-colors"
+              className="flex-1 py-3 bg-muted hover:bg-muted/80 disabled:opacity-50 disabled:cursor-not-allowed text-foreground font-semibold rounded-full transition-colors"
             >
               Cancel
             </button> 
@@ -159,13 +159,13 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
       )}
 
       {error && (
-        <div className="p-4 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm mt-4">
+        <div className="p-4 bg-destructive/10 border border-destructive/40 rounded-lg text-destructive text-sm mt-4">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400 text-sm">
+        <div className="p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-700 text-sm">
           {success}
         </div>
       )}
@@ -177,7 +177,7 @@ export default function PaymentForm({stall, stallId, user, setPay, setUser}) {
             setPhase("ready")
             setPay(false)
           }}
-          className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-colors"
+          className="mt-4 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full transition-colors"
         >
           Done
         </button>

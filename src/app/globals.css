@@ -1,73 +1,90 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* The site is always the light Amalfi palette: `dark:` classes only apply under a
+   .dark ancestor (none exists), never from the OS dark-mode setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------
+   Amalfi Coast theme — cream paper, cobalt majolica, lemon & gold,
+   with Apple-style "liquid glass" surfaces.
+   ------------------------------------------------------------------ */
+
 :root {
-  --background: #0f1117;
-  --foreground: #e6edf3;
-  --card: #161b22;
-  --card-foreground: #e6edf3;
-  --popover: #fff;
-  --popover-foreground: #0d1117;
-  --primary: #1f6feb;
-  --primary-foreground: #fff;
-  --secondary: #238636;
-  --secondary-foreground: #fff;
-  --muted: #30363d;
-  --muted-foreground: #8b949e;
-  --accent: #1f6feb;
-  --accent-foreground: #fff;
-  --destructive: #da3633;
-  --destructive-foreground: #fff;
-  --border: #30363d;
-  --input: #0d1117;
-  --ring: #1f6feb;
-  --chart-1: #3b82f6;
-  --chart-2: #10b981;
-  --chart-3: #f59e0b;
-  --chart-4: #8b5cf6;
-  --chart-5: #ec4899;
-  --radius: 0.75rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Amalfi palette */
+  --amalfi-cream: #fbf8f1;
+  --amalfi-paper: #fffdf7;
+  --amalfi-navy: #13235a;
+  --amalfi-cobalt: #2a51b8;
+  --amalfi-cobalt-deep: #1b3a8f;
+  --amalfi-sky: #6f8fdc;
+  --amalfi-lemon: #f1cd3f;
+  --amalfi-lemon-soft: #fbeeb0;
+  --amalfi-gold: #a8820f;
+  --amalfi-leaf: #5b9a3c;
+
+  /* App tokens (consumed by Tailwind classes across every page) */
+  --background: var(--amalfi-cream);
+  --foreground: var(--amalfi-navy);
+  --card: rgb(255 255 255 / 0.58);
+  --card-foreground: var(--amalfi-navy);
+  --popover: #ffffff;
+  --popover-foreground: var(--amalfi-navy);
+  --primary: var(--amalfi-cobalt);
+  --primary-foreground: #ffffff;
+  --secondary: var(--amalfi-lemon);
+  --secondary-foreground: var(--amalfi-navy);
+  --muted: rgb(19 35 90 / 0.06);
+  --muted-foreground: #56618a;
+  --accent: var(--amalfi-lemon);
+  --accent-foreground: var(--amalfi-navy);
+  --destructive: #c4372c;
+  --destructive-foreground: #ffffff;
+  --border: rgb(19 35 90 / 0.11);
+  --input: rgb(255 255 255 / 0.72);
+  --ring: var(--amalfi-cobalt);
+  --chart-1: var(--amalfi-cobalt);
+  --chart-2: var(--amalfi-lemon);
+  --chart-3: var(--amalfi-sky);
+  --chart-4: var(--amalfi-gold);
+  --chart-5: var(--amalfi-leaf);
+  --radius: 1rem;
+  --sidebar: rgb(255 255 255 / 0.6);
+  --sidebar-foreground: var(--amalfi-navy);
+  --sidebar-primary: var(--amalfi-cobalt);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgb(19 35 90 / 0.06);
+  --sidebar-accent-foreground: var(--amalfi-navy);
+  --sidebar-border: rgb(19 35 90 / 0.11);
+  --sidebar-ring: var(--amalfi-cobalt);
+
+  /* Liquid glass recipe */
+  --glass-fill: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.72) 0%,
+    rgb(255 255 255 / 0.48) 100%
+  );
+  --glass-edge: rgb(255 255 255 / 0.75);
+  --glass-blur: blur(22px) saturate(175%);
+  --glass-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    inset 0 -1px 0 rgb(19 35 90 / 0.04),
+    0 1px 2px rgb(19 35 90 / 0.05),
+    0 18px 40px -20px rgb(19 35 90 / 0.35);
+
+  color-scheme: light;
 }
 
+/* The app always renders in the Amalfi (light) palette */
 .dark {
-  --background: #0d1117;
-  --foreground: #e6edf3;
-  --card: #161b22;
-  --card-foreground: #e6edf3;
-  --popover: #0d1117;
-  --popover-foreground: #e6edf3;
-  --primary: #58a6ff;
-  --primary-foreground: #0d1117;
-  --secondary: #3fb950;
-  --secondary-foreground: #0d1117;
-  --muted: #21262d;
-  --muted-foreground: #8b949e;
-  --accent: #58a6ff;
-  --accent-foreground: #0d1117;
-  --destructive: #f85149;
-  --destructive-foreground: #0d1117;
-  --border: #21262d;
-  --input: #0d1117;
-  --ring: #58a6ff;
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  color-scheme: light;
 }
 
 @theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-script: var(--font-kaushan), cursive;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -92,10 +109,17 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --color-navy: var(--amalfi-navy);
+  --color-cobalt: var(--amalfi-cobalt);
+  --color-sky: var(--amalfi-sky);
+  --color-lemon: var(--amalfi-lemon);
+  --color-gold: var(--amalfi-gold);
+  --color-leaf: var(--amalfi-leaf);
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -106,21 +130,284 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Softer, navy-tinted elevation with a glass top highlight */
+@theme {
+  --shadow-sm: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 2px 8px -2px rgb(19 35 90 / 0.12);
+  --shadow-md: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 10px 24px -12px rgb(19 35 90 / 0.25);
+  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 22px 44px -22px rgb(19 35 90 / 0.38);
+  --shadow-xl: inset 0 1px 0 rgb(255 255 255 / 0.9), 0 30px 60px -28px rgb(19 35 90 / 0.45);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    background-color: var(--amalfi-cream);
+  }
+
   body {
     @apply bg-background text-foreground;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1,
   h2,
-  h3,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+    @apply text-foreground font-bold;
+  }
+
   h4,
   h5,
   h6 {
     @apply text-foreground font-semibold;
+  }
+
+  ::selection {
+    background: var(--amalfi-lemon-soft);
+    color: var(--amalfi-navy);
+  }
+
+  input,
+  select,
+  textarea {
+    background-color: var(--input);
+    color: var(--foreground);
+    border-color: var(--border);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(86 97 138 / 0.65);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: rgb(42 81 184 / 0.55);
+    box-shadow: 0 0 0 4px rgb(42 81 184 / 0.12);
+    background-color: rgb(255 255 255 / 0.92);
+  }
+
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Every solid primary button picks up a glossy, Apple-like pill finish */
+  :is(button, a)[class~="bg-primary"] {
+    background-image: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.22) 0%,
+      rgb(255 255 255 / 0) 55%
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      inset 0 -2px 0 rgb(0 0 0 / 0.08),
+      0 10px 24px -10px rgb(42 81 184 / 0.65);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  :is(button, a)[class~="bg-primary"]:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.4),
+      inset 0 -2px 0 rgb(0 0 0 / 0.08),
+      0 14px 30px -10px rgb(42 81 184 / 0.7);
+  }
+
+  :is(button, a)[class~="bg-primary"]:not(:disabled):active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  /* Liquid glass surface */
+  .liquid-glass {
+    position: relative;
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Thin specular rim, like light catching the edge of glass */
+  .liquid-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      160deg,
+      rgb(255 255 255 / 0.95),
+      rgb(255 255 255 / 0.15) 40%,
+      rgb(255 255 255 / 0) 60%,
+      rgb(255 255 255 / 0.55)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glass-pill {
+    background: rgb(255 255 255 / 0.55);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    backdrop-filter: blur(16px) saturate(170%);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      0 6px 18px -10px rgb(19 35 90 / 0.35);
+  }
+
+  /* Majolica tile band, used on top of cards and in the footer */
+  .tile-band {
+    height: 44px;
+    background-color: var(--amalfi-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='44' viewBox='0 0 88 44'%3E%3Crect width='44' height='44' fill='%23f1cd3f'/%3E%3Cg fill='%2313235a'%3E%3Ccircle cx='22' cy='22' r='5'/%3E%3Cellipse cx='22' cy='10' rx='4' ry='7'/%3E%3Cellipse cx='22' cy='34' rx='4' ry='7'/%3E%3Cellipse cx='10' cy='22' rx='7' ry='4'/%3E%3Cellipse cx='34' cy='22' rx='7' ry='4'/%3E%3C/g%3E%3Ccircle cx='22' cy='22' r='2' fill='%23fffdf7'/%3E%3Crect x='44' width='44' height='44' fill='%232a51b8'/%3E%3Cpath d='M66 6 L70 18 L82 22 L70 26 L66 38 L62 26 L50 22 L62 18Z' fill='%23fffdf7'/%3E%3Ccircle cx='66' cy='22' r='3' fill='%23f1cd3f'/%3E%3C/svg%3E");
+    background-size: 88px 44px;
+    background-repeat: repeat-x;
+    background-position: center;
+    image-rendering: auto;
+  }
+
+  /* Full majolica tile field (hero frame, footer) */
+  .tile-frame {
+    background-color: var(--amalfi-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='144' height='96' viewBox='0 0 144 96'%3E%3Crect x='0' y='0' width='48' height='48' fill='%23f1cd3f'/%3E%3Cg fill='%2313235a'%3E%3Cellipse cx='24' cy='11' rx='5' ry='8.5'/%3E%3Cellipse cx='24' cy='37' rx='5' ry='8.5'/%3E%3Cellipse cx='11' cy='24' rx='8.5' ry='5'/%3E%3Cellipse cx='37' cy='24' rx='8.5' ry='5'/%3E%3Ccircle cx='24' cy='24' r='6'/%3E%3C/g%3E%3Ccircle cx='24' cy='24' r='2.5' fill='%23fffdf7'/%3E%3Crect x='48' y='0' width='48' height='48' fill='%232a51b8'/%3E%3Cpath d='M72 5 L76.5 19.5 L91 24 L76.5 28.5 L72 43 L67.5 28.5 L53 24 L67.5 19.5Z' fill='%23fffdf7'/%3E%3Ccircle cx='72' cy='24' r='4' fill='%23f1cd3f'/%3E%3Crect x='96' y='0' width='48' height='48' fill='%23fffdf7'/%3E%3Cpath d='M120 4 L140 24 L120 44 L100 24Z' fill='none' stroke='%232a51b8' stroke-width='3.5'/%3E%3Cpath d='M120 13 L131 24 L120 35 L109 24Z' fill='%23f1cd3f'/%3E%3Ccircle cx='120' cy='24' r='3.5' fill='%2313235a'/%3E%3Crect x='0' y='48' width='48' height='48' fill='%23fffdf7'/%3E%3Cpath d='M24 52 L44 72 L24 92 L4 72Z' fill='none' stroke='%232a51b8' stroke-width='3.5'/%3E%3Cpath d='M24 61 L35 72 L24 83 L13 72Z' fill='%23f1cd3f'/%3E%3Ccircle cx='24' cy='72' r='3.5' fill='%2313235a'/%3E%3Crect x='48' y='48' width='48' height='48' fill='%2313235a'/%3E%3Cg fill='%23f1cd3f'%3E%3Cellipse cx='72' cy='59' rx='5' ry='8.5'/%3E%3Cellipse cx='72' cy='85' rx='5' ry='8.5'/%3E%3Cellipse cx='59' cy='72' rx='8.5' ry='5'/%3E%3Cellipse cx='85' cy='72' rx='8.5' ry='5'/%3E%3Ccircle cx='72' cy='72' r='6'/%3E%3C/g%3E%3Ccircle cx='72' cy='72' r='2.5' fill='%23fffdf7'/%3E%3Crect x='96' y='48' width='48' height='48' fill='%232a51b8'/%3E%3Cpath d='M120 53 L124.5 67.5 L139 72 L124.5 76.5 L120 91 L115.5 76.5 L101 72 L115.5 67.5Z' fill='%23fffdf7'/%3E%3Ccircle cx='120' cy='72' r='4' fill='%23f1cd3f'/%3E%3Cg fill='none' stroke='%2313235a' stroke-opacity='.18'%3E%3Cpath d='M0 48H144M48 0V96M96 0V96'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 144px 96px;
+  }
+
+  .tile-band-lg {
+    height: 56px;
+    background-size: 112px 56px;
+  }
+
+  .script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .serif {
+    font-family: var(--font-serif);
+  }
+
+  /* Lemon-yellow underline for links and accents */
+  .lemon-underline {
+    background-image: linear-gradient(transparent 62%, rgb(241 205 63 / 0.55) 62%);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Global liquid-glass treatment for every existing card surface.
+   Pages use bg-card / bg-card/50 etc.; this upgrades them all at once.
+   ------------------------------------------------------------------ */
+[class*="bg-card"] {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+@layer components {
+  [class*="bg-card"]:not(header):not(nav) {
+    background-image: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.35) 0%,
+      rgb(255 255 255 / 0) 70%
+    );
+    box-shadow: var(--glass-shadow);
+  }
+}
+
+/* Page shells (and body) stay clear so the fixed Amalfi backdrop shows through */
+body,
+.min-h-screen.bg-background {
+  background-color: transparent;
+}
+
+/* Modal scrims: frosted rather than flat black */
+.fixed.inset-0[class*="bg-black/"] {
+  background-color: rgb(19 35 90 / 0.35);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
+}
+
+/* Charts follow the palette */
+.recharts-bar-rectangle path,
+.recharts-bar-rectangle rect {
+  fill: var(--amalfi-cobalt);
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.recharts-default-tooltip {
+  border-radius: 14px !important;
+  border: 1px solid rgb(255 255 255 / 0.8) !important;
+  background: rgb(255 255 255 / 0.85) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px -14px rgb(19 35 90 / 0.4);
+}
+
+.recharts-tooltip-cursor {
+  fill: rgb(42 81 184 / 0.06);
+}
+
+@keyframes amalfi-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(-2deg);
+  }
+}
+
+@keyframes amalfi-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.08);
+  }
+}
+
+@keyframes amalfi-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -130,10 +417,41 @@
   }
 
   .glass {
-    @apply bg-card/50 backdrop-blur-md border border-border/50;
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow);
   }
 
   .glass-sm {
-    @apply bg-card/30 backdrop-blur-sm border border-border/30;
+    background: rgb(255 255 255 / 0.4);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.6);
+  }
+
+  .animate-float {
+    animation: amalfi-float 7s ease-in-out infinite;
+  }
+
+  .animate-drift {
+    animation: amalfi-drift 18s ease-in-out infinite;
+  }
+
+  .animate-rise {
+    animation: amalfi-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-drift,
+  .animate-rise {
+    animation: none;
+  }
+
+  :is(button, a)[class~="bg-primary"]:not(:disabled):hover {
+    transform: none;
   }
 }

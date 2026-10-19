@@ -100,7 +100,7 @@ export default function SellerLogsPage() {
             {transactions.map((tx) => (
               <div
                 key={tx.transaction_id}
-                className="flex items-center justify-between p-4 bg-card border border-border rounded-xl"
+                className="flex items-center justify-between p-4 bg-card border border-border rounded-2xl"
               >
                 {/* Left */}
                 <div className="min-w-0">

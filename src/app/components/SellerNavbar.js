@@ -27,32 +27,32 @@ export default function SellerNavbar({seller}) {
 
   return (
     <div>
-      <header className="sticky top-0 z-40 bg-card/50 backdrop-blur-md border-b border-border">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-40 px-3 pt-3 sm:px-6">
+        <nav className="liquid-glass max-w-7xl mx-auto pl-3 sm:pl-4 pr-2 h-16 rounded-full flex items-center justify-between gap-3">
           {/* Brand */}
           <Link
             href="/seller/profile"
-            className="flex items-center gap-2 font-bold text-lg hover:opacity-80 transition"
+            className="serif flex items-center gap-2.5 font-bold text-lg hover:opacity-80 transition"
           >
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+            <div className="serif w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-primary-foreground font-bold shadow-md ring-1 ring-white/70">
               E
             </div>
             <span className="hidden sm:inline">Stall Console</span>
             {/* <div className="mt-6 flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16"> */}
               <div className="justify-end flex gap-2">
                 <p className="text-xl text-muted-foreground flex justify-center items-center"></p>
-                <div className="text-xl text-muted-foreground">{seller}</div>
+                <div className="hidden lg:block glass-pill rounded-full px-3 py-1 font-sans text-sm font-medium text-muted-foreground">{seller}</div>
               </div>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5 rounded-full bg-muted p-1 ring-1 ring-white/70">
             <Link
               href="/seller/home"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+              className={`px-4 py-1.5 rounded-full transition-all text-sm font-semibold ${
                 isActive("/seller/home")
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-white text-primary shadow-md ring-1 ring-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/60"
               }`}
             >
               Home
@@ -60,10 +60,10 @@ export default function SellerNavbar({seller}) {
 
             <Link
               href="/seller/profile"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+              className={`px-4 py-1.5 rounded-full transition-all text-sm font-semibold ${
                 isActive("/seller/profile")
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-white text-primary shadow-md ring-1 ring-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/60"
               }`}
             >
               Profile
@@ -71,20 +71,20 @@ export default function SellerNavbar({seller}) {
 
             <Link
               href="/seller/logs"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+              className={`px-4 py-1.5 rounded-full transition-all text-sm font-semibold ${
                 isActive("/seller/logs")
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-white text-primary shadow-md ring-1 ring-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/60"
               }`}
             >
               Payments
             </Link>
             <Link
               href="/seller/leaderboard"
-              className={`px-4 py-2 rounded-lg transition-colors font-medium ${
+              className={`px-4 py-1.5 rounded-full transition-all text-sm font-semibold ${
                 isActive("/seller/leaderboard")
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-white text-primary shadow-md ring-1 ring-white"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/60"
               }`}
             >
               Leaderboard
@@ -95,7 +95,7 @@ export default function SellerNavbar({seller}) {
           <div className="hidden md:block">
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
+              className="glass-pill rounded-full px-4 py-2 text-sm text-destructive hover:bg-white/80 transition-colors font-semibold"
             >
               Logout
             </button>
@@ -103,7 +103,7 @@ export default function SellerNavbar({seller}) {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+            className="md:hidden glass-pill grid h-11 w-11 place-items-center rounded-full transition"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
           >
@@ -115,34 +115,34 @@ export default function SellerNavbar({seller}) {
 
         {/* Mobile Menu */}
         {open && (
-          <div className="md:hidden border-t border-border bg-card divide-y divide-border">
+          <div className="md:hidden liquid-glass animate-rise mx-auto mt-2 max-w-7xl overflow-hidden rounded-3xl p-2">
             <Link
               href="/seller/home"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="block rounded-2xl px-4 py-3 text-foreground hover:bg-white/60 transition-colors font-semibold"
             >
               Home
             </Link>
             <Link
               href="/seller/profile"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="block rounded-2xl px-4 py-3 text-foreground hover:bg-white/60 transition-colors font-semibold"
             >
               Profile
             </Link>
             <Link
               href="/seller/logs"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="block rounded-2xl px-4 py-3 text-foreground hover:bg-white/60 transition-colors font-semibold"
             >
               Payments
             </Link>
             <Link
               href="/seller/leaderboard"
-              className="block px-4 py-3 text-foreground hover:bg-muted transition-colors font-medium"
+              className="block rounded-2xl px-4 py-3 text-foreground hover:bg-white/60 transition-colors font-semibold"
             >
               Leaderboard
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full text-left px-4 py-3 text-red-500 hover:bg-muted transition-colors font-medium"
+              className="w-full rounded-2xl text-left px-4 py-3 text-destructive hover:bg-white/60 transition-colors font-semibold"
             >
               Logout
             </button>

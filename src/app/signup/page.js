@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import BrandMark from "../components/amalfi/BrandMark";
 import axios from "axios";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "@/lib/firebaseClient";
@@ -214,18 +215,18 @@ export default function SignupPage() {
         <div className="flex flex-col items-center justify-center px-4 py-10">
           {/* Header */}
           <div className="mb-8">
-            <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
-                E
-              </div>
-              <span>E-Cell FC 2k26</span>
+            <Link href="/" className="glass-pill flex items-center rounded-full py-1.5 pl-1.5 pr-4 transition hover:opacity-85">
+              <BrandMark />
             </Link>
           </div>
 
           {/* Card */}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-lg p-8">
+          <div className="w-full max-w-md liquid-glass animate-rise overflow-hidden rounded-[2rem]">
+            <div className="tile-band" />
+            <div className="p-7 sm:p-9">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold mb-2">Create Account</h1>
+              <p className="script text-xl text-gold">Benvenuti</p>
+              <h1 className="text-4xl font-bold mb-2">Create Account</h1>
               <p className="text-muted-foreground">
                 Join our food challenge community
               </p>
@@ -233,37 +234,37 @@ export default function SignupPage() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-2">Full Name</label>
+                <label className="block text-sm font-semibold mb-2">Full Name</label>
                 <input
                     placeholder="Full Name"
                   value={displayName}
                   disabled={otpVerified}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-input border rounded-lg focus:ring-2 focus:ring-primary/50"
+                  className="w-full px-4 py-3 bg-input border rounded-xl"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+                <label className="block text-sm font-semibold mb-2">Email</label>
                 <input
                     type="email"
                     placeholder="Email"
                   value={email}
                   disabled={otpVerified}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-input border rounded-lg focus:ring-2 focus:ring-primary/50"
+                  className="w-full px-4 py-3 bg-input border rounded-xl"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <label className="block text-sm font-medium mb-2 col-span-2">Set Password</label>
+                <label className="block text-sm font-semibold mb-2 col-span-2">Set Password</label>
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   disabled={otpVerified}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="px-4 py-2.5 bg-input border rounded-lg"
+                  className="min-w-0 px-4 py-3 bg-input border rounded-xl"
                 />
                 <input
                   type="password"
@@ -271,12 +272,12 @@ export default function SignupPage() {
                   value={confirm}
                   disabled={otpVerified}
                   onChange={(e) => setConfirm(e.target.value)}
-                  className="px-4 py-2.5 bg-input border rounded-lg"
+                  className="min-w-0 px-4 py-3 bg-input border rounded-xl"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Phone</label>
+                <label className="block text-sm font-semibold mb-2">Phone</label>
                 <input
                     placeholder="10-digit Phone Number"
                   value={phone}
@@ -285,7 +286,7 @@ export default function SignupPage() {
                     const v = e.target.value.replace(/\D/g, "");
                     if (v.length <= 10) setPhone(v);
                   }}
-                  className="w-full px-4 py-2.5 bg-input border rounded-lg"
+                  className="w-full px-4 py-3 bg-input border rounded-xl"
                 />
                 {!otpVerified && otpSent && !otpsending && (
                 <div className="flex items-center justify-between text-sm">
@@ -310,7 +311,7 @@ export default function SignupPage() {
               </div>
 
               {error && (
-                <div className="p-3 bg-destructive/10 border border-destructive rounded-lg text-destructive text-sm">
+                <div className="p-3 bg-destructive/10 border border-destructive/40 rounded-xl text-destructive text-sm">
                   {error}
                 </div>
               )}
@@ -319,7 +320,7 @@ export default function SignupPage() {
                 <button
                   type="button"
                   onClick={sendOTP}
-                  className="w-full py-2.5 bg-primary text-primary-foreground rounded-lg"
+                  className="w-full py-3.5 bg-primary text-primary-foreground font-semibold rounded-full"
                 >
                   Send OTP
                 </button>
@@ -327,7 +328,7 @@ export default function SignupPage() {
               {otpsending && (
                   <button
                     disabled
-                    className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
+                    className="w-full py-3.5 bg-primary/50 text-primary-foreground font-semibold rounded-full cursor-not-allowed"
                   >
                     Sending OTP...
                   </button>
@@ -339,7 +340,7 @@ export default function SignupPage() {
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-input border rounded-lg"
+                    className="w-full px-4 py-3 bg-input border rounded-xl"
                   />
                   {/* <button
                     type="button"
@@ -359,21 +360,21 @@ export default function SignupPage() {
               {loading ? (
               <button
                 disabled
-                className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
+                className="w-full py-3.5 bg-primary/50 text-primary-foreground font-semibold rounded-full cursor-not-allowed"
               >
                 Creating Account...
               </button>
               ): (
                 otp.length === 6 ? (
                 <button
-                  className="w-full py-2.5 bg-primary text-primary-foreground rounded-lg"
+                  className="w-full py-3.5 bg-primary text-primary-foreground font-semibold rounded-full"
                 >
                   Create Account
                 </button>
               ) :(
                 <button
                  disabled
-                  className="w-full py-2.5 bg-primary/50 text-primary-foreground rounded-lg"
+                  className="w-full py-3.5 bg-primary/50 text-primary-foreground font-semibold rounded-full cursor-not-allowed"
                 >
                   Create Account
                 </button>
@@ -384,14 +385,17 @@ export default function SignupPage() {
 
             <div className="mt-8 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login" className="text-primary font-medium">
+              <Link href="/login" className="inline-block py-2 text-primary font-medium">
                 Login 
               </Link>
+            </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="max-w-md mx-auto mt-20 bg-card border rounded-xl p-8 shadow-lg">
+        <div className="max-w-md mx-auto mt-20 liquid-glass overflow-hidden rounded-[2rem]">
+          <div className="tile-band" />
+          <div className="p-8">
           <h2 className="text-2xl font-bold mb-2">Set Security PIN</h2>
           <p className="text-muted-foreground mb-6">
             Set a 4-digit PIN to protect your account
@@ -403,17 +407,17 @@ export default function SignupPage() {
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="4-digit PIN"
-              className="w-full px-4 py-2.5 bg-input border rounded-lg"
+              className="w-full px-4 py-3 bg-input border rounded-xl"
             />
             <input
               maxLength={4}
               value={confirmPin}
               onChange={(e) => setConfirmPin(e.target.value)}
               placeholder="Confirm PIN"
-              className="w-full px-4 py-2.5 bg-input border rounded-lg"
+              className="w-full px-4 py-3 bg-input border rounded-xl"
             />
 
-            <button className="w-full py-2.5 bg-primary text-primary-foreground rounded-lg">
+            <button className="w-full py-3.5 bg-primary text-primary-foreground font-semibold rounded-full">
               Set PIN
             </button>
 
@@ -421,6 +425,7 @@ export default function SignupPage() {
               <p className="text-center text-sm font-medium mt-3">{message}</p>
             )}
           </form>
+          </div>
         </div>
       )}
     </div>

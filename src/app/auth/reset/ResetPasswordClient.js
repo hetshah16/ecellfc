@@ -62,7 +62,7 @@ export default function ResetPasswordClient() {
       {message && (
         <div className={`p-4 rounded-lg border ${
           messageType === "success" 
-            ? "bg-green-500/10 border-green-500/30 text-green-400" 
+            ? "bg-green-500/10 border-green-500/30 text-green-700" 
             : "bg-destructive/10 border-destructive/30 text-destructive"
         }`}>
           {message}
@@ -80,7 +80,7 @@ export default function ResetPasswordClient() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -94,7 +94,7 @@ export default function ResetPasswordClient() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+            className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -102,7 +102,7 @@ export default function ResetPasswordClient() {
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-colors disabled:opacity-50"
+            className="flex-1 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium rounded-full transition-colors disabled:opacity-50"
           >
             {loading ? "Resetting…" : "Reset Password"}
           </button>
@@ -110,7 +110,7 @@ export default function ResetPasswordClient() {
           <button
             type="button"
             onClick={() => router.push("/login")}
-            className="flex-1 px-4 py-2 border border-border bg-card hover:bg-muted text-foreground font-medium rounded-lg transition-colors"
+            className="flex-1 px-4 py-2 border border-border bg-card hover:bg-muted text-foreground font-medium rounded-full transition-colors"
           >
             Cancel
           </button>

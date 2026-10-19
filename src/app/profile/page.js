@@ -118,7 +118,7 @@ export default function ProfilePage() {
           <div className="mt-3">
             <button
               onClick={() => openModal("set")}
-              className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
+              className="px-3 py-2 rounded-full border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
             >
               Set PIN
             </button>
@@ -140,14 +140,14 @@ export default function ProfilePage() {
             {!pinVisible && (
               <button
                 onClick={() => openModal("reveal")}
-                className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
+                className="px-3 py-2 rounded-full border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
               >
                 Show PIN
               </button>
             )}
             <button
               onClick={() => openModal("update")}
-              className="px-3 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
+              className="px-3 py-2 rounded-full border border-border bg-card hover:bg-muted text-foreground transition-colors text-sm font-medium"
             >
               Update PIN
             </button>
@@ -197,12 +197,12 @@ export default function ProfilePage() {
               </div>
             </div>
           ) : fetchError ? (
-            <div className="p-4 rounded-lg bg-destructive/10 border border-destructive text-destructive">
+            <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/40 text-destructive">
               {fetchError}
             </div>
           ) : (
             user && (
-              <div className="bg-card border border-border rounded-xl p-6 sm:p-8">
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   {/* User ID */}
                   <div>
@@ -241,7 +241,7 @@ export default function ProfilePage() {
           {/* Password / PIN Modal */}
           {showPasswordModal && (
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-              <div className="bg-card border border-border rounded-xl p-6 sm:p-8 w-full max-w-md shadow-lg">
+              <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-lg">
                 <h3 className="text-xl sm:text-2xl font-bold mb-4 text-foreground">
                   {mode === "reveal"
                     ? "Verify your password"
@@ -260,7 +260,7 @@ export default function ProfilePage() {
                       placeholder="Enter account password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
                   
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                         minLength={4}
                         onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
                         onInput={(e) => e.target.setCustomValidity("")}
-                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       />
                     </div>
                     
@@ -301,14 +301,14 @@ export default function ProfilePage() {
                         minLength={4}
                         onInvalid={(e) => e.target.setCustomValidity("Enter a PIN between 1000 and 9999")}
                         onInput={(e) => e.target.setCustomValidity("")}
-                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className="w-full px-4 py-2 bg-background border border-border rounded-xl text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                       />
                     </div>
                     
                   )}
 
                   {modalError && (
-                    <div className="p-3 rounded-lg bg-destructive/10 border border-destructive text-destructive text-sm">
+                    <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/40 text-destructive text-sm">
                       {modalError}
                     </div>
                   )}
@@ -317,14 +317,14 @@ export default function ProfilePage() {
                     <button
                       type="button"
                       onClick={() => setShowPasswordModal(false)}
-                      className="flex-1 px-4 py-2 rounded-lg border border-border bg-card hover:bg-muted text-foreground transition-colors font-medium"
+                      className="flex-1 px-4 py-2 rounded-full border border-border bg-card hover:bg-muted text-foreground transition-colors font-medium"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={modalLoading}
-                      className="flex-1 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-colors disabled:opacity-50"
+                      className="flex-1 px-4 py-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-colors disabled:opacity-50"
                     >
                       {modalLoading
                         ? "Processing…"
@@ -337,12 +337,12 @@ export default function ProfilePage() {
                   </div>
 
                 {emailsent ? (
-                  <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                  <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg text-primary text-sm">
                     A link was sent to your email to reset your account password.
                   </div>
                 ):(
                   emailsending ? (
-                    <div className="p-3 bg-primary/10 border border-primary/50 rounded-lg text-primary text-sm">
+                    <div className="p-3 bg-primary/10 border border-primary/30 rounded-lg text-primary text-sm">
                       Sending reset link...
                     </div>
                   ) : (

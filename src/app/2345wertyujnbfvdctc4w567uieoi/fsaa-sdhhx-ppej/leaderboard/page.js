@@ -76,7 +76,7 @@ export default function LeaderboardPage() {
         Total Sales (All Stalls)
         </p>
 
-        <h2 className="text-4xl font-bold text-blue-900 dark:text-blue-100 mt-2">
+        <h2 className="text-4xl font-bold text-navy dark:text-blue-100 mt-2">
         💰 {totalSales.toLocaleString()} E-Coins
         </h2>
     </div>
@@ -103,15 +103,15 @@ export default function LeaderboardPage() {
             <div
               key={stall.stall_id}
               className={`rounded-2xl p-6 text-center shadow-md border
-                ${index === 0 ? "bg-yellow-50 border-yellow-300" :
-                index === 1 ? "bg-gray-50 border-gray-300" :
-                "bg-orange-50 border-orange-300"}
+                ${index === 0 ? "bg-lemon/30 border-lemon/70 backdrop-blur-xl" :
+                index === 1 ? "bg-white/60 border-white backdrop-blur-xl" :
+                "bg-sky/20 border-sky/40 backdrop-blur-xl"}
               `}
             >
               <div className="text-4xl mb-2">
                 {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
               </div>
-              <h3 className="text-xl font-semibold text-blue-900">{stall.stall_name}</h3>
+              <h3 className="text-xl font-semibold text-navy">{stall.stall_name}</h3>
               <p className="mt-2 text-lg font-bold text-primary">
                 💰 {stall.coins} E-Coins
               </p>

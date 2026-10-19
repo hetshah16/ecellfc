@@ -61,7 +61,8 @@ export default function StallPage({ params }) {
           <main className="max-w-3xl mx-auto px-4 py-8">
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-wide">
+              <p className="script text-2xl text-gold">Benvenuti a</p>
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
                 {stall}
               </h1>
 
@@ -70,15 +71,15 @@ export default function StallPage({ params }) {
             {/* Payment Section — UNCHANGED */}
             {/* Payment CTA Card */}
             {!pay  && (
-              <div className="bg-card border border-border rounded-xl p-5 mb-8 flex items-center justify-between shadow-sm gap-5">
+              <div className="bg-card border border-border rounded-[1.75rem] p-5 sm:p-6 mb-8 flex items-center justify-between shadow-sm gap-5">
                 <div>
-                  <p className="text-lg font-semibold">Ready to place your order ?</p>
+                  <p className="serif text-xl font-bold">Ready to place your order ?</p>
                   
                 </div>
 
                 <button
                   onClick={() => setPay(true)}
-                  className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition whitespace-nowrap"
+                  className="px-7 py-3.5 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full transition whitespace-nowrap"
                 >
                   Pay Now
                 </button>
@@ -86,7 +87,7 @@ export default function StallPage({ params }) {
             )}
 
             {pay && (
-              <div className="bg-card border border-border rounded-lg p-6 mb-10">
+              <div className="bg-card border border-border rounded-[1.75rem] p-6 sm:p-8 mb-10">
                 <h2 className="text-2xl font-bold mb-2">Order Payment</h2>
                 <p className="text-muted-foreground mb-6">
                   Complete your payment to place an order
@@ -112,12 +113,19 @@ export default function StallPage({ params }) {
               </div>
             ) : !pay ? (
               <>
-                <p className="text-lg font-bold mt-1 text-center">Menu</p>  
                 {/* Printed-menu style list */}
-                <div className="divide-y divide-border">
-                  {items.map((item) => (
-                    <MenuCard key={item.item_id} item={item} />
-                  ))}
+                <div className="liquid-glass overflow-hidden rounded-[1.75rem] mb-16">
+                  <div className="tile-band" />
+                  <div className="px-6 pt-6 pb-4 sm:px-10">
+                    <p className="text-center"><span className="script text-xl text-gold">Il menù</span></p>
+                    <p className="serif text-3xl font-bold mt-1 text-center">Menu</p>
+                    <div className="mx-auto mt-3 mb-2 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
+                    <div className="divide-y divide-dashed divide-border">
+                      {items.map((item) => (
+                        <MenuCard key={item.item_id} item={item} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Proceed Button — UNCHANGED */}

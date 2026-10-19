@@ -166,7 +166,7 @@ export default function SellerHomePage() {
               {/* Add Item Card */}
               <div
                 onClick={openModal}
-                className={`border border-border rounded-xl bg-card hover:shadow-lg transition p-6 flex items-center justify-center min-h-[140px]
+                className={`border border-border rounded-2xl bg-card hover:shadow-lg transition p-6 flex items-center justify-center min-h-[140px]
                 ${seller ? "cursor-pointer hover:border-primary/50" : "opacity-60 cursor-not-allowed"}`}
               >
                 <div className="text-center">
@@ -179,7 +179,7 @@ export default function SellerHomePage() {
 
               {/* Items Grid */}
               {items.length === 0 ? (
-                <div className="text-center text-muted-foreground py-12 bg-card border border-border rounded-xl">
+                <div className="text-center text-muted-foreground py-12 bg-card border border-border rounded-2xl">
                   No items yet. Click the + button above to add one!
                 </div>
               ) : (
@@ -187,7 +187,7 @@ export default function SellerHomePage() {
                   {items.map((item) => (
                     <div
                       key={item.item_id}
-                      className="bg-card border border-border rounded-xl p-5 hover:shadow-md transition flex flex-col justify-between h-full"
+                      className="bg-card border border-border rounded-2xl p-5 hover:shadow-md transition flex flex-col justify-between h-full"
                     >
                       <div>
                         <div className="font-semibold text-foreground text-base line-clamp-2 mb-2 leading-snug">
@@ -210,7 +210,7 @@ export default function SellerHomePage() {
                             })
                             setShowModal(true)
                           }}
-                          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-2 font-semibold transition text-sm"
+                          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-2 font-semibold transition text-sm"
                         >
                           Edit
                         </button>
@@ -232,7 +232,7 @@ export default function SellerHomePage() {
           {/* ADD / EDIT MODAL (same UI) */}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-              <div className="w-full max-w-md bg-card border border-border rounded-xl p-6">
+              <div className="w-full max-w-md bg-card border border-border rounded-2xl p-6">
                 <h2 className="text-2xl font-bold mb-1">
                   {editItem ? "Edit Food Item" : "Add Food Item"}
                 </h2>
@@ -246,7 +246,7 @@ export default function SellerHomePage() {
                   </label>
                   <input
                     disabled={!!editItem}
-                    className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:ring-2 focus:ring-primary disabled:bg-muted"
+                    className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary disabled:bg-muted"
                     name="item_name"
                     value={form.item_name}
                     onChange={handleChange}
@@ -258,7 +258,7 @@ export default function SellerHomePage() {
                   <input
                     type="number"
                     min="0"
-                    className="w-full mb-4 px-4 py-2 rounded-lg bg-background border border-border focus:ring-2 focus:ring-primary"
+                    className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary"
                     name="price"
                     value={form.price}
                     onChange={handleChange}
@@ -280,7 +280,7 @@ export default function SellerHomePage() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 font-semibold hover:opacity-90 transition"
+                      className="flex-1 bg-primary text-primary-foreground rounded-full py-2 font-semibold hover:opacity-90 transition"
                     >
                       {submitting
                         ? editItem
@@ -307,7 +307,7 @@ export default function SellerHomePage() {
           {/* DELETE CONFIRM MODAL (same styling) */}
           {deleteItem && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-              <div className="w-full max-w-md bg-card border border-border rounded-xl p-6 text-center">
+              <div className="w-full max-w-md bg-card border border-border rounded-2xl p-6 text-center">
                 <h2 className="text-xl font-bold mb-2">Confirm Deletion</h2>
                 <p className="text-muted-foreground mb-6">
                   Are you sure you want to remove{" "}
@@ -332,13 +332,13 @@ export default function SellerHomePage() {
                   { deleting ? (
                     <button
                       disabled
-                      className="flex-1 bg-red-600/50 text-white rounded-lg py-2 font-semibold cursor-not-allowed"
+                      className="flex-1 bg-red-600/50 text-white rounded-full py-2 font-semibold cursor-not-allowed"
                       >
                       Deleting...
                       </button>):(
                   <button
                     onClick={handleDeleteConfirm}
-                    className="flex-1 bg-red-600 text-white rounded-lg py-2 font-semibold hover:bg-red-700 transition"
+                    className="flex-1 bg-red-600 text-white rounded-full py-2 font-semibold hover:bg-red-700 transition"
                   >
                     Delete
                   </button>)}

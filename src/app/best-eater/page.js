@@ -122,10 +122,10 @@ const me =
               className={`rounded-2xl p-6 text-center shadow-md border
                 ${
                   index === 0
-                    ? "bg-yellow-50 border-yellow-300"
+                    ? "bg-lemon/30 border-lemon/70 backdrop-blur-xl"
                     : index === 1
-                    ? "bg-gray-50 border-gray-300"
-                    : "bg-orange-50 border-orange-300"
+                    ? "bg-white/60 border-white backdrop-blur-xl"
+                    : "bg-sky/20 border-sky/40 backdrop-blur-xl"
                 }
               `}
             >
@@ -133,7 +133,7 @@ const me =
                 {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
               </div>
 
-              <h3 className="text-xl font-semibold text-blue-900">
+              <h3 className="text-xl font-semibold text-navy">
                 {user.name}
               </h3>
 
