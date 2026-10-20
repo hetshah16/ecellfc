@@ -81,10 +81,13 @@ export default function LeaderboardPage() {
       <div className="min-h-screen bg-background">
         <SellerNavbar seller={seller?.stall_name} />
 
-        <div className="flex items-center justify-center py-32">
-          <div className="bg-card border rounded-2xl p-8 text-center max-w-md">
-            <h2 className="text-2xl font-bold mb-2">🏆 Stall Leaderboard</h2>
-            <p className="text-muted-foreground">
+        <div className="flex items-center justify-center px-4 py-24 sm:py-32">
+          <div className="w-full max-w-md rounded-2xl border bg-card p-8 text-center shadow-sm">
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+              Coming Soon
+            </span>
+            <h2 className="mt-4 text-2xl font-bold">Stall Leaderboard</h2>
+            <p className="mt-2 break-words text-sm text-muted-foreground">
               {pageStatus.down_message || "This leaderboard will be live soon"}
             </p>
           </div>
@@ -105,8 +108,8 @@ export default function LeaderboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">🏆 Stall Leaderboard</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold">Stall Leaderboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Top performing food stalls by E-Coins earned
           </p>
         </div>
@@ -117,25 +120,47 @@ export default function LeaderboardPage() {
         </div> */}
 
         {/* Top 3 Podium */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          {top3.map((stall, index) => (
-            <div
-              key={stall.stall_id}
-              className={`rounded-2xl p-6 text-center shadow-md border
-                ${index === 0 ? "bg-lemon/30 border-lemon/70 backdrop-blur-xl" :
-                index === 1 ? "bg-white/60 border-white backdrop-blur-xl" :
-                "bg-sky/20 border-sky/40 backdrop-blur-xl"}`}
-            >
-              <div className="text-4xl mb-2">
-                {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
+        {top3.length === 0 ? (
+          <div className="rounded-2xl border bg-card p-8 text-center text-sm text-muted-foreground">
+            No entries yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {top3.map((stall, index) => (
+              <div
+                key={stall.stall_id}
+                className={`min-w-0 rounded-2xl border bg-card p-5 shadow-sm ${
+                  index === 0 ? "border-lemon" : ""
+                }`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold ${
+                      index === 0
+                        ? "bg-lemon text-navy"
+                        : index === 1
+                        ? "bg-slate-200 text-slate-700"
+                        : "bg-amber-200 text-amber-900"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {index === 0 ? "1st Place" : index === 1 ? "2nd Place" : "3rd Place"}
+                  </span>
+                </div>
+
+                <h3 className="mt-4 truncate text-lg font-semibold text-navy" title={stall.stall_name}>
+                  {stall.stall_name}
+                </h3>
+
+                <p className="mt-3 text-xl font-bold text-primary">
+                  {stall.coins} <span className="text-sm font-medium text-muted-foreground">E-Coins</span>
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-navy">{stall.stall_name}</h3>
-              <p className="mt-2 text-lg font-bold text-primary">
-                💰 {stall.coins} E-Coins
-              </p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Rest of leaderboard */}
         {/* <div className="bg-card border rounded-2xl overflow-hidden">

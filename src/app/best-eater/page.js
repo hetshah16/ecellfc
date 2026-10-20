@@ -95,10 +95,13 @@ const me =
       <div className="min-h-screen bg-background">
         <Navbar coins={user.coins} user={user.name} />
 
-        <div className="flex items-center justify-center py-32">
-          <div className="bg-card border rounded-2xl p-8 text-center max-w-md">
-            <h2 className="text-2xl font-bold mb-2">🍔 Best Eater</h2>
-            <p className="text-muted-foreground">
+        <div className="flex items-center justify-center px-4 py-24 sm:py-32">
+          <div className="w-full max-w-md rounded-2xl border bg-card p-8 text-center shadow-sm">
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
+              Coming Soon
+            </span>
+            <h2 className="mt-4 text-2xl font-bold">Best Eaters Leaderboard</h2>
+            <p className="mt-2 break-words text-sm text-muted-foreground">
               {pageStatus.down_message || "This page will be live soon"}
             </p>
           </div>
@@ -114,110 +117,134 @@ const me =
      
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6"> Best Eaters Leaderboard</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          {top3.map((user, index) => (
-            <div
-              key={user.user_id}
-              className={`rounded-2xl p-6 text-center shadow-md border
-                ${
-                  index === 0
-                    ? "bg-lemon/30 border-lemon/70 backdrop-blur-xl"
-                    : index === 1
-                    ? "bg-white/60 border-white backdrop-blur-xl"
-                    : "bg-sky/20 border-sky/40 backdrop-blur-xl"
-                }
-              `}
-            >
-              <div className="text-4xl mb-2">
-                {index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}
-              </div>
-
-              <h3 className="text-xl font-semibold text-navy">
-                {user.name}
-              </h3>
-
-              <p className="text-sm text-muted-foreground">
-                {user.email}
-              </p>
-
-              <p className="mt-2 text-lg font-bold text-primary">
-                {user.coins} ⓔ
-              </p>
-            </div>
-          ))}
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold">Best Eaters Leaderboard</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Rankings based on E-Coins spent across all stalls
+          </p>
         </div>
-         {me && (
-            <div className="mb-6 bg-primary/10 border rounded-2xl">
-              <div className="p-4 flex items-center gap-4">
-                {/* Rank */}
-                <div className="w-8 text-center font-semibold">
-                  #{myRank}
+
+        {top3.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {top3.map((u, index) => (
+              <div
+                key={u.user_id}
+                className={`min-w-0 rounded-2xl border bg-card p-5 shadow-sm ${
+                  index === 0 ? "border-lemon" : ""
+                }`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold ${
+                      index === 0
+                        ? "bg-lemon text-navy"
+                        : index === 1
+                        ? "bg-slate-200 text-slate-700"
+                        : "bg-amber-200 text-amber-900"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {index === 0 ? "1st Place" : index === 1 ? "2nd Place" : "3rd Place"}
+                  </span>
                 </div>
 
-                {/* User info */}
-                <div className="flex-1">
-                  <div className="font-medium">
-                    {me.name}
-                    <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary text-white">
-                      You
-                    </span>
-                  </div>
+                <h3 className="mt-4 truncate text-lg font-semibold text-navy" title={u.name}>
+                  {u.name}
+                </h3>
+                <p className="truncate text-sm text-muted-foreground" title={u.email}>
+                  {u.email}
+                </p>
 
-                  <div className="text-xs text-muted-foreground">
-                    {me.email}
-                  </div>
+                <p className="mt-3 text-xl font-bold text-primary">
+                  {u.coins} <span className="text-sm font-medium text-muted-foreground">E-Coins</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {me && (
+          <div className="mb-6 rounded-2xl border border-primary/30 bg-primary/5">
+            <div className="flex items-center gap-4 p-4">
+              <div className="w-10 shrink-0 text-center font-semibold text-primary">
+                #{myRank}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="truncate font-medium">{me.name}</span>
+                  <span className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-white">
+                    You
+                  </span>
                 </div>
-
-                {/* Coins */}
-                <div className="font-semibold whitespace-nowrap">
-                  {me.coins} ⓔ
+                <div className="truncate text-sm text-muted-foreground">
+                  {me.email}
                 </div>
               </div>
+
+              <div className="shrink-0 whitespace-nowrap font-semibold">
+                {me.coins} ⓔ
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="bg-card border rounded-2xl overflow-hidden">
+          <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            <span className="w-10 shrink-0 text-center">Rank</span>
+            <span className="flex-1">Participant</span>
+            <span className="shrink-0">E-Coins</span>
+          </div>
+
+          {leaders.length === 0 && (
+            <div className="p-8 text-center text-sm text-muted-foreground">
+              No entries yet.
             </div>
           )}
 
-        <div className="bg-card border rounded-2xl overflow-hidden">
           {leaders.map((u, index) => (
             <div
               key={u.user_id}
-              className="flex items-center justify-between p-4 border-b last:border-b-0"
+              className={`flex items-center gap-4 border-b px-4 py-3 last:border-b-0 ${
+                u.user_id === user.user_id ? "bg-primary/5" : ""
+              }`}
             >
-              <div className="flex items-center gap-4">
-                <span className="font-bold">#{(page - 1) * limit + index + 1}</span>
-                <div>
-                  <div className="font-medium">{u.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {u.email}
-                  </div>
+              <span className="w-10 shrink-0 text-center font-semibold text-muted-foreground">
+                {(page - 1) * limit + index + 1}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="truncate font-medium">{u.name}</div>
+                <div className="truncate text-sm text-muted-foreground">
+                  {u.email}
                 </div>
               </div>
-
-              <div className="font-semibold">
+              <div className="shrink-0 whitespace-nowrap font-semibold">
                 {u.coins} ⓔ
               </div>
             </div>
           ))}
         </div>
-        <div className="flex justify-center gap-4 mt-8">
+        <div className="flex items-center justify-center gap-3 mt-8">
           <button
             disabled={page === 1}
             onClick={() => setPage(p => p - 1)}
-            className="px-4 py-2 rounded-lg border disabled:opacity-50"
+            className="rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
           >
-            ⬅ Previous
+            Previous
           </button>
 
-          <span className="px-4 py-2 text-sm text-muted-foreground">
+          <span className="px-2 text-sm text-muted-foreground">
             Page {page}
           </span>
 
           <button
             disabled={leaders.length < limit}
             onClick={() => setPage(p => p + 1)}
-            className="px-4 py-2 rounded-lg border disabled:opacity-50"
+            className="rounded-lg border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Next ➡
+            Next
           </button>
         </div>
 
