@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import AdminNavbar from "../components/AdminNavbar"
@@ -10,6 +10,8 @@ export default function PageSettingsAdminPage() {
   const [admin, setAdmin] = useState(null)
   const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(true)
+  const [savingPages, setSavingPages] = useState([])
+  const savingPagesRef = useRef(new Set())
 
   // 🔐 verify superadmin
   useEffect(() => {
@@ -42,6 +44,9 @@ export default function PageSettingsAdminPage() {
   }, [])
 
   const updatePage = async (page) => {
+  if (savingPagesRef.current.has(page.page_key)) return
+  savingPagesRef.current.add(page.page_key)
+  setSavingPages(Array.from(savingPagesRef.current))
   try {
     await axios.post(
       "/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/page-settings/update",
@@ -55,6 +60,9 @@ export default function PageSettingsAdminPage() {
     alert("Saved")
   } catch (err) {
     alert("Failed to update")
+  } finally {
+    savingPagesRef.current.delete(page.page_key)
+    setSavingPages(Array.from(savingPagesRef.current))
   }
 }
 
@@ -149,9 +157,15 @@ export default function PageSettingsAdminPage() {
 
               <button
                 onClick={() => updatePage(page)}
-                className="px-4 py-2 rounded-lg border bg-primary text-white"
+                disabled={savingPages.includes(page.page_key)}
+                className="px-4 py-2 rounded-lg border bg-primary text-white disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Save Changes
+                {savingPages.includes(page.page_key) ? (
+                  <span className="inline-flex items-center gap-2" role="status">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    Saving...
+                  </span>
+                ) : "Save Changes"}
               </button>
             </div>
           ))}

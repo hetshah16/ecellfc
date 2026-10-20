@@ -3,17 +3,25 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import { useRef, useState } from "react"
 
 export default function AdminNavbar() {
   const router = useRouter()
+  const [loggingOut, setLoggingOut] = useState(false)
+  const loggingOutRef = useRef(false)
 
   const handleLogout = async () => {
+    if (loggingOutRef.current) return
+    loggingOutRef.current = true
+    setLoggingOut(true)
     try {
       await axios.post("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/logout")
       alert("You've been logged out.")
       router.push("/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/login")
     } catch (err) {
       console.error("Logout failed", err)
+      loggingOutRef.current = false
+      setLoggingOut(false)
     }
   }
 
@@ -41,6 +49,12 @@ export default function AdminNavbar() {
             className="px-4 py-1.5 text-muted-foreground hover:text-primary rounded-full hover:bg-white/70 transition-colors font-semibold text-sm"
           >
             Add Stalls
+          </Link>
+          <Link
+            href="/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/add-admins"
+            className="px-4 py-1.5 text-muted-foreground hover:text-primary rounded-full hover:bg-white/70 transition-colors font-semibold text-sm"
+          >
+            Add Admins
           </Link>
           <Link
             href="/2345wertyujnbfvdctc4w567uieoi/fsaa-sdhhx-ppej/logs"
@@ -71,9 +85,15 @@ export default function AdminNavbar() {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="glass-pill rounded-full px-4 py-2 text-destructive hover:bg-white/80 transition-colors font-semibold text-sm"
+          disabled={loggingOut}
+          className="glass-pill rounded-full px-4 py-2 text-destructive hover:bg-white/80 transition-colors font-semibold text-sm disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Logout
+          {loggingOut ? (
+            <span className="inline-flex items-center gap-2" role="status">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-current/40 border-t-current" />
+              Logging out...
+            </span>
+          ) : "Logout"}
         </button>
       </nav>
     </header>

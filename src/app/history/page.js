@@ -26,16 +26,18 @@ export default function History() {
           return
         }
 
-        const [t1, t2, t3] = await Promise.all([
+        const [t1, t2, t3, t4] = await Promise.all([
           axios.get("/api/transferlog"),
           axios.get("/api/rechargelog"),
           axios.get("/api/transactionlog"),
+          axios.get("/api/superadminuserlog"),
         ])
 
         const combined = [
           ...t1.data,
           ...t2.data,
           ...t3.data,
+          ...t4.data,
         ].sort(
           (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
         )

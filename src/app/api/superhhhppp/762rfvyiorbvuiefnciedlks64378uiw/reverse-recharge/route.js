@@ -47,8 +47,8 @@ export async function POST(req) {
        3️⃣ CONSTANT RECEIVER (ECELL)
        ❗ NEVER TRUST FRONTEND
     =============================== */
-    const receiver_id = "ecell";
-    const receiver_name = "ecell";
+    const receiver_id = "E-cell";
+    const receiver_name = "E-Cell";
     const receiver_email = "ecell@spit.ac.in";
 
     /* ===============================

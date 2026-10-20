@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import AdminNavbar from "../components/AdminNavbar"
 import { useRouter } from "next/navigation"
 import axios from "axios"
@@ -204,11 +204,20 @@ export default function AdminAddStallPage() {
   const [stalls, setStalls] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
+  const [editingStall, setEditingStall] = useState(null)
+  const [editForm, setEditForm] = useState({
+    stall_name: "",
+    new_password: "",
+    superadmin_password: "",
+  })
+  const [editSubmitting, setEditSubmitting] = useState(false)
+  const editSubmittingRef = useRef(false)
   const [form, setForm] = useState({ stall_name: "", email: "", password: "", coins: 0 })
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [successMsg, setSuccessMsg] = useState("")
   const [initialLoadComplete, setInitialLoadComplete] = useState(false)
+  const submittingRef = useRef(false)
     useEffect(() => {
     const fetchAdmin = async () => {
       try {
@@ -270,6 +279,63 @@ export default function AdminAddStallPage() {
     setSubmitting(false)
   }
 
+  function openEditStall(stall) {
+    setEditingStall(stall)
+    setEditForm({
+      stall_name: stall.stall_name,
+      new_password: "",
+      superadmin_password: "",
+    })
+    setError("")
+  }
+
+  function closeEditStall() {
+    if (editSubmitting) return
+    setEditingStall(null)
+    setError("")
+  }
+
+  async function handleUpdateStall(e) {
+    e.preventDefault()
+    if (editSubmittingRef.current || !editingStall) return
+    if (!editForm.stall_name.trim()) {
+      setError("Stall name is required")
+      return
+    }
+    if (editForm.new_password && !editForm.superadmin_password) {
+      setError("Enter the superadmin account password to change this stall password")
+      return
+    }
+
+    editSubmittingRef.current = true
+    setEditSubmitting(true)
+    setError("")
+    try {
+      const res = await fetch("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/stalls", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          stall_id: editingStall.stall_id,
+          ...editForm,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || "Failed to update stall")
+        return
+      }
+
+      setEditingStall(null)
+      await fetchStalls()
+    } catch (err) {
+      console.error("Failed to update stall:", err)
+      setError("Network error while updating stall")
+    } finally {
+      editSubmittingRef.current = false
+      setEditSubmitting(false)
+    }
+  }
+
   function handleChange(e) {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: name === "coins" ? Number(value) : value }))
@@ -277,12 +343,14 @@ export default function AdminAddStallPage() {
 
   async function handleSubmit(e) {
     e?.preventDefault()
+    if (submittingRef.current) return
     setError("")
     setSuccessMsg("")
     if (!form.stall_name || !form.email || !form.password) {
       setError("Please fill in all required fields")
       return
     }
+    submittingRef.current = true
     setSubmitting(true)
     try {
       const res = await fetch("/api/superhhhppp/762rfvyiorbvuiefnciedlks64378uiw/stalls", {
@@ -305,6 +373,7 @@ export default function AdminAddStallPage() {
       console.error("Error:", err)
       setError("Network error")
     } finally {
+      submittingRef.current = false
       setSubmitting(false)
     }
   }
@@ -366,6 +435,13 @@ export default function AdminAddStallPage() {
                 <div style={styles.stallCoins}>{s.coins ?? 0} ⓔ</div>
                 <div style={styles.stallId}>ID: {s.stall_id}</div>
                 <div style={styles.stallDate}>Created: {new Date(s.created_at).toLocaleDateString("en-IN")}</div>
+                <button
+                  type="button"
+                  onClick={() => openEditStall(s)}
+                  className="mt-4 rounded-lg border border-white/15 px-3 py-2 text-sm font-semibold text-white hover:bg-white/10"
+                >
+                  Edit stall
+                </button>
               </div>
             ))
           )}
@@ -433,9 +509,88 @@ export default function AdminAddStallPage() {
                       e.currentTarget.style.transform = "translateY(0)"
                     }}
                   >
-                    {submitting ? "Creating..." : "Create Stall"}
+                    {submitting ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                        Creating...
+                      </span>
+                    ) : "Create Stall"}
                   </button>
                   <button type="button" style={styles.secondaryBtn} onClick={closeModal} disabled={submitting}>
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {editingStall && (
+          <div style={styles.modalOverlay}>
+            <div style={styles.modalContent}>
+              <h2 style={styles.modalTitle}>Edit Stall</h2>
+              <p style={styles.modalSubtitle}>
+                Update {editingStall.email}. Leave the new password blank to keep it unchanged.
+              </p>
+
+              <form onSubmit={handleUpdateStall}>
+                <label style={styles.label}>Stall Name</label>
+                <input
+                  style={styles.input}
+                  value={editForm.stall_name}
+                  onChange={(e) => setEditForm((current) => ({
+                    ...current,
+                    stall_name: e.target.value,
+                  }))}
+                  required
+                />
+
+                <label style={styles.label}>New Password (Optional)</label>
+                <input
+                  style={styles.input}
+                  type="password"
+                  autoComplete="new-password"
+                  value={editForm.new_password}
+                  onChange={(e) => setEditForm((current) => ({
+                    ...current,
+                    new_password: e.target.value,
+                  }))}
+                  minLength={editForm.new_password ? 6 : undefined}
+                  placeholder="Leave blank to keep current password"
+                />
+
+                {editForm.new_password && (
+                  <>
+                    <label style={styles.label}>Superadmin Account Password</label>
+                    <input
+                      style={styles.input}
+                      type="password"
+                      autoComplete="current-password"
+                      value={editForm.superadmin_password}
+                      onChange={(e) => setEditForm((current) => ({
+                        ...current,
+                        superadmin_password: e.target.value,
+                      }))}
+                      required
+                    />
+                  </>
+                )}
+
+                {error && <div style={styles.error}>{error}</div>}
+                <div style={styles.buttonGroup}>
+                  <button
+                    type="submit"
+                    style={styles.primaryBtn}
+                    disabled={editSubmitting}
+                  >
+                    {editSubmitting ? "Saving..." : "Save Changes"}
+                  </button>
+                  <button
+                    type="button"
+                    style={styles.secondaryBtn}
+                    onClick={closeEditStall}
+                    disabled={editSubmitting}
+                  >
                     Cancel
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import AdminNavbar from "../components/AdminNavbar"
@@ -10,6 +10,7 @@ export default function BestEaterLeaderboardPage() {
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1);
   const [admin, setAdmin] = useState(null);
+  const pageChangeRef = useRef(false)
 const limit = 10;
 const router = useRouter()
 
@@ -45,13 +46,21 @@ const router = useRouter()
   } catch (err) {
     console.error("Failed to load best eaters", err);
   } finally {
-    setLoading(false);
+  pageChangeRef.current = false
+  setLoading(false);
   }
 };
 
 
     fetchBestEaters()
   }, [page])
+
+  const changePage = (nextPage) => {
+    if (loading || pageChangeRef.current) return
+    pageChangeRef.current = true
+    setLoading(true)
+    setPage(nextPage)
+  }
 
   if (loading) {
     return (
@@ -181,8 +190,8 @@ const router = useRouter()
         </div>
         <div className="flex justify-center gap-4 mt-8">
   <button
-    disabled={page === 1}
-    onClick={() => setPage(p => p - 1)}
+    disabled={loading || page === 1}
+    onClick={() => changePage(page - 1)}
     className="px-4 py-2 rounded-lg border disabled:opacity-50"
   >
     ⬅ Previous
@@ -193,8 +202,8 @@ const router = useRouter()
   </span>
 
   <button
-    disabled={data.length < limit}
-    onClick={() => setPage(p => p + 1)}
+    disabled={loading || data.length < limit}
+    onClick={() => changePage(page + 1)}
     className="px-4 py-2 rounded-lg border disabled:opacity-50"
   >
     Next ➡
