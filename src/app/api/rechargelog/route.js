@@ -24,7 +24,10 @@ export async function GET(req) {
     `
     SELECT 
         CONCAT('#R',recharge_id) AS id,
-        'E-Cell Recharge' AS name,
+      CASE
+        WHEN method = 'Razorpay' THEN 'Online Self Recharge'
+        ELSE 'E-Cell Recharge'
+      END AS name,
         'ecell@spit.ac.in' AS email,
         amount,
         timestamp

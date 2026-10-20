@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import Link from "next/link"
 import BrandMark from "../components/amalfi/BrandMark"
+import PasswordInput from "../components/PasswordInput"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -101,8 +102,7 @@ export default function LoginPage() {
             {/* Password */}
             <div>
               <label className="block text-sm font-semibold mb-2">Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"

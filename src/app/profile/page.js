@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import Navbar from "../components/Navbar"
+import PasswordInput from "../components/PasswordInput"
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -255,8 +256,7 @@ export default function ProfilePage() {
                     <label className="block text-sm font-medium text-muted-foreground mb-2">
                       Password
                     </label>
-                    <input
-                      type="password"
+                    <PasswordInput
                       placeholder="Enter account password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -269,8 +269,7 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-muted-foreground mb-2">
                         New 4-digit PIN
                       </label>
-                      <input
-                        type="password"
+                      <PasswordInput
                         inputMode="numeric"
                         placeholder="Enter new PIN"
                         pattern="^[1-9][0-9]{3}$"
@@ -290,8 +289,7 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-muted-foreground mb-2">
                         Confirm 4-digit PIN
                       </label>
-                      <input
-                        type="password"
+                      <PasswordInput
                         inputMode="numeric"
                         placeholder="Confirm new PIN"
                         pattern="^[1-9][0-9]{3}$"

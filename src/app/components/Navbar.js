@@ -9,6 +9,7 @@ import BrandMark from "./amalfi/BrandMark"
 
 const links = [
   { href: "/home", label: "Browse Stalls" },
+  { href: "/self-recharge", label: "Recharge" },
   { href: "/transfer", label: "Transfer" },
   { href: "/profile", label: "Profile" },
   { href: "/history", label: "History" },

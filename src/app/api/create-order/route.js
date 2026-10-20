@@ -1,10 +1,28 @@
 import { randomUUID } from "node:crypto"
 import { NextResponse } from "next/server"
-import dotenv from 'dotenv';
-dotenv.config();
+import { verifyToken } from "@/lib/jwt"
+import dotenv from "dotenv"
+
+dotenv.config()
 export const runtime = "nodejs"
 
 export async function POST(request) {
+  const token = request.cookies.get("token")?.value
+  if (!token) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+  }
+
+  let payload
+  try {
+    payload = verifyToken(token)
+  } catch {
+    return NextResponse.json({ error: "Invalid session. Please log in again." }, { status: 401 })
+  }
+
+  if (!payload?.user_id) {
+    return NextResponse.json({ error: "Invalid user session" }, { status: 401 })
+  }
+
   let body
   try {
     body = await request.json()
@@ -37,6 +55,7 @@ export async function POST(request) {
         amount,
         currency: "INR",
         receipt: `ecell-${randomUUID().replaceAll("-", "")}`,
+        notes: { user_id: String(payload.user_id) },
       }),
     })
   } catch (error) {

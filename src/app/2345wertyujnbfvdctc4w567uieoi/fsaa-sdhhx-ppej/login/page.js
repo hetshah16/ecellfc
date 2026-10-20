@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import styles from "../../../login/page.module.css"
 import axios from "axios"
+import PasswordInput from "../../../components/PasswordInput"
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -65,9 +66,8 @@ export default function AdminLoginPage() {
 
           <label className={styles.label}>
             Password
-            <input
+            <PasswordInput
               className={styles.input}
-              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"

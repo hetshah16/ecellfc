@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import SellerNavbar from "../../components/SellerNavbar"
+import PasswordInput from "../../components/PasswordInput"
 
 export default function SellerProfilePage() {
   const router = useRouter()
@@ -164,8 +165,7 @@ export default function SellerProfilePage() {
                     <label className="block text-sm font-medium mb-1">
                     Current Password
                     </label>
-                    <input
-                    type="password"
+                    <PasswordInput
                     className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
@@ -174,8 +174,7 @@ export default function SellerProfilePage() {
                     <label className="block text-sm font-medium mb-1">
                     New Password
                     </label>
-                    <input
-                    type="password"
+                    <PasswordInput
                     className="w-full mb-4 px-4 py-2 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import PasswordInput from "../components/PasswordInput";
 
 export default function SetPinPage() {
   const router = useRouter();
@@ -97,8 +98,7 @@ export default function SetPinPage() {
       </p>
 
       <form onSubmit={handleSetPin} className="space-y-4">
-        <input
-          type="password"
+        <PasswordInput
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={4}
@@ -108,8 +108,7 @@ export default function SetPinPage() {
           className="w-full px-4 py-2.5 bg-input border rounded-xl"
         />
 
-        <input
-          type="password"
+        <PasswordInput
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={4}

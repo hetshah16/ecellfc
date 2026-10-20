@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "../../../login/page.module.css"
 import axios from "axios"
 import { useEffect } from "react"
+import PasswordInput from "../../../components/PasswordInput"
 export default function AdminSignupPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -89,9 +90,8 @@ export default function AdminSignupPage() {
 
           <label className={styles.label}>
             Password
-            <input
+            <PasswordInput
               className={styles.input}
-              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
@@ -112,9 +112,8 @@ export default function AdminSignupPage() {
             
           <label className={styles.label}>
             Confirm Password
-            <input
+            <PasswordInput
               className={styles.input}
-              type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"

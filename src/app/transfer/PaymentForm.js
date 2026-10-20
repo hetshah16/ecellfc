@@ -3,6 +3,7 @@ import { useState } from "react"
 import axios from "axios"
 
 import { useRouter } from "next/navigation";
+import PasswordInput from "../components/PasswordInput"
 
 export default function PaymentForm({ selected, user, setPay, setUser, setSelected}) {
   const [amount, setAmount] = useState("")
@@ -105,8 +106,7 @@ export default function PaymentForm({ selected, user, setPay, setUser, setSelect
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Enter your PIN to confirm</label>
-            <input
-                type="password"
+            <PasswordInput
                 name="pin" 
                 maxLength="4" 
                 pattern="^[1-9][0-9]{3}$"

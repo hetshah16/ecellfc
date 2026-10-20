@@ -6,6 +6,7 @@ import styles from "../../login/page.module.css"
 import axios from "axios"
 import Link from "next/link"
 import BrandMark from "../../components/amalfi/BrandMark"
+import PasswordInput from "../../components/PasswordInput"
 
 export default function SellerLoginPage() {
   const router = useRouter()
@@ -82,8 +83,7 @@ export default function SellerLoginPage() {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium mb-2">Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"

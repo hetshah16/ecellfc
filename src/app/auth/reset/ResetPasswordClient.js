@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
+import PasswordInput from "../../components/PasswordInput";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function ResetPasswordClient() {
@@ -74,8 +75,7 @@ export default function ResetPasswordClient() {
           <label className="block text-sm font-medium text-muted-foreground mb-2">
             New Password
           </label>
-          <input
-            type="password"
+          <PasswordInput
             placeholder="Enter new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -88,8 +88,7 @@ export default function ResetPasswordClient() {
           <label className="block text-sm font-medium text-muted-foreground mb-2">
             Confirm Password
           </label>
-          <input
-            type="password"
+          <PasswordInput
             placeholder="Confirm new password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

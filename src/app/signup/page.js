@@ -7,6 +7,7 @@ import BrandMark from "../components/amalfi/BrandMark";
 import axios from "axios";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "@/lib/firebaseClient";
+import PasswordInput from "../components/PasswordInput";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -258,21 +259,19 @@ export default function SignupPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <label className="block text-sm font-semibold mb-2 col-span-2">Set Password</label>
-                <input
-                  type="password"
+                <PasswordInput
                   placeholder="Password"
                   value={password}
                   disabled={otpVerified}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="min-w-0 px-4 py-3 bg-input border rounded-xl"
+                  className="w-full min-w-0 px-4 py-3 bg-input border rounded-xl"
                 />
-                <input
-                  type="password"
+                <PasswordInput
                   placeholder="Confirm"
                   value={confirm}
                   disabled={otpVerified}
                   onChange={(e) => setConfirm(e.target.value)}
-                  className="min-w-0 px-4 py-3 bg-input border rounded-xl"
+                  className="w-full min-w-0 px-4 py-3 bg-input border rounded-xl"
                 />
               </div>
 

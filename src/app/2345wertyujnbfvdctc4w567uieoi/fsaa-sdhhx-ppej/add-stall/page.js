@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import AdminNavbar from "../components/AdminNavbar"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import PasswordInput from "../../../components/PasswordInput"
 const styles = {
   container: {
     minHeight: "100vh",
@@ -398,10 +399,9 @@ export default function AdminAddStallPage() {
                 />
 
                 <label style={styles.label}>Password</label>
-                <input
+                <PasswordInput
                   style={styles.input}
                   name="password"
-                  type="password"
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Set a secure password"
