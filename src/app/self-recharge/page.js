@@ -226,3 +226,9 @@
 //     </>
 //   )
 // }
+
+export default function RazorpayPage() {
+return(
+  <div>The page will be available soon</div>
+)
+}
