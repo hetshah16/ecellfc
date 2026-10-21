@@ -59,7 +59,7 @@ return (
   <div className="min-h-screen bg-background">
     {user ? (
       <>
-        <Navbar coins={user?.coins} user={user?.name} />
+        <Navbar coins={user?.coins} user={user?.name} showRecharge />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
           {/* Stalls Section */}
           <div>

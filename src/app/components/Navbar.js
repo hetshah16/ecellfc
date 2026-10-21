@@ -16,7 +16,7 @@ const links = [
   { href: "/best-eater", label: "Best Eater" },
 ]
 
-export default function Navbar({ coins, user }) {
+export default function Navbar({ coins, user, showRecharge = false }) {
   const router = useRouter()
   const pathname = usePathname() || "/"
   const [open, setOpen] = useState(false)
@@ -129,12 +129,26 @@ export default function Navbar({ coins, user }) {
 
       {/* Balance */}
       <div className="mx-auto mt-4 flex max-w-7xl justify-end px-4 sm:px-6 lg:px-8">
-        <div className="glass-pill flex items-center gap-3 rounded-full py-1.5 pr-4 pl-1.5">
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-lemon text-lg font-bold text-navy shadow-sm ring-2 ring-white">
-            ⓔ
-          </span>
-          <p className="text-sm font-medium text-muted-foreground">Your Balance</p>
-          <div className="serif text-2xl font-bold text-primary">{coins} ⓔ</div>
+        <div className="glass-pill flex items-center gap-2 rounded-full p-1.5 sm:gap-3">
+          <div className="flex items-center gap-2 pl-2 sm:gap-3 sm:pl-3">
+            <p className="whitespace-nowrap text-xs font-medium text-muted-foreground sm:text-sm">
+              Your Balance
+            </p>
+            <div className="serif min-w-0 max-w-24 truncate text-xl font-bold tabular-nums text-primary sm:max-w-32 sm:text-2xl">
+              {coins}
+            </div>
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-lemon text-base font-bold text-navy shadow-sm ring-2 ring-white sm:h-9 sm:w-9 sm:text-lg">
+              ⓔ
+            </span>
+          </div>
+          {showRecharge && (
+            <Link
+              href="/self-recharge"
+              className="flex h-9 shrink-0 items-center rounded-full bg-primary px-3 text-xs font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 sm:h-10 sm:px-4 sm:text-sm"
+            >
+              Recharge
+            </Link>
+          )}
         </div>
       </div>
     </div>
