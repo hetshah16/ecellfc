@@ -12,6 +12,7 @@ export default function RazorpayPage() {
   const [scriptReady, setScriptReady] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState("")
+  const [notice, setNotice] = useState("")
   const [user, setUser] = useState(null)
   const [loadingUser, setLoadingUser] = useState(true)
   const [paymentSuccess, setPaymentSuccess] = useState(null)
@@ -41,6 +42,7 @@ export default function RazorpayPage() {
   async function handlePayment(event) {
     event.preventDefault()
     setError("")
+    setNotice("")
 
     const amountInRupees = Number(amount)
     const unroundedAmountInPaise = amountInRupees * 100
@@ -74,6 +76,7 @@ export default function RazorpayPage() {
         throw new Error(orderData.error || "Unable to create payment order.")
       }
 
+      let paymentAttemptFinished = false
       const checkout = new window.Razorpay({
         key: orderData.key_id,
         amount: orderData.amount,
@@ -82,6 +85,7 @@ export default function RazorpayPage() {
         description: "Secure payment",
         order_id: orderData.order_id,
         handler: async (payment) => {
+          paymentAttemptFinished = true
           try {
             const verificationResponse = await fetch("/api/verify-payment", {
               method: "POST",
@@ -118,14 +122,18 @@ export default function RazorpayPage() {
         },
         modal: {
           ondismiss: () => {
-            setMessage("Payment was cancelled.")
+            if (paymentAttemptFinished) return
+
             setProcessing(false)
+            setAmount("")
+            setNotice("Recharge cancelled. You can try again.")
           },
         },
         theme: { color: "#7c3aed" },
       })
 
       checkout.on("payment.failed", (payment) => {
+        paymentAttemptFinished = true
         setError(payment.error?.description || "Payment failed. Please try again.")
         setProcessing(false)
       })
@@ -211,6 +219,11 @@ export default function RazorpayPage() {
                   {error && (
                     <p role="alert" className="mt-4 rounded-lg border border-destructive bg-destructive/10 p-3 text-sm text-destructive">
                       {error}
+                    </p>
+                  )}
+                  {notice && (
+                    <p role="status" className="mt-4 rounded-lg border border-border bg-muted/50 p-3 text-sm text-muted-foreground">
+                      {notice}
                     </p>
                   )}
                 </>
