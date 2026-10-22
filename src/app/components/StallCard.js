@@ -5,7 +5,7 @@ const archRadius = "50% 50% 1.1rem 1.1rem / 62.5% 62.5% 1.1rem 1.1rem"
 
 export default function StallCard({ stall }) {
   const id = Number(stall.stall_id) || 0
-  const initial = stall.stall_name?.trim()?.charAt(0)?.toUpperCase() || "E"
+  const initial = String(stall.stall_id).padStart(2)
   const number = String(stall.stall_id).padStart(2, "0")
 
   return (
